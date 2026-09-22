@@ -1,10 +1,11 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { restoreMessages, serializeChatRequest, SESSION_KEY, type SessionMessage } from "@/lib/ai/session";
 import { ChatMessage } from "@/components/chat-message";
 import { ArrowUpRight, Check, ChevronDown, CircleHelp, Copy, Database, FileText, Gem, History, LayoutGrid, Menu, Network, Plus, Search, Send, Settings2, Sparkles, Wallet, X, Zap } from "lucide-react";
 
-type Message = { role: "user" | "assistant"; text: string };
+type Message = SessionMessage;
 
 const starterPrompts = ["Explain how Sui works", "What is DeFi on Sui?", "What can I build on Sui?"];
 const navItems = [{ label: "Overview", icon: LayoutGrid }, { label: "Conversations", icon: History, active: true }, { label: "Knowledge", icon: Database }];
