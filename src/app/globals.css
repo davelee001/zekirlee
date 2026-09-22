@@ -157,3 +157,7 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .composer-input-row .send-button { flex: 0 0 32px; align-self: flex-end; }
 .composer-footer { padding: 0 14px 10px; }
 .empty-state { padding: 30px 20px 34px; }
+/* Guest chat feedback */
+.chat-status, .chat-error { margin: 12px 18px; font-size: 13px; }
+.chat-status { color: #687169; }
+.chat-error { color: #a32d24; }
