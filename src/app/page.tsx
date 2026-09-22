@@ -17,6 +17,8 @@ export default function Home() {
   const [isSending, setIsSending] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
   const sendingRef = useRef(false);
+  const [sessionReady, setSessionReady] = useState(false);
+  const [storageNotice, setStorageNotice] = useState<string | null>(null);
 
   async function submitPrompt(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
