@@ -65,7 +65,7 @@
 
 :root { --ink: #162420; --paper: #f7f5ef; --paper-deep: #efede4; --line: #dadbd2; --muted-ink: #717871; --lime: #d2f36b; --coral: #ff765e; --teal: #126b61; }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-anchor: none; }
 body { background: var(--paper); color: var(--ink); }
 button, a, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
