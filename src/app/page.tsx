@@ -41,6 +41,13 @@ export default function Home() {
     }
   }, [messages, sessionReady, isSending]);
 
+  function newConversation() {
+    if (sendingRef.current) return;
+    setMessages([]);
+    setPrompt("");
+    setChatError(null);
+  }
+
   async function submitPrompt(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const cleanPrompt = prompt.trim();
