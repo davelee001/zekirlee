@@ -51,7 +51,7 @@ export default function Home() {
   async function submitPrompt(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const cleanPrompt = prompt.trim();
-    if (!cleanPrompt || sendingRef.current) return;
+    if (!cleanPrompt || sendingRef.current || !sessionReady) return;
     const nextMessages: Message[] = [...messages, { role: "user", text: cleanPrompt }];
     sendingRef.current = true;
     setIsSending(true);
