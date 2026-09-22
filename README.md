@@ -31,7 +31,7 @@ The starter page and /api/health work without external credentials. Integration 
 
 **Supabase:** Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY from your project's Connect dialog. Configure the Auth site URL for localhost in development and your Vercel/custom domain in production. Add redirect URLs when implementing sign-in. Both clients use Supabase's Data API for PostgreSQL, so a direct database password is unnecessary. Enable Row Level Security and appropriate policies in every future application-table migration. The proxy refreshes sessions but does not authorize routes; protected handlers must verify claims or users themselves. Login screens and application tables are not part of this scaffold.
 
-**AI:** AI_PROVIDER is google (default) or openai. Set the corresponding API key; Gemini defaults to gemini-2.5-flash. OPENAI_MODEL is configurable and defaults to gpt-4.1-mini. Use getLanguageModel() with the Vercel AI SDK's generateText or streamText in an authenticated server handler. No paid generation endpoint is exposed by the scaffold.
+**AI:** AI_PROVIDER is google (default) or openai. Set the corresponding server-side API key; Gemini defaults to gemini-2.5-flash. OPENAI_MODEL defaults to gpt-4.1-mini. The chat UI calls POST /api/chat without requiring a wallet, login, Supabase, or Walrus credentials. Requests use the configured provider and incur its normal usage charges. Missing credentials or provider failures show a retryable error, never a simulated answer. The last seven messages are sent as context; conversation history stays in page state and is cleared on reload. Wallet-specific data, live retrieval, and persistent memory are not used by guest chat. Requests have input/output limits and a 45-second provider timeout; this endpoint does not implement distributed rate limiting.
 
 **Walrus Memory:** Uses the official `@mysten-incubation/memwal` SDK. Set a Mainnet account object ID and its registered 32-byte Ed25519 delegate private key (64 hexadecimal characters, no 0x prefix). WALRUS_NETWORK is restricted to mainnet. The relayer API does not accept a network setting: verify your selected relayer is deployed against Walrus/Sui Mainnet. The environment value alone cannot change the relayer's network. The default URL follows the SDK API documentation; availability and account access must be verified before use.
 
@@ -40,6 +40,7 @@ createMemoryClient() requires a UUID from a verified Supabase session and derive
 ## Checks
 
 - `npm run lint`
+- `npm test` (guest chat and error-handling regression tests; no provider calls)
 - `npm run typecheck`
 - `npm run build`
 - `npm start` (after building)
