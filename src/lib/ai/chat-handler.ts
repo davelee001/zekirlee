@@ -2,8 +2,8 @@ import { z } from "zod";
 
 const messageSchema = z.object({
   role: z.enum(["user", "assistant"]),
-  text: z.string().trim().min(1).max(8000),
-});
+  text: z.string().trim().min(1).max(32000),
+}).refine(message => message.role === "assistant" || message.text.length <= 8000);
 const requestSchema = z.object({
   messages: z.array(messageSchema).min(1).max(40),
 }).refine(({ messages }) => messages.at(-1)?.role === "user");
