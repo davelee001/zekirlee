@@ -20,6 +20,17 @@ export default function Home() {
   const [sessionReady, setSessionReady] = useState(false);
   const [storageNotice, setStorageNotice] = useState<string | null>(null);
 
+  useEffect(() => {
+    try {
+      // Hydrate browser-only session storage after the server-rendered first frame.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMessages(restoreMessages(sessionStorage.getItem(SESSION_KEY)));
+    } catch {
+      setStorageNotice("Tab storage is unavailable. Your conversation will last until you refresh.");
+    }
+    setSessionReady(true);
+  }, []);
+
   async function submitPrompt(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const cleanPrompt = prompt.trim();
