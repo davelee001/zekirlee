@@ -24,3 +24,7 @@ test("invalid saved history is discarded", () => {
   }
 });
 
+test("full sessions fail explicitly instead of silently dropping context", () => {
+  assert.throws(() => serializeChatRequest(Array.from({ length: 41 }, () => ({ role: "user", text: "Hello" }))), /full/);
+  assert.throws(() => serializeChatRequest([{ role: "user", text: "a".repeat(64000) }]), /too long/);
+});
