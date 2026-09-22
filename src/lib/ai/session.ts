@@ -11,3 +11,7 @@ export function restoreMessages(raw: string | null): SessionMessage[] {
   } catch { return []; }
 }
 
+export function serializeChatRequest(messages: SessionMessage[]) {
+  const body = JSON.stringify({ messages });
+  return body;
+}
