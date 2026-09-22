@@ -143,3 +143,13 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
   .composer-footer { padding-left: 12px; }
 }
 
+/* Keep the product promise directly above the conversation entry point. */
+.content-wrap { padding-top: 42px; }
+.hero-row { order: 1; margin-top: 0; margin-bottom: 34px; }
+.chat-column { display: flex; flex-direction: column; }
+.chat-layout { order: 2; }
+.conversation-header { order: 1; }
+.composer { order: 2; margin-top: 0; margin-bottom: 16px; }
+.conversation { order: 3; min-height: 0; }
+.empty-state { padding: 30px 20px 34px; }
+
