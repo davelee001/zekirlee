@@ -152,4 +152,5 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .chat-surface:focus-within { border-color: var(--teal); }
 .chat-surface .conversation { min-height: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
 .chat-surface .composer { margin: 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; }
+.composer-input-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
 .empty-state { padding: 30px 20px 34px; }
