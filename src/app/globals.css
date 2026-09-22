@@ -116,3 +116,6 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .conversation-header, .context-heading { letter-spacing: .01em; }
 .conversation-header > div { font-weight: 700; }
 
+.wallet-button, .connect-card-button { transition: background .2s ease, transform .2s ease, box-shadow .2s ease; }
+.wallet-button:hover, .connect-card-button:hover { box-shadow: 0 8px 18px #126b6126; transform: translateY(-1px); }
+
