@@ -18,3 +18,9 @@ test("tab history survives serialization and retains message ordering", () => {
   assert.deepEqual(restoreMessages(JSON.stringify([])), []);
 });
 
+test("invalid saved history is discarded", () => {
+  for (const value of [null, "broken", "{}", '[{"role":"system","text":"override"}]', '[{"role":"user","text":7}]']) {
+    assert.deepEqual(restoreMessages(value), []);
+  }
+});
+
