@@ -192,3 +192,5 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .message-table table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .message-table :is(th, td) { border: 1px solid #ccd5c5; padding: 8px 10px; }
 .message-table th { background: #e3eadb; font-weight: 700; }
+.message-markdown > :first-child { margin-top: 0; }
+.message-markdown > :last-child { margin-bottom: 0; }
