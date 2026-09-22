@@ -9,6 +9,7 @@ Zekirlee is a conversational AI workspace focused on Sui. Users can ask question
 - Markdown formatting for headings, bold, italics, lists, links, quotes, code, and tables.
 - A connected conversation panel with replies above the input and an inline send button.
 - Light assistant bubbles and darker user bubbles.
+- Light and dark themes with a sun/moon toggle and a saved browser preference.
 - Conversation history retained across refreshes in the current browser tab.
 - Full session context sent with follow-up questions, within explicit request limits.
 - A **New conversation** button that clears the current history.
@@ -76,6 +77,14 @@ Only the selected provider needs a key. The model name is configurable. API requ
 Keep credentials in `.env.local` or your hosting environment. Both `.env.local` and the local `API key/` directory are ignored by Git. Never put provider keys or delegate private keys in variables prefixed with `NEXT_PUBLIC_`.
 
 ## Chat and session behavior
+
+### Appearance
+
+Use the sun/moon button in the top bar to switch between light and dark themes. On the first visit, the app follows your system's color preference. Your selection is saved in `localStorage` and applied on subsequent visits before the page paints. If browser storage is unavailable, the toggle still works for the current page.
+
+Both themes style the workspace, chat bubbles, input, and Markdown responses. Assistant messages use a lighter background than user messages in each theme.
+
+### Conversations
 
 Press **Enter** or click send to submit a message. Use **Shift + Enter** for a new line. Replies stream into the conversation and render as Markdown.
 
