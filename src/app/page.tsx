@@ -31,6 +31,16 @@ export default function Home() {
     setSessionReady(true);
   }, []);
 
+  useEffect(() => {
+    if (!sessionReady || isSending) return;
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(messages));
+    } catch {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setStorageNotice("Your conversation could not be saved in this tab. Keep this page open to retain it.");
+    }
+  }, [messages, sessionReady, isSending]);
+
   async function submitPrompt(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const cleanPrompt = prompt.trim();
