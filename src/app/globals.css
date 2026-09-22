@@ -186,3 +186,5 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .message-markdown hr { margin: 20px 0; border: 0; border-top: 1px solid #ccd5c5; }
 .message-markdown a { color: #0b6258; text-decoration: underline; text-underline-offset: 3px; }
 .message-markdown code { border-radius: 4px; padding: 2px 5px; background: #dfe6d8; font-family: monospace; font-size: .9em; }
+.message-markdown pre { max-width: 100%; overflow-x: auto; margin: 14px 0; border-radius: 8px; padding: 14px; background: #23382f; color: #f2f6ef; }
+.message-markdown pre code { padding: 0; background: transparent; color: inherit; white-space: pre; }
