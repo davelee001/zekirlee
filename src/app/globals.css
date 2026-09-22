@@ -109,3 +109,7 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 
 :focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
 
+.brand-mark, .spark-icon { transition: transform .25s ease, box-shadow .25s ease; }
+.brand:hover .brand-mark { transform: rotate(2deg) scale(1.06); }
+.empty-state:hover .spark-icon { transform: rotate(0deg) scale(1.04); box-shadow: 0 10px 24px #9ab94945; }
+
