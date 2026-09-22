@@ -171,3 +171,5 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .message.user > div { background: #30483e; border: 1px solid #30483e; border-top-right-radius: 4px; text-align: left; }
 .message.user small { color: #c5d5c9; }
 .message.user p { color: #f6f8f3; }
+.message-markdown { margin-top: 8px; color: #34483c; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
+.message .message-markdown p { margin: 0 0 12px; font-size: inherit; line-height: inherit; white-space: normal; }
