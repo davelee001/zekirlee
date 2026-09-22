@@ -12,3 +12,9 @@ test("context includes early messages beyond the previous seven-message window",
   assert.match(sent[0].text, /Mango/);
 });
 
+test("tab history survives serialization and retains message ordering", () => {
+  const messages = [{ role: "user", text: "Hello" }, { role: "assistant", text: "Welcome!" }];
+  assert.deepEqual(restoreMessages(JSON.stringify(messages)), messages);
+  assert.deepEqual(restoreMessages(JSON.stringify([])), []);
+});
+
