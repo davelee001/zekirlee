@@ -168,3 +168,6 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .message.assistant > div { background: #f0f3e8; border: 1px solid #e0e6d6; border-top-left-radius: 4px; }
 .message.assistant small { color: #64715f; }
 .message.assistant p { color: #34483c; }
+.message.user > div { background: #30483e; border: 1px solid #30483e; border-top-right-radius: 4px; text-align: left; }
+.message.user small { color: #c5d5c9; }
+.message.user p { color: #f6f8f3; }
