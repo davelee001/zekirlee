@@ -177,3 +177,6 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .message-markdown h3 { font-size: 18px; }
 .message-markdown strong { font-weight: 700; }
 .message-markdown em { font-style: italic; }
+.message-markdown :is(ul, ol) { margin: 8px 0 14px; padding-left: 24px; }
+.message-markdown ul { list-style: disc; }
+.message-markdown ol { list-style: decimal; }
