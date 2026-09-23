@@ -249,3 +249,4 @@ html { color-scheme: light; }
 .workspace-actions { display: flex; gap: 10px; }
 .connection-note { text-decoration: none; }
 .app-shell { height: 100dvh; min-height: 0; overflow: hidden; }
+.sidebar { overflow-y: auto; }
