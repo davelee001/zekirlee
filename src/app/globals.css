@@ -250,4 +250,4 @@ html { color-scheme: light; }
 .connection-note { text-decoration: none; }
 .app-shell { height: 100dvh; min-height: 0; overflow: hidden; }
 .sidebar { overflow-y: auto; }
-.main-panel { display: flex; }
+.main-panel { display: flex; flex-direction: column; }
