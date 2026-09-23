@@ -272,4 +272,8 @@ html { color-scheme: light; }
 @media (max-width: 850px) {
   .chat-layout { display: flex; }
   .chat-column { flex: 1; width: 100%; }
+  .chain-stamp { display: none; }
+}
+@media (max-width: 540px) {
+  .topbar { flex-basis: 62px; }
 }
