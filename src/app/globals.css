@@ -251,3 +251,5 @@ html { color-scheme: light; }
 .app-shell { height: 100dvh; min-height: 0; overflow: hidden; }
 .sidebar { overflow-y: auto; }
 .main-panel { display: flex; flex-direction: column; min-height: 0; }
+.topbar { flex: 0 0 70px; }
+.content-wrap { flex: 1; }
