@@ -237,3 +237,4 @@ html { color-scheme: light; }
 .dark :is(.message-table th, .message-table td, .message-markdown hr) { border-color: #536d57; }
 .workspace-content { flex: 1; min-height: 0; overflow-y: auto; padding: 32px clamp(18px, 4vw, 48px); line-height: 1.65; }
 .workspace-content > h1 { font-size: clamp(26px, 4vw, 38px); margin-bottom: 20px; letter-spacing: -.04em; }
+.workspace-lead { max-width: 720px; margin-bottom: 24px; }
