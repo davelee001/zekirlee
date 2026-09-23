@@ -285,5 +285,5 @@ html { color-scheme: light; }
 }
 @media (max-height: 600px) {
   .page-footer { display: none; }
-  .hero-row { display: flex; }
+  .hero-row { display: flex; margin-bottom: 10px; }
 }
