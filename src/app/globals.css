@@ -261,3 +261,5 @@ html { color-scheme: light; }
 .hero-copy { margin-top: 8px; font-size: 12px; line-height: 1.45; }
 .chat-layout { flex: 1; min-height: 0; margin-top: 0; align-items: stretch; }
 .chat-column { min-height: 0; min-width: 0; }
+.conversation-header { flex-shrink: 0; }
+.chat-surface { display: flex; }
