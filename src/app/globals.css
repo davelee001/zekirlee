@@ -235,3 +235,4 @@ html { color-scheme: light; }
 .dark .message-markdown pre code { background: transparent; }
 .dark .message-table th { background: #294030; }
 .dark :is(.message-table th, .message-table td, .message-markdown hr) { border-color: #536d57; }
+.workspace-content { flex: 1; }
