@@ -285,4 +285,5 @@ html { color-scheme: light; }
 }
 @media (max-height: 600px) {
   .page-footer { display: none; }
+  .hero-row { display: flex; }
 }
