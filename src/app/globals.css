@@ -271,5 +271,5 @@ html { color-scheme: light; }
 .empty-state { padding: 24px 16px; }
 @media (max-width: 850px) {
   .chat-layout { display: flex; }
-  .chat-column { flex: 1; }
+  .chat-column { flex: 1; width: 100%; }
 }
