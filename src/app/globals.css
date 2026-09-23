@@ -156,6 +156,7 @@ body { background-image: radial-gradient(circle at 86% 10%, #d2f36b1c 0 1px, tra
 .composer-input-row textarea { flex: 1; min-width: 0; min-height: 32px; max-height: 160px; field-sizing: content; resize: none; padding: 6px 0; line-height: 20px; }
 .composer-input-row .send-button { flex: 0 0 32px; align-self: flex-end; }
 .composer-input-row textarea { caret-color: #126b61; }
+.dark .composer-input-row textarea { caret-color: #d2f36b; }
 .composer-footer { padding: 0 14px 10px; }
 .empty-state { padding: 30px 20px 34px; }
 /* Guest chat feedback */
