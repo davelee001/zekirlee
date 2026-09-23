@@ -257,3 +257,4 @@ html { color-scheme: light; }
 .hero-row .eyebrow { margin-bottom: 8px; font-size: 9px; }
 .hero-row h1 { font-size: clamp(20px, 2.3vw, 28px); line-height: 1.15; letter-spacing: -.035em; }
 .hero-row h1 br { display: none; }
+.hero-row h1 em::before { content: " "; }
