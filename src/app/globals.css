@@ -263,4 +263,4 @@ html { color-scheme: light; }
 .chat-column { min-height: 0; min-width: 0; }
 .conversation-header { flex-shrink: 0; }
 .chat-surface { display: flex; flex-direction: column; flex: 1; min-height: 0; }
-.chat-surface .conversation { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.chat-surface .conversation { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; overflow-anchor: none; }
