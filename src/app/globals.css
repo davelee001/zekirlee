@@ -246,3 +246,4 @@ html { color-scheme: light; }
 .workspace-card a { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
 .workspace-card button:not(.theme-toggle) { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; background: var(--paper); }
 .workspace-card input { display: block; width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); }
+.workspace-actions { display: flex; }
