@@ -265,4 +265,4 @@ html { color-scheme: light; }
 .chat-surface { display: flex; flex-direction: column; flex: 1; min-height: 0; }
 .chat-surface .conversation { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; overflow-anchor: none; }
 .chat-surface .composer { flex: 0 0 auto; }
-.chat-surface :is(.chat-status, .chat-error) { flex-shrink: 0; max-height: 64px; overflow-y: auto; }
+.chat-surface :is(.chat-status, .chat-error) { flex-shrink: 0; max-height: 64px; overflow-y: auto; margin-block: 6px; }
