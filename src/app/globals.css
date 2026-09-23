@@ -242,3 +242,4 @@ html { color-scheme: light; }
 .workspace-card { min-width: 0; padding: 22px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-deep); }
 .workspace-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
 .workspace-card p { margin-bottom: 14px; }
+.workspace-card ul { list-style: disc; }
