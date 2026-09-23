@@ -286,4 +286,5 @@ html { color-scheme: light; }
 @media (max-height: 600px) {
   .page-footer { display: none; }
   .hero-row { display: flex; margin-bottom: 10px; }
+  .hero-row h1 { font-size: 20px; }
 }
