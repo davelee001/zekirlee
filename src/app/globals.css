@@ -243,3 +243,4 @@ html { color-scheme: light; }
 .workspace-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
 .workspace-card p { margin-bottom: 14px; }
 .workspace-card ul { list-style: disc; padding-left: 22px; }
+.workspace-card a { color: var(--teal); text-decoration: underline; }
