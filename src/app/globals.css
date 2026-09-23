@@ -235,4 +235,4 @@ html { color-scheme: light; }
 .dark .message-markdown pre code { background: transparent; }
 .dark .message-table th { background: #294030; }
 .dark :is(.message-table th, .message-table td, .message-markdown hr) { border-color: #536d57; }
-.workspace-content { flex: 1; min-height: 0; overflow-y: auto; padding: 32px clamp(18px, 4vw, 48px); }
+.workspace-content { flex: 1; min-height: 0; overflow-y: auto; padding: 32px clamp(18px, 4vw, 48px); line-height: 1.65; }
