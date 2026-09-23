@@ -267,3 +267,4 @@ html { color-scheme: light; }
 .chat-surface .composer { flex: 0 0 auto; }
 .chat-surface :is(.chat-status, .chat-error) { flex-shrink: 0; max-height: 64px; overflow-y: auto; margin-block: 6px; }
 .context-panel { min-height: 0; overflow-y: auto; }
+.page-footer { flex-shrink: 0; }
