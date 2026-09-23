@@ -276,4 +276,5 @@ html { color-scheme: light; }
 }
 @media (max-width: 540px) {
   .topbar { flex-basis: 62px; }
+  .content-wrap { padding: 12px 12px max(10px, env(safe-area-inset-bottom)); }
 }
