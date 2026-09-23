@@ -14,8 +14,28 @@ Zekirlee is a conversational AI workspace focused on Sui. Users can ask question
 - Full session context sent with follow-up questions, within explicit request limits.
 - A **New conversation** button that clears the current history.
 - Loading, configuration, storage, and interrupted-response feedback.
+- Sidebar navigation to dedicated workspace, learning, settings, and help pages.
+- Public Sui address lookup that opens wallet activity in an external explorer.
+- A compact introduction and visible message input, with conversation history scrolling independently.
 
 Wallet connection, live blockchain retrieval, login screens, and persistent Walrus memory are not implemented in the chat flow. Supabase and Walrus client helpers are available for future integration.
+
+## Workspace pages
+
+| Destination | Route | Content and actions |
+| --- | --- | --- |
+| Overview | `/overview` | Workspace introduction and shortcuts to chat, learning, and settings. |
+| Conversations | `/conversations` or `/` | Streamed AI chat with the current tab's conversation history. |
+| Knowledge | `/knowledge` | Curated topics and links to official Sui and Move documentation. |
+| Sui basics | `/sui-basics` | Introductory explanations of objects, ownership, Move, and transactions. |
+| Wallet activity | `/wallet-activity` | Validate a public Sui address and open its Mainnet activity on Suiscan. |
+| Settings | `/settings` | Switch themes or clear this tab's saved conversation after confirmation. |
+| Help center | `/help` | Messaging instructions, session behavior, and troubleshooting guidance. |
+| Sui network | `/network` | Links to a Mainnet explorer and public-address lookup. |
+
+The shared sidebar highlights the active destination and supports a collapsible mobile menu. Pinned shortcuts open Sui basics and Wallet activity; the plus icon opens Knowledge to browse topics. Navigating back to Conversations restores saved history from the current tab.
+
+Knowledge resources are curated links, not documents automatically searched by the chatbot. Wallet lookup opens an external explorer without connecting a wallet or signing transactions. The network page does not monitor live network health.
 
 ## Technology
 
@@ -88,6 +108,8 @@ Both themes style the workspace, chat bubbles, input, and Markdown responses. As
 
 Press **Enter** or click send to submit a message. Use **Shift + Enter** for a new line. Replies stream into the conversation and render as Markdown.
 
+The introduction stays visible in a smaller font, while the message input fits within the initial screen. Conversation history scrolls above the input, so long replies do not push the composer down the page. The input receives focus after session restoration and uses a contrasting native blinking cursor without automatically scrolling the page.
+
 History is stored in `sessionStorage` for the current tab and restored after refresh. **New conversation** clears the conversation and composer. This is browser session storage, not a database or cross-device memory service. If storage is unavailable, chat continues in page memory and displays a notice.
 
 Each request sends the full conversation rather than silently removing earlier messages. Limits are:
@@ -133,10 +155,17 @@ src/
   app/
     api/chat/route.ts       Streaming AI endpoint
     api/health/route.ts     Liveness endpoint
+    [section]/page.tsx      Overview, knowledge, guides, settings, help, and network pages
+    conversations/page.tsx Dedicated route for the chat interface
     page.tsx               Chat interface and tab-session lifecycle
     globals.css            Layout, themes, and message formatting
   components/
-    chat-message.tsx       Markdown renderer
+    chat-message.tsx        Markdown renderer
+    theme-toggle.tsx        Browser-persisted theme control
+    workspace-sidebar.tsx  Shared navigation and mobile menu
+    workspace-page.tsx     Shared layout for content pages
+    workspace-settings.tsx Appearance and session-history controls
+    wallet-lookup.tsx      Public-address validation and explorer link
     ui/                    Reusable shadcn/ui components
   lib/
     ai/
