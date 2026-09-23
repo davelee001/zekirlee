@@ -280,4 +280,6 @@ html { color-scheme: light; }
   .hero-row { margin-bottom: 12px; }
   .hero-row h1 { font-size: 21px; }
   .hero-copy, .hero-row .eyebrow { display: none; }
+  .page-footer { display: none; }
+  .empty-state { padding: 18px 12px; }
 }
