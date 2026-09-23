@@ -239,4 +239,4 @@ html { color-scheme: light; }
 .workspace-content > h1 { font-size: clamp(26px, 4vw, 38px); margin-bottom: 20px; letter-spacing: -.04em; }
 .workspace-lead { max-width: 720px; margin-bottom: 24px; color: var(--muted-ink); }
 .workspace-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); gap: 18px; }
-.workspace-card { min-width: 0; padding: 22px; margin-bottom: 18px; border: 1px solid var(--line); }
+.workspace-card { min-width: 0; padding: 22px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 12px; }
