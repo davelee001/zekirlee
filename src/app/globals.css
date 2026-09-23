@@ -278,4 +278,5 @@ html { color-scheme: light; }
   .topbar { flex-basis: 62px; }
   .content-wrap { padding: 12px 12px max(10px, env(safe-area-inset-bottom)); }
   .hero-row { margin-bottom: 12px; }
+  .hero-row h1 { font-size: 21px; }
 }
