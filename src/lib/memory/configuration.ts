@@ -27,3 +27,6 @@ export function getMemoryConfiguration(env: Record<string, string | undefined>) 
   }
   if (!/^[a-zA-Z0-9_-]{1,64}$/.test(values.namespace)) {
     throw new MemoryConfigurationError("WALRUS_MEMORY_NAMESPACE must contain 1–64 letters, numbers, underscores, or hyphens.");
+  }
+  return values;
+}
