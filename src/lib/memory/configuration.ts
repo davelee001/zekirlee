@@ -18,3 +18,6 @@ export function getMemoryConfiguration(env: Record<string, string | undefined>) 
   if (!/^0x[a-fA-F0-9]{64}$/.test(values.accountId)) {
     throw new MemoryConfigurationError("Set WALRUS_MEMORY_ACCOUNT_ID to the mainnet MemWalAccount object ID (0x plus 64 hex characters).");
   }
+  let url: URL;
+  try { url = new URL(values.serverUrl); } catch {
+    throw new MemoryConfigurationError("WALRUS_MEMORY_SERVER_URL must be an HTTPS URL.");
