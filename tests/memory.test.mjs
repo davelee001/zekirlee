@@ -8,3 +8,6 @@ const env = {
 };
 
 test("memory config defaults to the hosted relayer and normalizes hex keys", () => {
+  const config = getMemoryConfiguration({ ...env, WALRUS_MEMORY_DELEGATE_KEY: ` 0x${env.WALRUS_MEMORY_DELEGATE_KEY} ` });
+  assert.equal(config.key, env.WALRUS_MEMORY_DELEGATE_KEY);
+  assert.equal(config.serverUrl, "https://relayer.memory.walrus.xyz");
