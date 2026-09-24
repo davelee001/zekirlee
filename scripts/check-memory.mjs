@@ -15,3 +15,6 @@ try {
     console.error("Memory connection check timed out.");
     process.exit(1);
   }, 30000);
+  try {
+    await client.recall({ query: "ZekirLee connection check", topK: 1 });
+    console.log("PASS: authenticated recall (no memories written)");
