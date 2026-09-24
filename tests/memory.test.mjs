@@ -45,3 +45,6 @@ test("mainnet verification rejects testnet, unknown networks, and failed relayer
   await verifyMainnetRelayer("https://example.com", async (url, options) => {
     assert.equal(url, "https://example.com/config");
     assert.equal(options.redirect, "error");
+    assert.ok(options.signal instanceof AbortSignal);
+    return Response.json({ network: "mainnet" });
+  });
