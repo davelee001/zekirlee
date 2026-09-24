@@ -27,3 +27,6 @@ try {
 
   const messages = [{ role: "user", text: "Remember this session code: violet-742. Briefly acknowledge it." }];
   const reply = await chat(messages);
+  console.log("PASS: guest AI response");
+  messages.push({ role: "assistant", text: reply }, { role: "user", text: "What session code did I give you? Reply with only that code." });
+  assert.match(await chat(messages), /violet-742/i, "Follow-up did not retain session context.");
