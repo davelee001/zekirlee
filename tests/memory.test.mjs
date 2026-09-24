@@ -26,3 +26,6 @@ test("memory config rejects missing credentials, other networks, and unsafe URLs
     assert.throws(() => getMemoryConfiguration({ ...env, ...override }), error => {
       assert.doesNotMatch(error.message, /secret-invalid-key|user:secret/);
       return true;
+    });
+  }
+});
