@@ -130,3 +130,6 @@ test("disconnecting a response aborts the provider and closes its iterator", asy
   let providerSignal;
   let closed = false;
   const handler = createChatHandler(async (_messages, signal) => {
+    providerSignal = signal;
+    return {
+      [Symbol.asyncIterator]() { return this; },
