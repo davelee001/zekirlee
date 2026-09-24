@@ -86,6 +86,9 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
         },
         async cancel() {
           cancelled = true;
+          cancellation.abort();
+          try { await iterator.return?.(); } catch { /* The provider may reject on abort. */ }
+        },
         async cancel() { await iterator.return?.(); },
       });
       return new Response(stream, { headers: {
