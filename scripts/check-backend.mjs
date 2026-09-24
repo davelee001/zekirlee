@@ -21,3 +21,6 @@ async function chat(messages) {
 
 try {
   const health = await fetch(new URL("/api/health", base), { signal: AbortSignal.timeout(10000) });
+  assert.equal(health.status, 200);
+  assert.equal((await health.json()).status, "ok");
+  console.log("PASS: backend health");
