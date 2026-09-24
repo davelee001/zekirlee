@@ -11,6 +11,9 @@ const requestSchema = z.object({
 type ChatMessage = z.infer<typeof messageSchema>;
 type Reply = (messages: ChatMessage[], signal: AbortSignal) => Promise<string | AsyncIterable<string>>;
 
+class RequestTooLarge extends Error {}
+
+async function readBody(request: Request) {
 export function createChatHandler(reply: Reply, configurationError?: () => string | undefined) {
   return async function POST(request: Request) {
     const json = (body: object, status = 200) => Response.json(body, {
