@@ -2,6 +2,22 @@
 
 Zekirlee is a conversational AI workspace focused on Sui. Users can ask questions, receive streamed answers, and continue a conversation without connecting a wallet or signing in.
 
+## Project status
+
+**Phase one is complete.** The application foundation and interactive guest workspace have been implemented and pushed to `main`.
+
+Delivered in this phase:
+
+- Application structure, npm dependencies, environment configuration, and GitHub CI.
+- AI chat with streamed Markdown responses and full conversation context within session limits.
+- Tab-session history, refresh recovery, and a new-conversation reset.
+- A visible composer, contrasting message bubbles, and persistent light/dark preferences.
+- Dedicated Overview, Conversations, Knowledge, Sui basics, Wallet activity, Settings, Help, and Network pages.
+- Knowledge search, category filters, pinned-only filtering, and browser-saved sidebar pins.
+- Public-address explorer links, theme controls, and confirmed session-history clearing.
+
+Phase two requirements have not yet been defined. Wallet connection, live data retrieval in chat, user authentication, and persistent Walrus memory remain outside the delivered phase-one scope. Supabase and Walrus integration helpers are prepared but are not active chat features.
+
 ## Current features
 
 - Real AI responses through the Vercel AI SDK, with Google Gemini and OpenAI provider options.
@@ -15,6 +31,8 @@ Zekirlee is a conversational AI workspace focused on Sui. Users can ask question
 - A **New conversation** button that clears the current history.
 - Loading, configuration, storage, and interrupted-response feedback.
 - Sidebar navigation to dedicated workspace, learning, settings, and help pages.
+- Interactive Knowledge search, category filters, and a pinned-only view.
+- Pin/unpin controls that update the sidebar immediately and remember choices in this browser.
 - Public Sui address lookup that opens wallet activity in an external explorer.
 - A compact introduction and visible message input, with conversation history scrolling independently.
 
@@ -193,6 +211,8 @@ npm start
 ```
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
+
+Knowledge tests also cover combined search/category/pin filters and restoration of empty, invalid, or duplicate pin selections. If browser storage cannot save pin changes, selections remain available in page memory and the interface displays a notice.
 
 CI runs installation, lint, tests, TypeScript checks, and a production build. Add shadcn components with `npx shadcn@latest add <component>`.
 
