@@ -32,3 +32,7 @@ test("memory config rejects missing credentials, other networks, and unsafe URLs
 
 test("user namespaces stay separate and require verified UUID-shaped IDs", () => {
   const first = "6af70a77-c48e-4ff1-95b7-50c4c0d33dfa";
+  const second = "ae50f1a2-f22e-4201-8be9-ab476a23a13e";
+  assert.notEqual(userMemoryNamespace("zekirlee", first), userMemoryNamespace("zekirlee", second));
+  assert.throws(() => userMemoryNamespace("zekirlee", "guest"));
+});
