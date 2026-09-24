@@ -34,3 +34,4 @@ try {
 } catch (error) {
   console.error(`Backend check failed: ${error.message}`);
   process.exitCode = 1;
+}
