@@ -12,3 +12,6 @@ async function chat(messages) {
   assert.equal(response.status, 200, `Chat returned HTTP ${response.status}`);
   assert.match(response.headers.get("content-type") || "", /application\/x-ndjson/);
   const events = (await response.text()).trim().split("\n").map(line => JSON.parse(line));
+  assert.equal(events.some(event => event.type === "error"), false, "Chat stream failed; check provider configuration and quota.");
+  assert.equal(events.at(-1)?.type, "done", "Chat stream did not finish.");
+  const text = events.filter(event => event.type === "text").map(event => event.text).join("");
