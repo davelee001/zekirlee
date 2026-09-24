@@ -251,7 +251,7 @@ html { color-scheme: light; }
 .workspace-actions { display: flex; gap: 10px; }
 .topic-filters, .topic-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-block: 14px; }
 .topic-actions { justify-content: space-between; }
-.topic-actions button { display: inline-flex; }
+.topic-actions button { display: inline-flex; align-items: center; }
 .connection-note { text-decoration: none; }
 .app-shell { height: 100dvh; min-height: 0; overflow: hidden; }
 .sidebar { overflow-y: auto; }
