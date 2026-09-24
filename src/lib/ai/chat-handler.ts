@@ -51,6 +51,9 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
     if (setupError) return json({ error: setupError, code: "CHAT_NOT_CONFIGURED" }, 503);
 
     try {
+      const cancellation = new AbortController();
+      const signal = AbortSignal.any([request.signal, cancellation.signal, AbortSignal.timeout(45000)]);
+      signal.throwIfAborted();
       const signal = AbortSignal.any([request.signal, AbortSignal.timeout(45000)]);
       const result = await reply(parsed.data.messages, signal);
       if (typeof result === "string") {
