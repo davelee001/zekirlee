@@ -14,6 +14,9 @@ type Reply = (messages: ChatMessage[], signal: AbortSignal) => Promise<string | 
 class RequestTooLarge extends Error {}
 
 async function readBody(request: Request) {
+  const reader = request.body?.pipeThrough(new TextDecoderStream()).getReader();
+  if (!reader) return "";
+  let raw = "";
 export function createChatHandler(reply: Reply, configurationError?: () => string | undefined) {
   return async function POST(request: Request) {
     const json = (body: object, status = 200) => Response.json(body, {
