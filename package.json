@@ -12,7 +12,8 @@
     "lint": "eslint . --max-warnings=0",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test:backend": "node scripts/check-backend.mjs",
+    "test:memory": "node --experimental-strip-types scripts/check-memory.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.76",
