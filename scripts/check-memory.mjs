@@ -12,3 +12,6 @@ try {
   const client = MemWal.create({ ...config, namespace: `${config.namespace}:connection-check` });
   // Health is unauthenticated; recall verifies the account and delegate without writing.
   const timeout = setTimeout(() => {
+    console.error("Memory connection check timed out.");
+    process.exit(1);
+  }, 30000);
