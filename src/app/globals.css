@@ -249,7 +249,7 @@ html { color-scheme: light; }
 .workspace-card button:not(.theme-toggle) { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; background: var(--paper); }
 .workspace-card input { display: block; width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); }
 .workspace-actions { display: flex; gap: 10px; }
-.topic-filters, .topic-actions { display: flex; flex-wrap: wrap; }
+.topic-filters, .topic-actions { display: flex; flex-wrap: wrap; align-items: center; }
 .connection-note { text-decoration: none; }
 .app-shell { height: 100dvh; min-height: 0; overflow: hidden; }
 .sidebar { overflow-y: auto; }
