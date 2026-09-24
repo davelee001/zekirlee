@@ -23,6 +23,7 @@ export function usePinnedTopics() {
     const next = JSON.stringify(current.includes(id) ? current.filter(item => item !== id) : [...current, id]);
     fallback = next;
     let saved = true;
+    try { localStorage.setItem(key, next); } catch { saved = false; }
     window.dispatchEvent(new Event(event));
     return saved;
   }
