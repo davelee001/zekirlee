@@ -161,6 +161,9 @@ The proxy refreshes sessions but does not authorize application routes. Future p
 ### Walrus Memory
 
 The server-only helper uses `@mysten-incubation/memwal`. Set these values in `.env.local` and in the Vercel server environment:
+
+```dotenv
+WALRUS_NETWORK=mainnet
 The server-only helper uses `@mysten-incubation/memwal`. Configure a Mainnet account object ID and its registered delegate key using the variables in `.env.example`. The helper expects a 32-byte Ed25519 private key encoded as 64 hexadecimal characters without a `0x` prefix.
 
 `createMemoryClient()` takes a verified Supabase user UUID and derives a per-user namespace within the configured account. This is application-level isolation, not separate on-chain ownership. Keep the raw client and namespace overrides server-side.
