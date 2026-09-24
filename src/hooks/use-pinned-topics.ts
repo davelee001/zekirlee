@@ -15,3 +15,8 @@ function subscribe(callback: () => void) {
   window.addEventListener(event, callback);
   return () => { window.removeEventListener("storage", callback); window.removeEventListener(event, callback); };
 }
+export function usePinnedTopics() {
+  const raw = useSyncExternalStore(subscribe, snapshot, () => null);
+  const pins = parsePins(raw);
+  return { pins };
+}
