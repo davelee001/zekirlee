@@ -48,3 +48,4 @@ test("mainnet verification rejects testnet, unknown networks, and failed relayer
     assert.ok(options.signal instanceof AbortSignal);
     return Response.json({ network: "mainnet" });
   });
+});
