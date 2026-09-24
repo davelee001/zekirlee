@@ -6,3 +6,6 @@ nextEnv.loadEnvConfig(process.cwd(), true);
 
 try {
   const config = getMemoryConfiguration(process.env);
+  console.log("PASS: memory environment configuration");
+  await verifyMainnetRelayer(config.serverUrl);
+  console.log("PASS: relayer reports mainnet");
