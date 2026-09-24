@@ -176,7 +176,7 @@ Run `npm run test:memory` after setting the credentials. It checks configuration
 
 `await createMemoryClient(verifiedUserId)` takes a verified Supabase user UUID, validates the relayer network before returning a client, and derives a per-user namespace within the configured account. This is application-level isolation, not separate on-chain ownership. Keep the raw client and namespace overrides server-side. Callers must obtain the user ID from verified authentication, never from request input.
 
-`WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change the relayer's deployment. Account provisioning, funding, and Mainnet transactions require separate setup. Guest chat does not write memories.
+`WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. The chat route is not yet wired to store or recall memories; guest chat continues to work without memory credentials.
 
 ## Project structure
 
@@ -223,6 +223,8 @@ npm start
 ```
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
+
+With the app running, run `npm run test:backend` to check health, a real guest AI response, and follow-up context. This separate smoke check makes two provider requests and uses your configured provider quota. It defaults to `http://localhost:3000`; set `BACKEND_URL` to check another server. Chat rejects oversized bodies while reading them and aborts provider generation when the response stream is cancelled.
 
 Knowledge tests also cover combined search/category/pin filters and restoration of empty, invalid, or duplicate pin selections. If browser storage cannot save pin changes, selections remain available in page memory and the interface displays a notice.
 
