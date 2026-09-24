@@ -54,7 +54,6 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
       const cancellation = new AbortController();
       const signal = AbortSignal.any([request.signal, cancellation.signal, AbortSignal.timeout(45000)]);
       signal.throwIfAborted();
-      const signal = AbortSignal.any([request.signal, AbortSignal.timeout(45000)]);
       const result = await reply(parsed.data.messages, signal);
       if (typeof result === "string") {
         if (!result.trim()) throw new Error("Empty model response");
@@ -63,11 +62,13 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
       const iterator = result[Symbol.asyncIterator]();
       const encoder = new TextEncoder();
       let hasText = false;
+      let cancelled = false;
       const stream = new ReadableStream({
         async pull(controller) {
           const send = (event: object) => controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
           try {
             const chunk = await iterator.next();
+            if (cancelled) return;
             if (chunk.done) {
               if (!hasText) throw new Error("Empty model response");
               send({ type: "done" });
