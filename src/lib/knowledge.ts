@@ -15,3 +15,12 @@ export function filterTopics(query: string, category: string, pinnedOnly: boolea
   );
 }
 
+export function parsePins(raw: string | null): string[] {
+  const defaults = ["sui-basics", "wallet-activity"];
+  if (raw === null) return defaults;
+  try {
+    const value: unknown = JSON.parse(raw);
+    if (!Array.isArray(value)) return defaults;
+    return value.filter((id): id is string => typeof id === "string" && knowledgeTopics.some(topic => topic.id === id));
+  } catch { return defaults; }
+}
