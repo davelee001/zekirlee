@@ -173,9 +173,8 @@ WALRUS_MEMORY_NAMESPACE=zekirlee
 The account ID is a **MemWalAccount object ID**, not your wallet address. Use a mainnet account and register an Ed25519 delegate through the [Walrus Memory account setup](https://memory.walrus.xyz). The delegate key must be 64 hex characters, with an optional `0x` prefix. Keep it server-side and out of Git. The namespace accepts 1–64 letters, numbers, underscores, or hyphens.
 
 Run `npm run test:memory` after setting the credentials. It checks configuration, verifies that the relayer's `/config` reports `mainnet`, and makes an authenticated recall in a dedicated connection-check namespace. It does not write memories or print credentials or recalled content. A passing public health request alone does not validate delegate access.
-The server-only helper uses `@mysten-incubation/memwal`. Configure a Mainnet account object ID and its registered delegate key using the variables in `.env.example`. The helper expects a 32-byte Ed25519 private key encoded as 64 hexadecimal characters without a `0x` prefix.
 
-`createMemoryClient()` takes a verified Supabase user UUID and derives a per-user namespace within the configured account. This is application-level isolation, not separate on-chain ownership. Keep the raw client and namespace overrides server-side.
+`await createMemoryClient(verifiedUserId)` takes a verified Supabase user UUID, validates the relayer network before returning a client, and derives a per-user namespace within the configured account. This is application-level isolation, not separate on-chain ownership. Keep the raw client and namespace overrides server-side. Callers must obtain the user ID from verified authentication, never from request input.
 
 `WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change the relayer's deployment. Account provisioning, funding, and Mainnet transactions require separate setup. Guest chat does not write memories.
 
