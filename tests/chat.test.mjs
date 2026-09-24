@@ -139,3 +139,7 @@ test("disconnecting a response aborts the provider and closes its iterator", asy
   });
   const response = await handler(request({ messages: [{ role: "user", text: "Hello" }] }));
   const reader = response.body.getReader();
+  await reader.read();
+  await reader.cancel();
+  assert.equal(providerSignal.aborted, true);
+  assert.equal(closed, true);
