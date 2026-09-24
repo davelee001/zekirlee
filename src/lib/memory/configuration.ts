@@ -40,3 +40,6 @@ export async function verifyMainnetRelayer(serverUrl: string, fetcher: typeof fe
     signal: AbortSignal.timeout(10000), cache: "no-store", redirect: "error",
   });
   if (!response.ok) throw new MemoryConfigurationError("Could not verify the Walrus Memory relayer configuration.");
+  const config = await response.json();
+  if (config.network !== "mainnet") {
+    throw new MemoryConfigurationError("The Walrus Memory relayer does not report mainnet. Memory access is disabled.");
