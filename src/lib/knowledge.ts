@@ -5,3 +5,13 @@ export const knowledgeTopics = [
   { id: "move", title: "Move concepts", category: "Build", description: "Understand the language and Sui's object model.", href: "https://docs.sui.io/develop/write-move/sui-move-concepts" },
   { id: "network", title: "Sui network", category: "Explore", description: "Find Mainnet resources and public activity.", href: "/network" },
 ];
+
+export function filterTopics(query: string, category: string, pinnedOnly: boolean, pins: string[]) {
+  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  return knowledgeTopics.filter(topic =>
+    (category === "All" || topic.category === category) &&
+    (!pinnedOnly || pins.includes(topic.id)) &&
+    words.every(word => `${topic.title} ${topic.description} ${topic.category}`.toLowerCase().includes(word)),
+  );
+}
+
