@@ -22,3 +22,6 @@ try {
 } catch (error) {
   console.error(error instanceof MemoryConfigurationError
     ? error.message
+    : "Memory connection failed. Check relayer availability, SDK compatibility, and mainnet account/delegate registration.");
+  process.exitCode = 1;
+}
