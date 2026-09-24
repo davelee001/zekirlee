@@ -136,3 +136,6 @@ test("disconnecting a response aborts the provider and closes its iterator", asy
       async next() { return { value: "Hello", done: false }; },
       async return() { closed = true; return { done: true }; },
     };
+  });
+  const response = await handler(request({ messages: [{ role: "user", text: "Hello" }] }));
+  const reader = response.body.getReader();
