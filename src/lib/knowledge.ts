@@ -21,6 +21,6 @@ export function parsePins(raw: string | null): string[] {
   try {
     const value: unknown = JSON.parse(raw);
     if (!Array.isArray(value)) return defaults;
-    return value.filter((id): id is string => typeof id === "string" && knowledgeTopics.some(topic => topic.id === id));
+    return [...new Set(value.filter((id): id is string => typeof id === "string" && knowledgeTopics.some(topic => topic.id === id)))];
   } catch { return defaults; }
 }
