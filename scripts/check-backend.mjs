@@ -6,3 +6,6 @@ async function chat(messages) {
   const response = await fetch(new URL("/api/chat", base), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ messages }),
+    signal: AbortSignal.timeout(60000),
+  });
