@@ -37,3 +37,6 @@ export function userMemoryNamespace(namespace: string, authenticatedUserId: stri
 
 export async function verifyMainnetRelayer(serverUrl: string, fetcher: typeof fetch = fetch) {
   const response = await fetcher(`${serverUrl}/config`, {
+    signal: AbortSignal.timeout(10000), cache: "no-store", redirect: "error",
+  });
+  if (!response.ok) throw new MemoryConfigurationError("Could not verify the Walrus Memory relayer configuration.");
