@@ -18,3 +18,6 @@ async function chat(messages) {
   assert.ok(text.trim(), "Provider returned no text.");
   return text;
 }
+
+try {
+  const health = await fetch(new URL("/api/health", base), { signal: AbortSignal.timeout(10000) });
