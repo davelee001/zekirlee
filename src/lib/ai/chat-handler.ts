@@ -41,7 +41,8 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
     try {
       const raw = await readBody(request);
       body = JSON.parse(raw);
-    } catch {
+    } catch (error) {
+      if (error instanceof RequestTooLarge) return json({ error: "Please send a shorter conversation." }, 413);
       return json({ error: "Invalid chat request." }, 400);
     }
     const parsed = requestSchema.safeParse(body);
