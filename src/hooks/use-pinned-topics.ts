@@ -18,5 +18,13 @@ function subscribe(callback: () => void) {
 export function usePinnedTopics() {
   const raw = useSyncExternalStore(subscribe, snapshot, () => null);
   const pins = parsePins(raw);
-  return { pins };
+  function toggle(id: string) {
+    const current = parsePins(snapshot());
+    const next = JSON.stringify(current.includes(id) ? current.filter(item => item !== id) : [...current, id]);
+    fallback = next;
+    let saved = true;
+    window.dispatchEvent(new Event(event));
+    return saved;
+  }
+  return { pins, toggle };
 }
