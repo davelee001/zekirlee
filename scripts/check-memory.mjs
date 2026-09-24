@@ -18,3 +18,7 @@ try {
   try {
     await client.recall({ query: "ZekirLee connection check", topK: 1 });
     console.log("PASS: authenticated recall (no memories written)");
+  } finally { clearTimeout(timeout); }
+} catch (error) {
+  console.error(error instanceof MemoryConfigurationError
+    ? error.message
