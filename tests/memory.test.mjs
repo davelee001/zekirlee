@@ -14,3 +14,6 @@ test("memory config defaults to the hosted relayer and normalizes hex keys", () 
   assert.equal(config.namespace, "zekirlee");
 });
 
+test("memory config rejects missing credentials, other networks, and unsafe URLs without leaking secrets", () => {
+  for (const override of [
+    { WALRUS_NETWORK: "testnet" },
