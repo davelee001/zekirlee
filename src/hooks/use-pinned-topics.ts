@@ -10,3 +10,4 @@ function snapshot() {
   if (memoryOnly) return fallback;
   try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
 }
+function subscribe(callback: () => void) { return () => {}; }
