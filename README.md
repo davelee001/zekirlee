@@ -16,7 +16,17 @@ Delivered in this phase:
 - Knowledge search, category filters, pinned-only filtering, and browser-saved sidebar pins.
 - Public-address explorer links, theme controls, and confirmed session-history clearing.
 
-Backend reliability work is underway. Wallet connection, live data retrieval in chat, user authentication, and persistent Walrus memory remain outside the delivered phase-one scope. Supabase and Walrus integration helpers are prepared but are not active chat features.
+Backend reliability and Walrus mainnet configuration are now implemented. Oversized chat requests are rejected while reading the body, and cancelling a response aborts provider generation. Separate live checks verify guest chat with follow-up context and Walrus account access.
+
+| Backend capability | Status |
+| --- | --- |
+| Guest AI chat and session context | Implemented and verified with live requests |
+| Walrus mainnet configuration | Implemented; hosted relayer confirmed to report `mainnet` |
+| Walrus account access | Requires a mainnet account ID and registered delegate key; authenticated access is not yet verified |
+| Persistent memory in chat | Storage and recall are not yet connected to the chat route |
+| Supabase authentication and database | Client helpers prepared; sign-in and database-backed conversations remain pending |
+
+Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
 
 ## Current features
 
@@ -204,10 +214,15 @@ src/
       chat-handler.ts      Request validation and stream handling
       session.ts           History validation and request serialization
     env/                   Public configuration validation
-    memory/                Walrus Memory helper
+    memory/
+      configuration.ts     Credential validation, user namespaces, mainnet verification
+      client.ts            Server-only Walrus client factory
     supabase/              Browser and server Supabase clients
   proxy.ts                 Supabase session refresh
-tests/                     Chat and session regression tests
+scripts/
+  check-backend.mjs         Live health, guest chat, and follow-up context check
+  check-memory.mjs          Mainnet and authenticated recall check without writes
+tests/                     Chat, session, knowledge, and memory regression tests
 supabase/migrations/       Placeholder for application migrations
 .github/workflows/ci.yml    Automated checks
 ```
@@ -223,6 +238,13 @@ npm start
 ```
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
+
+The regression suite currently contains 21 tests, including request-body cancellation, provider cancellation, memory configuration validation, namespace separation, and rejection of non-mainnet relayers.
+
+| Live check | Prerequisites | What it verifies |
+| --- | --- | --- |
+| `npm run test:backend` | Running app and configured AI provider | Health endpoint, streamed guest response, and follow-up context |
+| `npm run test:memory` | Mainnet account ID, registered delegate key, reachable relayer | Mainnet deployment and signed recall access; no memory writes |
 
 With the app running, run `npm run test:backend` to check health, a real guest AI response, and follow-up context. This separate smoke check makes two provider requests and uses your configured provider quota. It defaults to `http://localhost:3000`; set `BACKEND_URL` to check another server. Chat rejects oversized bodies while reading them and aborts provider generation when the response stream is cancelled.
 
@@ -250,6 +272,10 @@ No custom `vercel.json` is required by this application. Configure Supabase Auth
 | Interrupted reply | Retry; check provider availability and quota if it persists. |
 | Conversation full | Click **New conversation** to reset context. |
 | History disappears on refresh | Check the storage notice and browser session-storage permissions. |
+| Memory configuration error | Set the mainnet MemWalAccount object ID and registered delegate key, then run `npm run test:memory`. |
+| Relayer does not report mainnet | Check `WALRUS_MEMORY_SERVER_URL`; setting `WALRUS_NETWORK` cannot change the relayer deployment. |
+| Memory connection check fails | Check connectivity, SDK compatibility, and whether the delegate is registered on the configured mainnet account. |
+| Chat does not recall Walrus memories | The chat route is not yet connected to persistent memory; current history is stored in the browser tab. |
 | npm blocked in PowerShell | Use `npm.cmd`. |
 
 ## References
