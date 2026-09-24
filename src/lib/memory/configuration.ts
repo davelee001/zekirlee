@@ -12,3 +12,6 @@ export function getMemoryConfiguration(env: Record<string, string | undefined>) 
     serverUrl: (env.WALRUS_MEMORY_SERVER_URL?.trim() || "https://relayer.memory.walrus.xyz").replace(/\/+$/, ""),
     namespace: env.WALRUS_MEMORY_NAMESPACE?.trim() || "zekirlee",
   };
+  if (!/^[a-fA-F0-9]{64}$/.test(values.key)) {
+    throw new MemoryConfigurationError("Set WALRUS_MEMORY_DELEGATE_KEY to the registered 32-byte Ed25519 delegate key in hex.");
+  }
