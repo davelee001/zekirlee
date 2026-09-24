@@ -6,4 +6,7 @@ const key = "zekirlee.pinned-topics.v1";
 const event = "zekirlee:pins-changed";
 let fallback: string | null = null;
 let memoryOnly = false;
-function snapshot() { return fallback; }
+function snapshot() {
+  if (memoryOnly) return fallback;
+  try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
+}
