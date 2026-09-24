@@ -133,3 +133,6 @@ test("disconnecting a response aborts the provider and closes its iterator", asy
     providerSignal = signal;
     return {
       [Symbol.asyncIterator]() { return this; },
+      async next() { return { value: "Hello", done: false }; },
+      async return() { closed = true; return { done: true }; },
+    };
