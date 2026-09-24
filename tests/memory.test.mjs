@@ -36,3 +36,6 @@ test("user namespaces stay separate and require verified UUID-shaped IDs", () =>
   assert.notEqual(userMemoryNamespace("zekirlee", first), userMemoryNamespace("zekirlee", second));
   assert.throws(() => userMemoryNamespace("zekirlee", "guest"));
 });
+
+test("mainnet verification rejects testnet, unknown networks, and failed relayers", async () => {
+  for (const body of [{ network: "testnet" }, {}]) {
