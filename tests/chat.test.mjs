@@ -127,3 +127,6 @@ test("oversized chunked requests are cancelled before the full body is read", as
 });
 
 test("disconnecting a response aborts the provider and closes its iterator", async () => {
+  let providerSignal;
+  let closed = false;
+  const handler = createChatHandler(async (_messages, signal) => {
