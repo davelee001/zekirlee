@@ -20,6 +20,9 @@ async function readBody(request: Request) {
   try {
     while (true) {
       const chunk = await reader.read();
+      if (chunk.done) return raw;
+      raw += chunk.value;
+      if (raw.length > 64000) {
 export function createChatHandler(reply: Reply, configurationError?: () => string | undefined) {
   return async function POST(request: Request) {
     const json = (body: object, status = 200) => Response.json(body, {
