@@ -12,5 +12,6 @@ function snapshot() {
 }
 function subscribe(callback: () => void) {
   window.addEventListener("storage", callback);
-  return () => { window.removeEventListener("storage", callback); };
+  window.addEventListener(event, callback);
+  return () => { window.removeEventListener("storage", callback); window.removeEventListener(event, callback); };
 }
