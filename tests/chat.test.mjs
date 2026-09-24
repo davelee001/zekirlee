@@ -143,3 +143,4 @@ test("disconnecting a response aborts the provider and closes its iterator", asy
   await reader.cancel();
   assert.equal(providerSignal.aborted, true);
   assert.equal(closed, true);
+});
