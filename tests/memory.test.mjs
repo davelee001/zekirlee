@@ -39,3 +39,6 @@ test("user namespaces stay separate and require verified UUID-shaped IDs", () =>
 
 test("mainnet verification rejects testnet, unknown networks, and failed relayers", async () => {
   for (const body of [{ network: "testnet" }, {}]) {
+    await assert.rejects(verifyMainnetRelayer("https://example.com", async () => Response.json(body)), /mainnet/);
+  }
+  await assert.rejects(verifyMainnetRelayer("https://example.com", async () => new Response(null, { status: 503 })), /verify/);
