@@ -34,3 +34,6 @@ export function getMemoryConfiguration(env: Record<string, string | undefined>) 
 export function userMemoryNamespace(namespace: string, authenticatedUserId: string) {
   return `${namespace}:${z.uuid().parse(authenticatedUserId)}`;
 }
+
+export async function verifyMainnetRelayer(serverUrl: string, fetcher: typeof fetch = fetch) {
+  const response = await fetcher(`${serverUrl}/config`, {
