@@ -23,3 +23,6 @@ test("memory config rejects missing credentials, other networks, and unsafe URLs
     { WALRUS_MEMORY_SERVER_URL: "https://user:secret@example.com" },
     { WALRUS_MEMORY_NAMESPACE: "someone:else" },
   ]) {
+    assert.throws(() => getMemoryConfiguration({ ...env, ...override }), error => {
+      assert.doesNotMatch(error.message, /secret-invalid-key|user:secret/);
+      return true;
