@@ -9,9 +9,6 @@ export async function createMemoryClient(authenticatedUserId: string) {
   // The SDK has no network selector: check the deployment before signed operations.
   await verifyMainnetRelayer(config.serverUrl);
   return MemWal.create({ ...config, namespace });
-  z.literal("mainnet").parse(process.env.WALRUS_NETWORK || "mainnet");
-  const config = z.object({
-    key: z.string().regex(/^[a-fA-F0-9]{64}$/),
     accountId: z.string().regex(/^0x[a-fA-F0-9]{64}$/),
     serverUrl: z.url().startsWith("https://"),
     namespace: z.string().min(1),
