@@ -26,14 +26,14 @@ Wallet connection, live blockchain retrieval, login screens, and persistent Walr
 | --- | --- | --- |
 | Overview | `/overview` | Workspace introduction and shortcuts to chat, learning, and settings. |
 | Conversations | `/conversations` or `/` | Streamed AI chat with the current tab's conversation history. |
-| Knowledge | `/knowledge` | Curated topics and links to official Sui and Move documentation. |
+| Knowledge | `/knowledge` | Searchable topics, category filters, a pinned-only view, and links to official resources. |
 | Sui basics | `/sui-basics` | Introductory explanations of objects, ownership, Move, and transactions. |
 | Wallet activity | `/wallet-activity` | Validate a public Sui address and open its Mainnet activity on Suiscan. |
 | Settings | `/settings` | Switch themes or clear this tab's saved conversation after confirmation. |
 | Help center | `/help` | Messaging instructions, session behavior, and troubleshooting guidance. |
 | Sui network | `/network` | Links to a Mainnet explorer and public-address lookup. |
 
-The shared sidebar highlights the active destination and supports a collapsible mobile menu. Pinned shortcuts open Sui basics and Wallet activity; the plus icon opens Knowledge to browse topics. Navigating back to Conversations restores saved history from the current tab.
+The shared sidebar highlights the active destination and supports a collapsible mobile menu. Use Knowledge to pin or unpin topics; the sidebar updates immediately and remembers your choices in this browser. Sui basics and Wallet activity are pinned initially. The plus icon opens Knowledge to browse topics. Navigating back to Conversations restores saved history from the current tab.
 
 Knowledge resources are curated links, not documents automatically searched by the chatbot. Wallet lookup opens an external explorer without connecting a wallet or signing transactions. The network page does not monitor live network health.
 
