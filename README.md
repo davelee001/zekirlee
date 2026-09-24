@@ -167,6 +167,9 @@ WALRUS_NETWORK=mainnet
 WALRUS_MEMORY_SERVER_URL=https://relayer.memory.walrus.xyz
 WALRUS_MEMORY_ACCOUNT_ID=your_mainnet_account_object_id
 WALRUS_MEMORY_DELEGATE_KEY=your_registered_delegate_private_key
+WALRUS_MEMORY_NAMESPACE=zekirlee
+```
+
 The server-only helper uses `@mysten-incubation/memwal`. Configure a Mainnet account object ID and its registered delegate key using the variables in `.env.example`. The helper expects a 32-byte Ed25519 private key encoded as 64 hexadecimal characters without a `0x` prefix.
 
 `createMemoryClient()` takes a verified Supabase user UUID and derives a per-user namespace within the configured account. This is application-level isolation, not separate on-chain ownership. Keep the raw client and namespace overrides server-side.
