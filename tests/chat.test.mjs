@@ -112,3 +112,6 @@ test("empty provider output is treated as a retryable failure", async () => {
 });
 
 test("oversized chunked requests are cancelled before the full body is read", async () => {
+  let cancelled = false;
+  const handler = createChatHandler(async () => assert.fail("Provider must not run"));
+  const body = new ReadableStream({
