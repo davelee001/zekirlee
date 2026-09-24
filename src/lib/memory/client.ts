@@ -5,6 +5,9 @@ import { getMemoryConfiguration, userMemoryNamespace, verifyMainnetRelayer } fro
 // Only pass the user ID obtained from a verified Supabase session.
 export async function createMemoryClient(authenticatedUserId: string) {
   const config = getMemoryConfiguration(process.env);
+  const namespace = userMemoryNamespace(config.namespace, authenticatedUserId);
+  // The SDK has no network selector: check the deployment before signed operations.
+  await verifyMainnetRelayer(config.serverUrl);
 export function createMemoryClient(authenticatedUserId: string) {
   const userId = z.uuid().parse(authenticatedUserId);
   z.literal("mainnet").parse(process.env.WALRUS_NETWORK || "mainnet");
