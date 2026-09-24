@@ -30,3 +30,7 @@ export function getMemoryConfiguration(env: Record<string, string | undefined>) 
   }
   return values;
 }
+
+export function userMemoryNamespace(namespace: string, authenticatedUserId: string) {
+  return `${namespace}:${z.uuid().parse(authenticatedUserId)}`;
+}
