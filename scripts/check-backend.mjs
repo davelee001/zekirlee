@@ -30,3 +30,7 @@ try {
   console.log("PASS: guest AI response");
   messages.push({ role: "assistant", text: reply }, { role: "user", text: "What session code did I give you? Reply with only that code." });
   assert.match(await chat(messages), /violet-742/i, "Follow-up did not retain session context.");
+  console.log("PASS: follow-up conversation context");
+} catch (error) {
+  console.error(`Backend check failed: ${error.message}`);
+  process.exitCode = 1;
