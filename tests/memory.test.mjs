@@ -20,3 +20,6 @@ test("memory config rejects missing credentials, other networks, and unsafe URLs
     { WALRUS_MEMORY_ACCOUNT_ID: "" },
     { WALRUS_MEMORY_DELEGATE_KEY: "secret-invalid-key" },
     { WALRUS_MEMORY_SERVER_URL: "http://example.com" },
+    { WALRUS_MEMORY_SERVER_URL: "https://user:secret@example.com" },
+    { WALRUS_MEMORY_NAMESPACE: "someone:else" },
+  ]) {
