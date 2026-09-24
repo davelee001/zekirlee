@@ -78,10 +78,14 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
               send({ type: "text", text: chunk.value });
             }
           } catch {
+            if (cancelled) return;
+            cancellation.abort();
             send({ type: "error", error: "The reply was interrupted. Please try again." });
             controller.close();
           }
         },
+        async cancel() {
+          cancelled = true;
         async cancel() { await iterator.return?.(); },
       });
       return new Response(stream, { headers: {
