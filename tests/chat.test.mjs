@@ -124,3 +124,6 @@ test("oversized chunked requests are cancelled before the full body is read", as
   assert.equal(response.status, 413);
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(cancelled, true);
+});
+
+test("disconnecting a response aborts the provider and closes its iterator", async () => {
