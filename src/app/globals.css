@@ -254,6 +254,7 @@ html { color-scheme: light; }
 .topic-actions button { display: inline-flex; align-items: center; gap: 6px; }
 .workspace-card button[aria-pressed="true"] { background: var(--teal); color: var(--paper); border-color: var(--teal); }
 .workspace-card .pinned-filter { display: flex; align-items: center; gap: 8px; margin-block: 14px; }
+.workspace-card .pinned-filter input { width: auto; }
 .connection-note { text-decoration: none; }
 .app-shell { height: 100dvh; min-height: 0; overflow: hidden; }
 .sidebar { overflow-y: auto; }
