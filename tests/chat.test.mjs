@@ -121,3 +121,6 @@ test("oversized chunked requests are cancelled before the full body is read", as
   const response = await handler(new Request("http://localhost/api/chat", {
     method: "POST", body, duplex: "half",
   }));
+  assert.equal(response.status, 413);
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(cancelled, true);
