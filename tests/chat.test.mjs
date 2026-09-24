@@ -118,3 +118,6 @@ test("oversized chunked requests are cancelled before the full body is read", as
     pull(controller) { controller.enqueue(new TextEncoder().encode("x".repeat(32001))); },
     cancel() { cancelled = true; },
   });
+  const response = await handler(new Request("http://localhost/api/chat", {
+    method: "POST", body, duplex: "half",
+  }));
