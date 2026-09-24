@@ -26,6 +26,9 @@ async function readBody(request: Request) {
         await reader.cancel();
         throw new RequestTooLarge();
       }
+    }
+  } finally {
+    reader.releaseLock();
 export function createChatHandler(reply: Reply, configurationError?: () => string | undefined) {
   return async function POST(request: Request) {
     const json = (body: object, status = 200) => Response.json(body, {
