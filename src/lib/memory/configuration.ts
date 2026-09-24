@@ -9,3 +9,6 @@ export function getMemoryConfiguration(env: Record<string, string | undefined>) 
   const values = {
     key: env.WALRUS_MEMORY_DELEGATE_KEY?.trim().replace(/^0x/i, "") || "",
     accountId: env.WALRUS_MEMORY_ACCOUNT_ID?.trim() || "",
+    serverUrl: (env.WALRUS_MEMORY_SERVER_URL?.trim() || "https://relayer.memory.walrus.xyz").replace(/\/+$/, ""),
+    namespace: env.WALRUS_MEMORY_NAMESPACE?.trim() || "zekirlee",
+  };
