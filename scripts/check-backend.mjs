@@ -9,3 +9,6 @@ async function chat(messages) {
     body: JSON.stringify({ messages }),
     signal: AbortSignal.timeout(60000),
   });
+  assert.equal(response.status, 200, `Chat returned HTTP ${response.status}`);
+  assert.match(response.headers.get("content-type") || "", /application\/x-ndjson/);
+  const events = (await response.text()).trim().split("\n").map(line => JSON.parse(line));
