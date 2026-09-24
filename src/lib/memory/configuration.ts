@@ -15,3 +15,6 @@ export function getMemoryConfiguration(env: Record<string, string | undefined>) 
   if (!/^[a-fA-F0-9]{64}$/.test(values.key)) {
     throw new MemoryConfigurationError("Set WALRUS_MEMORY_DELEGATE_KEY to the registered 32-byte Ed25519 delegate key in hex.");
   }
+  if (!/^0x[a-fA-F0-9]{64}$/.test(values.accountId)) {
+    throw new MemoryConfigurationError("Set WALRUS_MEMORY_ACCOUNT_ID to the mainnet MemWalAccount object ID (0x plus 64 hex characters).");
+  }
