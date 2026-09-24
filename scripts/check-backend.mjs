@@ -15,3 +15,6 @@ async function chat(messages) {
   assert.equal(events.some(event => event.type === "error"), false, "Chat stream failed; check provider configuration and quota.");
   assert.equal(events.at(-1)?.type, "done", "Chat stream did not finish.");
   const text = events.filter(event => event.type === "text").map(event => event.text).join("");
+  assert.ok(text.trim(), "Provider returned no text.");
+  return text;
+}
