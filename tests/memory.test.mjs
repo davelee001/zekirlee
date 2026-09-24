@@ -17,3 +17,6 @@ test("memory config defaults to the hosted relayer and normalizes hex keys", () 
 test("memory config rejects missing credentials, other networks, and unsafe URLs without leaking secrets", () => {
   for (const override of [
     { WALRUS_NETWORK: "testnet" },
+    { WALRUS_MEMORY_ACCOUNT_ID: "" },
+    { WALRUS_MEMORY_DELEGATE_KEY: "secret-invalid-key" },
+    { WALRUS_MEMORY_SERVER_URL: "http://example.com" },
