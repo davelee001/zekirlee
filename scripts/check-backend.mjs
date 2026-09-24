@@ -24,3 +24,6 @@ try {
   assert.equal(health.status, 200);
   assert.equal((await health.json()).status, "ok");
   console.log("PASS: backend health");
+
+  const messages = [{ role: "user", text: "Remember this session code: violet-742. Briefly acknowledge it." }];
+  const reply = await chat(messages);
