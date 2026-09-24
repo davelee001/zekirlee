@@ -110,3 +110,5 @@ test("empty provider output is treated as a retryable failure", async () => {
   const handler = createChatHandler(async () => " ");
   assert.equal((await handler(request({ messages: [{ role: "user", text: "Hello" }] }))).status, 503);
 });
+
+test("oversized chunked requests are cancelled before the full body is read", async () => {

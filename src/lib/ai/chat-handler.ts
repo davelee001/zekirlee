@@ -89,7 +89,6 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
           cancellation.abort();
           try { await iterator.return?.(); } catch { /* The provider may reject on abort. */ }
         },
-        async cancel() { await iterator.return?.(); },
       });
       return new Response(stream, { headers: {
         "Content-Type": "application/x-ndjson; charset=utf-8",
