@@ -115,3 +115,6 @@ test("oversized chunked requests are cancelled before the full body is read", as
   let cancelled = false;
   const handler = createChatHandler(async () => assert.fail("Provider must not run"));
   const body = new ReadableStream({
+    pull(controller) { controller.enqueue(new TextEncoder().encode("x".repeat(32001))); },
+    cancel() { cancelled = true; },
+  });
