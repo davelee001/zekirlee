@@ -21,3 +21,6 @@ export function getMemoryConfiguration(env: Record<string, string | undefined>) 
   let url: URL;
   try { url = new URL(values.serverUrl); } catch {
     throw new MemoryConfigurationError("WALRUS_MEMORY_SERVER_URL must be an HTTPS URL.");
+  }
+  if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash) {
+    throw new MemoryConfigurationError("WALRUS_MEMORY_SERVER_URL must use HTTPS without credentials, query parameters, or a fragment.");
