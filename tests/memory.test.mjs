@@ -5,3 +5,6 @@ import { getMemoryConfiguration, userMemoryNamespace, verifyMainnetRelayer } fro
 const env = {
   WALRUS_MEMORY_ACCOUNT_ID: `0x${"a".repeat(64)}`,
   WALRUS_MEMORY_DELEGATE_KEY: "b".repeat(64),
+};
+
+test("memory config defaults to the hosted relayer and normalizes hex keys", () => {
