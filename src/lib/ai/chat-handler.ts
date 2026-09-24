@@ -23,6 +23,9 @@ async function readBody(request: Request) {
       if (chunk.done) return raw;
       raw += chunk.value;
       if (raw.length > 64000) {
+        await reader.cancel();
+        throw new RequestTooLarge();
+      }
 export function createChatHandler(reply: Reply, configurationError?: () => string | undefined) {
   return async function POST(request: Request) {
     const json = (body: object, status = 200) => Response.json(body, {
