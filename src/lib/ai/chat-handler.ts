@@ -29,6 +29,9 @@ async function readBody(request: Request) {
     }
   } finally {
     reader.releaseLock();
+  }
+}
+
 export function createChatHandler(reply: Reply, configurationError?: () => string | undefined) {
   return async function POST(request: Request) {
     const json = (body: object, status = 200) => Response.json(body, {
