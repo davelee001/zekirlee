@@ -8,8 +8,7 @@ export async function createMemoryClient(authenticatedUserId: string) {
   const namespace = userMemoryNamespace(config.namespace, authenticatedUserId);
   // The SDK has no network selector: check the deployment before signed operations.
   await verifyMainnetRelayer(config.serverUrl);
-export function createMemoryClient(authenticatedUserId: string) {
-  const userId = z.uuid().parse(authenticatedUserId);
+  return MemWal.create({ ...config, namespace });
   z.literal("mainnet").parse(process.env.WALRUS_NETWORK || "mainnet");
   const config = z.object({
     key: z.string().regex(/^[a-fA-F0-9]{64}$/),
