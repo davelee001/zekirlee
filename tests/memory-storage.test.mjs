@@ -64,3 +64,6 @@ test("partial storage failures are not reported as successful saves", async () =
       { text: "User studies Move", evidence: "I study Move." },
     ] }),
     writer: { rememberAndWait: async text => {
+      if (text.includes("Move")) throw Error("secret provider error");
+      return { blob_id: "blob" };
+    } },
