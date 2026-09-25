@@ -35,3 +35,6 @@ export async function storeUsefulFacts(input: {
     const idempotencyKey = createHash("sha256").update(`${input.namespace}\n${text}`).digest("hex");
     const result = await input.writer.rememberAndWait(text, undefined, { timeoutMs: 20000, idempotencyKey });
     if (!result.blob_id) throw new Error("Storage did not confirm a blob");
+  }));
+  return {
+    saved: outcomes.filter(result => result.status === "fulfilled").length,
