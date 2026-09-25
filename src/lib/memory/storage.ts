@@ -33,3 +33,5 @@ export async function storeUsefulFacts(input: {
   const outcomes = await Promise.allSettled([...unique.values()].map(async text => {
     // Stable per fact and namespace: retries do not create fresh storage jobs.
     const idempotencyKey = createHash("sha256").update(`${input.namespace}\n${text}`).digest("hex");
+    const result = await input.writer.rememberAndWait(text, undefined, { timeoutMs: 20000, idempotencyKey });
+    if (!result.blob_id) throw new Error("Storage did not confirm a blob");
