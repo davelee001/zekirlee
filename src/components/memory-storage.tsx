@@ -45,3 +45,6 @@ export function useMemoryStorage() {
   return { enabled, notice, toggle, save };
 }
 
+export function MemoryStorageControl({ enabled, notice, toggle }: {
+  enabled: boolean; notice: string; toggle: (enabled: boolean) => void;
+}) {
