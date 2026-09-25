@@ -209,7 +209,7 @@ With memory enabled, the latest message becomes a semantic search query in the b
 
 The app waits at most four seconds for recall before continuing with the current conversation. Missing configuration, an unavailable relayer, and failed retrieval never block ordinary chat. The UI distinguishes supplied facts, no matches, a new browser identity, and unavailable memory. A provider request already in progress may continue after the wait expires, but late results are not added to the reply.
 
-Turning memory off stops future saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. Memory recall in replies and a deletion interface remain future work. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
+Start a new conversation and re-enable memory after a page reload to use saved facts without the old message history. Recently submitted storage jobs may not yet be available for recall. Tests exercise a storage-to-recall round trip with the SDK's offline mock; a real mainnet round trip still needs valid account credentials.
 
 ## Project structure
 
@@ -243,6 +243,7 @@ src/
       client.ts            Server-only Walrus client factory
       identity.ts          Signed browser identity for guest memory
       storage.ts           Fact validation, deduplication, and storage confirmation
+      recall.ts            Bounded retrieval and model context formatting
     supabase/              Browser and server Supabase clients
   proxy.ts                 Supabase session refresh
 scripts/
@@ -265,7 +266,7 @@ npm start
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
 
-The regression suite currently contains 27 tests, including request-body cancellation, provider cancellation, memory configuration validation, signed guest identity, evidence validation, duplicate handling, partial storage failures, and rejection of non-mainnet relayers.
+The regression suite currently contains 34 tests, including request-body cancellation, provider cancellation, memory configuration validation, signed guest identity, evidence validation, duplicate handling, partial storage failures, recall fallback and cancellation, an offline storage-to-recall round trip, and rejection of non-mainnet relayers.
 
 | Live check | Prerequisites | What it verifies |
 | --- | --- | --- |
@@ -301,7 +302,7 @@ No custom `vercel.json` is required by this application. Configure Supabase Auth
 | Memory configuration error | Set the mainnet MemWalAccount object ID and registered delegate key, then run `npm run test:memory`. |
 | Relayer does not report mainnet | Check `WALRUS_MEMORY_SERVER_URL`; setting `WALRUS_NETWORK` cannot change the relayer deployment. |
 | Memory connection check fails | Check connectivity, SDK compatibility, and whether the delegate is registered on the configured mainnet account. |
-| Chat does not recall Walrus memories | Saving facts is implemented, but recall in replies is not yet connected; current conversation context still comes from the browser tab. |
+| Chat does not recall Walrus memories | Enable **Use and save memory with Walrus**, use the browser that saved the facts, and check the recall notice. Verify credentials with `npm run test:memory`; recent writes may still be processing. |
 | npm blocked in PowerShell | Use `npm.cmd`. |
 
 ## References
