@@ -17,3 +17,9 @@ export async function recallForChat(options: {
   timeoutMs?: number;
 }): Promise<RecallContext> {
   if (!options.enabled) return { status: "off", facts: [] };
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let active = true;
+  let onAbort: () => void = () => {};
+  try {
+    options.signal.throwIfAborted();
+    const stopped = new Promise<never>((_resolve, reject) => {
