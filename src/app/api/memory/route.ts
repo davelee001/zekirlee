@@ -34,3 +34,5 @@ export async function POST(request: NextRequest) {
   const parsed = schema.safeParse(body);
   if (!parsed.success) return json({ error: "Enable memory and send up to 8,000 characters." }, 400);
 
+  let config;
+  try { config = getMemoryConfiguration(process.env); }
