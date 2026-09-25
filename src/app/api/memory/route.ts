@@ -55,3 +55,5 @@ export async function POST(request: NextRequest) {
       text: parsed.data.text, namespace, writer,
       extract: async text => {
         const result = await generateText({
+          model: getLanguageModel(), system: extractionInstructions,
+          prompt: JSON.stringify({ userMessage: text }),
