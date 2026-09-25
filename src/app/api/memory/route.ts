@@ -44,3 +44,6 @@ export async function POST(request: NextRequest) {
     });
     return response;
   };
+  // Establish the cookie before any writes, including requests that later time out.
+  if (!identity.existing) return setIdentity(json({ code: "MEMORY_SESSION_CREATED" }, 409));
+  const namespace = `${config.namespace}:guest:${identity.id}`;
