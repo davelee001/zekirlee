@@ -22,7 +22,6 @@ export function useMemoryStorage() {
       : status === "unavailable" ? "Saved memory is unavailable. This reply uses the current conversation."
       : status === "new" ? "No memory identity found in this browser yet."
       : status === "empty" ? "No relevant saved details found for this reply." : "");
-    setNotice(value ? "New messages can save preferences, goals, and project details." : "Memory is off. Previously saved details remain stored.");
   }
 
   function save(text: string) {
@@ -53,10 +52,11 @@ export function useMemoryStorage() {
     });
   }
 
-  return { enabled, notice, toggle, save };
+  return { enabled, notice, recallNotice, toggle, save, reportRecall };
 }
 
-export function MemoryStorageControl({ enabled, notice, toggle }: {
+export function MemoryStorageControl({ enabled, notice, recallNotice, toggle }: {
+  enabled: boolean; notice: string; recallNotice: string; toggle: (enabled: boolean) => void;
   enabled: boolean; notice: string; toggle: (enabled: boolean) => void;
 }) {
   return <div className="memory-storage-control">
