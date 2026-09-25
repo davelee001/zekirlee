@@ -27,3 +27,6 @@ export function useMemoryStorage() {
         let response = await send();
         let result = await response.json();
         if (response.status === 409 && result.code === "MEMORY_SESSION_CREATED") {
+          if (!optedIn.current) return;
+          response = await send();
+          result = await response.json();
