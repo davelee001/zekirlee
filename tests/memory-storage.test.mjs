@@ -22,3 +22,6 @@ test("only supported useful facts are stored and duplicate facts share one write
     text: "I prefer TypeScript.", namespace: "guest:one",
     extract: async () => ({ facts: [
       { text: "User prefers TypeScript.", evidence: "I prefer TypeScript." },
+      { text: "User prefers TypeScript.", evidence: "I prefer TypeScript." },
+      { text: "User lives in Paris.", evidence: "I live in Paris." },
+    ] }),
