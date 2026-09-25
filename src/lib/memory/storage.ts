@@ -30,3 +30,6 @@ export async function storeUsefulFacts(input: {
     if (!input.text.includes(fact.evidence) || sensitive.test(fact.text) || sensitive.test(fact.evidence)) continue;
     unique.set(fact.text.toLowerCase().replace(/\s+/g, " "), fact.text);
   }
+  const outcomes = await Promise.allSettled([...unique.values()].map(async text => {
+    // Stable per fact and namespace: retries do not create fresh storage jobs.
+    const idempotencyKey = createHash("sha256").update(`${input.namespace}\n${text}`).digest("hex");
