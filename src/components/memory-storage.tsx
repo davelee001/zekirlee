@@ -5,12 +5,16 @@ import { useRef, useState } from "react";
 export function useMemoryStorage() {
   const [enabled, setEnabled] = useState(false);
   const [notice, setNotice] = useState("");
+  const [recallNotice, setRecallNotice] = useState("");
   const queue = useRef(Promise.resolve());
   const optedIn = useRef(false);
 
   function toggle(value: boolean) {
     optedIn.current = value;
     setEnabled(value);
+    setRecallNotice("");
+    setNotice(value ? "Replies can use saved details, and new messages can save preferences, goals, and project details." : "Memory is off. Previously saved details remain stored.");
+  }
     setNotice(value ? "New messages can save preferences, goals, and project details." : "Memory is off. Previously saved details remain stored.");
   }
 

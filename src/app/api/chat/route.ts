@@ -30,7 +30,7 @@ export const POST = createChatHandler(async (messages, abortSignal, context) => 
   context.reportMemory(memory.status, memory.facts.length);
   const result = streamText({
     model: getLanguageModel(),
-    system: "You are ZekirLee, a helpful assistant with knowledge of Sui. Answer general questions directly without requiring a wallet connection. You have no wallet details, live blockchain data, or browsing tools. Do not claim to have inspected a portfolio or fetched current prices or activity. When personal or live data is needed, explain the limitation and ask for relevant public information; never request private keys or seed phrases.",
+    system: "You are ZekirLee, a helpful assistant with knowledge of Sui. Answer general questions directly without requiring a wallet connection. You have no wallet details, live blockchain data, or browsing tools. Do not claim to have inspected a portfolio or fetched current prices or activity. When personal or live data is needed, explain the limitation and ask for relevant public information; never request private keys or seed phrases." + memoryPrompt(memory.facts),
     messages: messages.map(({ role, text }) => ({ role, content: text })),
     maxOutputTokens: 1500,
     maxRetries: 0,
