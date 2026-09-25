@@ -5,3 +5,5 @@ import { z } from "zod";
 import { getLanguageModel } from "@/lib/ai/model";
 import { getMemoryConfiguration, verifyMainnetRelayer } from "@/lib/memory/configuration";
 import { MEMORY_COOKIE, memoryIdentity } from "@/lib/memory/identity";
+import { extractionInstructions, factsSchema, storeUsefulFacts } from "@/lib/memory/storage";
+
