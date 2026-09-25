@@ -19,3 +19,9 @@ test("stored facts can be recalled with an empty conversation using the SDK mock
   assert.equal(recalled.status, "recalled");
   assert.deepEqual(recalled.facts, ["User prefers TypeScript"]);
 });
+
+test("memory off skips all configuration and network access", async () => {
+  assert.deepEqual(await recallForChat({ ...defaults(), enabled: false, loadClient: async () => assert.fail("Must not access memory") }), { status: "off", facts: [] });
+});
+
+test("new identities and empty search results provide no saved context", async () => {
