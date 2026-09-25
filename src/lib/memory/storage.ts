@@ -41,3 +41,4 @@ export async function storeUsefulFacts(input: {
     failed: outcomes.filter(result => result.status === "rejected").length,
     skipped: false,
   };
+}
