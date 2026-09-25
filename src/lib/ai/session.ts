@@ -13,7 +13,7 @@ export function restoreMessages(raw: string | null): SessionMessage[] {
 
 export function serializeChatRequest(messages: SessionMessage[], useMemory = false) {
   if (messages.length > 40) throw new Error("This conversation is full. Start a new conversation to keep chatting.");
-  const body = JSON.stringify({ messages });
+  const body = JSON.stringify({ messages, ...(useMemory ? { useMemory: true } : {}) });
   if (body.length > 64000) throw new Error("This conversation is too long. Start a new conversation to keep chatting.");
   return body;
 }

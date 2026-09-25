@@ -2,6 +2,10 @@ import { streamText } from "ai";
 import { getLanguageModel } from "@/lib/ai/model";
 import { createChatHandler } from "@/lib/ai/chat-handler";
 import { ChatConfigurationError, getAIConfiguration } from "@/lib/ai/configuration";
+import { cookies } from "next/headers";
+import { MemWal } from "@mysten-incubation/memwal";
+import { getMemoryConfiguration, verifyMainnetRelayer } from "@/lib/memory/configuration";
+import { MEMORY_COOKIE, memoryIdentity } from "@/lib/memory/identity";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
