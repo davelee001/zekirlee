@@ -58,3 +58,9 @@ test("request cancellation stops waiting for memory", async () => {
   const controller = new AbortController();
   const result = recallForChat({ ...defaults(), signal: controller.signal, loadClient: () => new Promise(() => {}) });
   controller.abort();
+  assert.equal((await result).status, "unavailable");
+});
+
+test("chat passes explicit consent and reports recall without disclosing facts in headers", async () => {
+  const messages = [{ role: "user", text: "Hello" }];
+  for (const enabled of [false, true]) {
