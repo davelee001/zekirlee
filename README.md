@@ -193,6 +193,8 @@ Run `npm run test:memory` after setting the credentials. It checks configuration
 ### Memory storage
 
 Enable **Save useful details to Walrus** above the conversation to save details from subsequent successful chat turns. The control starts off on each page load. Each completed reply triggers a separate memory request using only the latest user message, so storage does not delay streamed answers or resubmit the whole conversation.
+
+The configured AI model extracts at most three short facts about preferences, ongoing projects, goals, or learning needs. Each fact must have a supporting quote in the message. Empty extraction results cause no writes; repeated facts within an extraction are collapsed. Obvious credential-bearing messages are skipped, and extraction instructions exclude sensitive personal information. These filters are not a guarantee of detecting every sensitive detail.
 `WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. The chat route is not yet wired to store or recall memories; guest chat continues to work without memory credentials.
 
 ## Project structure
