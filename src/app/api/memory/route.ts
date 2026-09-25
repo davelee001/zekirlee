@@ -65,3 +65,6 @@ export async function POST(request: NextRequest) {
       },
     });
     response = json(outcome);
+  } catch {
+    response = json({ error: "Memory storage could not be confirmed. Your chat is unaffected; a submitted storage job may still finish." }, 503);
+  }
