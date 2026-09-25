@@ -12,3 +12,5 @@ export const extractionInstructions = `Extract up to three durable, useful facts
 
 const sensitive = /(?:private\s*key|seed\s*phrase|mnemonic|password|api[ _-]?key|secret|suiprivkey|\bsk-[a-z0-9]|0x[a-f0-9]{40,}|[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})/i;
 
+type MemoryWriter = {
+  rememberAndWait: (text: string, namespace?: string, options?: { timeoutMs?: number; idempotencyKey?: string }) => Promise<{ blob_id: string }>;
