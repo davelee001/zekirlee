@@ -30,3 +30,5 @@ test("only supported useful facts are stored and duplicate facts share one write
   assert.equal(writes.length, 1);
   assert.equal(writes[0][0], "User prefers TypeScript.");
   assert.deepEqual(result, { saved: 1, failed: 0, skipped: false });
+});
+
