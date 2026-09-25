@@ -31,3 +31,6 @@ export async function POST(request: NextRequest) {
     body = JSON.parse(raw + decoder.decode());
   } catch { return json({ error: "Invalid memory request." }, 400); }
   finally { reader.releaseLock(); }
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) return json({ error: "Enable memory and send up to 8,000 characters." }, 400);
+
