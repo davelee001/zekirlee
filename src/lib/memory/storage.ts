@@ -14,3 +14,6 @@ const sensitive = /(?:private\s*key|seed\s*phrase|mnemonic|password|api[ _-]?key
 
 type MemoryWriter = {
   rememberAndWait: (text: string, namespace?: string, options?: { timeoutMs?: number; idempotencyKey?: string }) => Promise<{ blob_id: string }>;
+};
+
+export async function storeUsefulFacts(input: {
