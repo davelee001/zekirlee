@@ -10,3 +10,6 @@ import { extractionInstructions, factsSchema, storeUsefulFacts } from "@/lib/mem
 export const runtime = "nodejs";
 export const maxDuration = 60;
 const schema = z.object({ consent: z.literal(true), text: z.string().trim().min(1).max(8000) }).strict();
+const json = (body: object, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "private, no-store" } });
+
+export async function POST(request: NextRequest) {
