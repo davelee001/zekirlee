@@ -75,3 +75,5 @@ test("malformed extraction fails before storage", async () => {
   await assert.rejects(storeUsefulFacts({
     text: "Hello", namespace: "one", extract: async () => ({ facts: [{ text: "invented" }] }),
     writer: { rememberAndWait: async () => assert.fail("Must not store") },
+  }));
+});
