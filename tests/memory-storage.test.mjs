@@ -14,3 +14,6 @@ test("signed memory cookies isolate guests and reject tampering or key rotation"
     assert.equal(memoryIdentity(token, key).existing, false);
   }
   assert.equal(memoryIdentity(first.token, "b".repeat(64)).existing, false);
+});
+
+test("only supported useful facts are stored and duplicate facts share one write", async () => {
