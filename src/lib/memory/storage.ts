@@ -38,3 +38,6 @@ export async function storeUsefulFacts(input: {
   }));
   return {
     saved: outcomes.filter(result => result.status === "fulfilled").length,
+    failed: outcomes.filter(result => result.status === "rejected").length,
+    skipped: false,
+  };
