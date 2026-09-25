@@ -25,3 +25,10 @@ test("memory off skips all configuration and network access", async () => {
 });
 
 test("new identities and empty search results provide no saved context", async () => {
+  assert.equal((await recallForChat({ ...defaults(), loadClient: async () => null })).status, "new");
+  assert.equal((await recallForChat({ ...defaults(), loadClient: async () => ({ recall: async () => ({ results: [] }) }) })).status, "empty");
+});
+
+test("recall selects relevant, bounded, unique facts", async () => {
+  const result = await recallForChat({ ...defaults(), loadClient: async () => ({ recall: async options => {
+    assert.equal(options.query, "What should I build?");
