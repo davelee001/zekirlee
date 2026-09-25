@@ -63,3 +63,5 @@ export async function POST(request: NextRequest) {
         });
         return result.output;
       },
+    });
+    response = json(outcome);
