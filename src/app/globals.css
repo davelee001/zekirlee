@@ -305,3 +305,6 @@ html { color-scheme: light; }
   gap: 4px;
   margin-bottom: 10px;
   font-size: 12px;
+}
+.memory-storage-control label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.memory-storage-control input { accent-color: #167d70; }
