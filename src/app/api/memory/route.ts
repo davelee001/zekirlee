@@ -52,3 +52,6 @@ export async function POST(request: NextRequest) {
     await verifyMainnetRelayer(config.serverUrl);
     const writer = MemWal.create({ ...config, namespace });
     const outcome = await storeUsefulFacts({
+      text: parsed.data.text, namespace, writer,
+      extract: async text => {
+        const result = await generateText({
