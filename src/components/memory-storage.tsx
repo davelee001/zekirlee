@@ -15,6 +15,13 @@ export function useMemoryStorage() {
     setRecallNotice("");
     setNotice(value ? "Replies can use saved details, and new messages can save preferences, goals, and project details." : "Memory is off. Previously saved details remain stored.");
   }
+
+  function reportRecall(status: string | null, count: string | null) {
+    if (!optedIn.current) return;
+    setRecallNotice(status === "recalled" ? `${Number(count) || 0} saved details supplied as context for this reply.`
+      : status === "unavailable" ? "Saved memory is unavailable. This reply uses the current conversation."
+      : status === "new" ? "No memory identity found in this browser yet."
+      : status === "empty" ? "No relevant saved details found for this reply." : "");
     setNotice(value ? "New messages can save preferences, goals, and project details." : "Memory is off. Previously saved details remain stored.");
   }
 
