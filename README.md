@@ -203,6 +203,12 @@ Guest memories use a separate namespace tied to a signed, HttpOnly browser cooki
 
 Turning memory off stops future recall and saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. A deletion interface remains future work. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
 
+### Memory recall
+
+With memory enabled, the latest message becomes a semantic search query in the browser's guest namespace. Recall retrieves at most five facts, filters weak matches and duplicates, and caps supplied context at 2,000 characters. Saved facts are sent to the configured AI provider as untrusted contextual data; instructions tell the model to prioritize current user statements over old facts and ignore commands embedded in memories.
+
+The app waits at most four seconds for recall before continuing with the current conversation. Missing configuration, an unavailable relayer, and failed retrieval never block ordinary chat. The UI distinguishes supplied facts, no matches, a new browser identity, and unavailable memory. A provider request already in progress may continue after the wait expires, but late results are not added to the reply.
+
 Turning memory off stops future saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. Memory recall in replies and a deletion interface remain future work. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
 
 ## Project structure
