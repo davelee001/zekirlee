@@ -77,3 +77,7 @@ test("chat passes explicit consent and reports recall without disclosing facts i
   }
   const handler = createChatHandler(async () => assert.fail("Invalid consent must not reach the model"));
   const invalid = await handler(new Request("http://localhost/api/chat", {
+    method: "POST", body: JSON.stringify({ messages, useMemory: "true" }),
+  }));
+  assert.equal(invalid.status, 400);
+});

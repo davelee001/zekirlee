@@ -24,7 +24,7 @@ Backend reliability and Walrus mainnet configuration are now implemented. Oversi
 | Walrus mainnet configuration | Implemented; hosted relayer confirmed to report `mainnet` |
 | Walrus account access | Requires a mainnet account ID and registered delegate key; authenticated access is not yet verified |
 | Memory storage | Opt-in extraction and storage implemented; a live mainnet write still requires configured credentials |
-| Memory recall in replies | Not yet implemented |
+| Memory recall in replies | Opt-in retrieval implemented with bounded context and fallback to ordinary chat; live account access remains unverified |
 | Supabase authentication and database | Client helpers prepared; sign-in and database-backed conversations remain pending |
 
 Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
