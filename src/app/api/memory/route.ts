@@ -23,3 +23,6 @@ export async function POST(request: NextRequest) {
     let raw = "", bytes = 0;
     while (true) {
       const { value, done } = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      if (bytes > 50000) { await reader.cancel(); return json({ error: "Message is too large." }, 413); }
