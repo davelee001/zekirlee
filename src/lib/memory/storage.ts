@@ -25,3 +25,6 @@ export async function storeUsefulFacts(input: {
   // Avoid sending obvious credential-bearing messages to the extraction model.
   if (sensitive.test(input.text)) return { saved: 0, failed: 0, skipped: true };
   const { facts } = factsSchema.parse(await input.extract(input.text));
+  const unique = new Map<string, string>();
+  for (const fact of facts) {
+    if (!input.text.includes(fact.evidence) || sensitive.test(fact.text) || sensitive.test(fact.evidence)) continue;
