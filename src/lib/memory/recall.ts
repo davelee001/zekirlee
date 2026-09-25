@@ -4,3 +4,9 @@ type MemoryReader = {
   }>;
 };
 
+export type RecallContext = {
+  status: "off" | "new" | "empty" | "recalled" | "unavailable";
+  facts: string[];
+};
+
+export async function recallForChat(options: {
