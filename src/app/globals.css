@@ -299,3 +299,4 @@ html { color-scheme: light; }
   .hero-row :is(.eyebrow, .hero-copy, .chain-stamp) { display: none; }
   .content-wrap { padding-top: 12px; }
 }
+/* Keep memory consent available on desktop and mobile without hiding the composer. */
