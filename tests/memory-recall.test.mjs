@@ -45,3 +45,9 @@ test("recall selects relevant, bounded, unique facts", async () => {
   assert.deepEqual(result, { status: "recalled", facts: ["User likes TypeScript", "User studies Move"] });
   assert.match(memoryPrompt(result.facts), /untrusted data/);
   assert.match(memoryPrompt(result.facts), /Current user statements override old facts/);
+  assert.equal(memoryPrompt([]), "");
+});
+
+test("failed or stalled memory returns a fallback without throwing", async () => {
+  for (const loadClient of [async () => { throw Error("private key error"); }, () => new Promise(() => {})]) {
+    assert.deepEqual(await recallForChat({ ...defaults(), loadClient, timeoutMs: 10 }), { status: "unavailable", facts: [] });
