@@ -35,3 +35,6 @@ export function useMemoryStorage() {
         setNotice(result.failed
           ? `${result.saved} details confirmed saved; ${result.failed} could not be confirmed and may still finish.`
           : result.saved ? `${result.saved} useful detail${result.saved === 1 ? "" : "s"} saved to Walrus.`
+          : "No suitable new details to save from this message.");
+      } catch (error) {
+        setNotice(error instanceof Error && error.name !== "TimeoutError" ? error.message : "Memory storage timed out. A submitted job may still finish; your chat is unaffected.");
