@@ -38,3 +38,5 @@ export function useMemoryStorage() {
           : "No suitable new details to save from this message.");
       } catch (error) {
         setNotice(error instanceof Error && error.name !== "TimeoutError" ? error.message : "Memory storage timed out. A submitted job may still finish; your chat is unaffected.");
+      }
+    });
