@@ -232,6 +232,8 @@ src/
     memory/
       configuration.ts     Credential validation, user namespaces, mainnet verification
       client.ts            Server-only Walrus client factory
+      identity.ts          Signed browser identity for guest memory
+      storage.ts           Fact validation, deduplication, and storage confirmation
     supabase/              Browser and server Supabase clients
   proxy.ts                 Supabase session refresh
 scripts/
@@ -254,6 +256,7 @@ npm start
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
 
+The regression suite currently contains 27 tests, including request-body cancellation, provider cancellation, memory configuration validation, signed guest identity, evidence validation, duplicate handling, partial storage failures, and rejection of non-mainnet relayers.
 The regression suite currently contains 21 tests, including request-body cancellation, provider cancellation, memory configuration validation, namespace separation, and rejection of non-mainnet relayers.
 
 | Live check | Prerequisites | What it verifies |
