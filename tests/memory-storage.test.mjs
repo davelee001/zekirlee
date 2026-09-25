@@ -61,3 +61,6 @@ test("partial storage failures are not reported as successful saves", async () =
     text: "I use TypeScript. I study Move.", namespace: "one",
     extract: async () => ({ facts: [
       { text: "User uses TypeScript", evidence: "I use TypeScript." },
+      { text: "User studies Move", evidence: "I study Move." },
+    ] }),
+    writer: { rememberAndWait: async text => {
