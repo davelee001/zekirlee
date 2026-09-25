@@ -300,3 +300,5 @@ html { color-scheme: light; }
   .content-wrap { padding-top: 12px; }
 }
 /* Keep memory consent available on desktop and mobile without hiding the composer. */
+.memory-storage-control {
+  display: grid;
