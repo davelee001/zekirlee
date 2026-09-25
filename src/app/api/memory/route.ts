@@ -13,3 +13,5 @@ const schema = z.object({ consent: z.literal(true), text: z.string().trim().min(
 const json = (body: object, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "private, no-store" } });
 
 export async function POST(request: NextRequest) {
+  if (request.headers.get("origin") !== request.nextUrl.origin) return json({ error: "Memory requests must come from this site." }, 403);
+  if (!request.headers.get("content-type")?.startsWith("application/json")) return json({ error: "Expected JSON." }, 415);
