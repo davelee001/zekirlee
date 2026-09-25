@@ -36,3 +36,6 @@ export async function POST(request: NextRequest) {
 
   let config;
   try { config = getMemoryConfiguration(process.env); }
+  catch { return json({ error: "Memory storage is not configured yet. Your chat still works." }, 503); }
+  const identity = memoryIdentity(request.cookies.get(MEMORY_COOKIE)?.value, config.key);
+  const setIdentity = (response: NextResponse) => {
