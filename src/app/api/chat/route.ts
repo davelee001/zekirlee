@@ -6,10 +6,17 @@ import { cookies } from "next/headers";
 import { MemWal } from "@mysten-incubation/memwal";
 import { getMemoryConfiguration, verifyMainnetRelayer } from "@/lib/memory/configuration";
 import { MEMORY_COOKIE, memoryIdentity } from "@/lib/memory/identity";
+import { memoryPrompt, recallForChat } from "@/lib/memory/recall";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
+// Memory is optional and failures fall back to the current conversation.
+export const POST = createChatHandler(async (messages, abortSignal, context) => {
+  const memory = await recallForChat({
+    enabled: context.useMemory, query: messages.at(-1)!.text, signal: abortSignal,
+    loadClient: async () => {
+      if (context.request.headers.get("origin") !== new URL(context.request.url).origin) throw new Error("Memory requires same origin");
 // Guest chat deliberately has no wallet, Supabase, or persistent-memory dependency.
 export const POST = createChatHandler(async (messages, abortSignal) => {
   const result = streamText({
