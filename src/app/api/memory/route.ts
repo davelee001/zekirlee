@@ -26,3 +26,5 @@ export async function POST(request: NextRequest) {
       if (done) break;
       bytes += value.byteLength;
       if (bytes > 50000) { await reader.cancel(); return json({ error: "Message is too large." }, 413); }
+      raw += decoder.decode(value, { stream: true });
+    }
