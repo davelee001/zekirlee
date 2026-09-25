@@ -16,7 +16,7 @@ Delivered in this phase:
 - Knowledge search, category filters, pinned-only filtering, and browser-saved sidebar pins.
 - Public-address explorer links, theme controls, and confirmed session-history clearing.
 
-Backend reliability and Walrus mainnet configuration are now implemented. Oversized chat requests are rejected while reading the body, and cancelling a response aborts provider generation. Separate live checks verify guest chat with follow-up context and Walrus account access.
+Backend reliability, Walrus mainnet configuration, and opt-in memory storage and recall are implemented. Oversized chat requests are rejected while reading the body, and cancelling a response aborts provider generation. Separate live-check commands are available for guest chat and Walrus account access; the latter still needs configured mainnet credentials.
 
 | Backend capability | Status |
 | --- | --- |
@@ -46,6 +46,9 @@ Wallet connection and live blockchain retrieval remain outside the delivered sco
 - Pin/unpin controls that update the sidebar immediately and remember choices in this browser.
 - Public Sui address lookup that opens wallet activity in an external explorer.
 - A compact introduction and visible message input, with conversation history scrolling independently.
+- Optional extraction and storage of useful user details in Walrus, with confirmed-save and failure notices.
+- Relevant saved facts supplied to future replies, with bounded retrieval time and fallback to ordinary chat.
+- Signed browser identities for guest memory, without requiring a wallet or sign-in.
 
 Wallet connection, live blockchain retrieval, and login screens are not implemented in the chat flow. Users can opt in to saving useful details and using relevant Walrus memories in replies without a wallet or sign-in, once server credentials are configured.
 
@@ -210,6 +213,28 @@ With memory enabled, the latest message becomes a semantic search query in the b
 The app waits at most four seconds for recall before continuing with the current conversation. Missing configuration, an unavailable relayer, and failed retrieval never block ordinary chat. The UI distinguishes supplied facts, no matches, a new browser identity, and unavailable memory. A provider request already in progress may continue after the wait expires, but late results are not added to the reply.
 
 Start a new conversation and re-enable memory after a page reload to use saved facts without the old message history. Recently submitted storage jobs may not yet be available for recall. Tests exercise a storage-to-recall round trip with the SDK's offline mock; a real mainnet round trip still needs valid account credentials.
+
+### Try memory from a new conversation
+
+1. Configure the AI provider and Walrus mainnet account variables in `.env.local`, then run `npm run test:memory` to verify signed account access.
+2. Start the app with `npm run dev` and enable **Use and save memory with Walrus**.
+3. Send a useful preference, such as **I prefer TypeScript for my projects.** Wait for the storage notice to confirm a saved detail.
+4. Click **New conversation** in the same browser and ask **Which programming language do I prefer for projects?** Keep memory enabled; if you reload the page, enable it again.
+5. Check the recall notice as well as the answer. It reports how many saved details were supplied, or explains that no matches were found or memory was unavailable.
+
+This manual check performs real AI requests and may write to Walrus mainnet. A successful `test:memory` checks access without writing and does not replace this storage-and-recall check.
+
+### What resets memory?
+
+| Action | Effect |
+| --- | --- |
+| New conversation | Clears current chat context; stored Walrus facts remain available with memory enabled. |
+| Reload page | Restores tab history, but resets the memory opt-in to off. |
+| Turn memory off | Stops future recall and saves; previously stored facts remain. |
+| Clear browser cookies | Loses the guest identity linking this browser to its stored facts; it does not delete them. |
+| Switch device or browser | Uses a different guest identity; cross-device account linking is not implemented. |
+
+Remaining work includes a memory deletion interface, cross-device identity, Supabase sign-in and database-backed conversations, and verification of a real mainnet storage-and-recall round trip.
 
 ## Project structure
 
