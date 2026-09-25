@@ -22,3 +22,5 @@ export function useMemoryStorage() {
       try {
         const send = () => fetch("/api/memory", {
           method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ consent: true, text }), signal: AbortSignal.timeout(55000),
+        });
