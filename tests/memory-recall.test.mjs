@@ -38,3 +38,10 @@ test("recall selects relevant, bounded, unique facts", async () => {
       { text: "User likes TypeScript", distance: 0.2 },
       { text: "user likes typescript", distance: 0.3 },
       { text: "irrelevant", distance: 0.9 },
+      { text: "x".repeat(501), distance: 0.1 },
+      { text: "User studies Move", distance: 0.4 },
+    ] };
+  } }) });
+  assert.deepEqual(result, { status: "recalled", facts: ["User likes TypeScript", "User studies Move"] });
+  assert.match(memoryPrompt(result.facts), /untrusted data/);
+  assert.match(memoryPrompt(result.facts), /Current user statements override old facts/);
