@@ -23,3 +23,10 @@ export async function recallForChat(options: {
   try {
     options.signal.throwIfAborted();
     const stopped = new Promise<never>((_resolve, reject) => {
+      timer = setTimeout(() => reject(new Error("Recall timed out")), options.timeoutMs ?? 4000);
+      onAbort = () => reject(new Error("Request cancelled"));
+      options.signal.addEventListener("abort", onAbort, { once: true });
+    });
+    return await Promise.race([stopped, (async (): Promise<RecallContext> => {
+      const client = await options.loadClient();
+      if (!active || options.signal.aborted) return { status: "unavailable", facts: [] };
