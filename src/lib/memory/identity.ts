@@ -16,3 +16,5 @@ export function memoryIdentity(cookie: string | undefined, key: string) {
     }
   }
   const fresh = randomUUID();
+  return { id: fresh, token: `${fresh}.${signature(fresh, key)}`, existing: false };
+}
