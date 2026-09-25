@@ -10,3 +10,10 @@ export type RecallContext = {
 };
 
 export async function recallForChat(options: {
+  enabled: boolean;
+  query: string;
+  signal: AbortSignal;
+  loadClient: () => Promise<MemoryReader | null>;
+  timeoutMs?: number;
+}): Promise<RecallContext> {
+  if (!options.enabled) return { status: "off", facts: [] };
