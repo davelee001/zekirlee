@@ -24,3 +24,6 @@ export function useMemoryStorage() {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ consent: true, text }), signal: AbortSignal.timeout(55000),
         });
+        let response = await send();
+        let result = await response.json();
+        if (response.status === 409 && result.code === "MEMORY_SESSION_CREATED") {
