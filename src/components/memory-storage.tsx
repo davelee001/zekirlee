@@ -30,3 +30,5 @@ export function useMemoryStorage() {
           if (!optedIn.current) return;
           response = await send();
           result = await response.json();
+        }
+        if (!response.ok) throw new Error(result.error || "Memory could not be saved.");
