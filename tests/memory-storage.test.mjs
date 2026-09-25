@@ -11,3 +11,6 @@ test("signed memory cookies isolate guests and reject tampering or key rotation"
   assert.equal(memoryIdentity(first.token, key).existing, true);
   assert.notEqual(memoryIdentity(undefined, key).id, first.id);
   for (const token of [first.id, first.token + ".extra", first.token.slice(0, -1) + "z"]) {
+    assert.equal(memoryIdentity(token, key).existing, false);
+  }
+  assert.equal(memoryIdentity(first.token, "b".repeat(64)).existing, false);
