@@ -14,3 +14,6 @@ export function useMemoryStorage() {
     setNotice(value ? "New messages can save preferences, goals, and project details." : "Memory is off. Previously saved details remain stored.");
   }
 
+  function save(text: string) {
+    if (!optedIn.current) return;
+    queue.current = queue.current.then(async () => {
