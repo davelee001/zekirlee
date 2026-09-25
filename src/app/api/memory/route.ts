@@ -70,3 +70,4 @@ export async function POST(request: NextRequest) {
   }
   // Keep identity even after partial failures so retries target the same namespace.
   return setIdentity(response);
+}
