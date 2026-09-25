@@ -190,6 +190,9 @@ Run `npm run test:memory` after setting the credentials. It checks configuration
 
 `WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. Guest chat continues to work without memory credentials.
 
+### Memory storage
+
+Enable **Save useful details to Walrus** above the conversation to save details from subsequent successful chat turns. The control starts off on each page load. Each completed reply triggers a separate memory request using only the latest user message, so storage does not delay streamed answers or resubmit the whole conversation.
 `WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. The chat route is not yet wired to store or recall memories; guest chat continues to work without memory credentials.
 
 ## Project structure
