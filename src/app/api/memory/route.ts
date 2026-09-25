@@ -41,3 +41,6 @@ export async function POST(request: NextRequest) {
   const setIdentity = (response: NextResponse) => {
     response.cookies.set(MEMORY_COOKIE, identity.token, {
       httpOnly: true, secure: request.nextUrl.protocol === "https:", sameSite: "strict", path: "/", maxAge: 60 * 60 * 24 * 365,
+    });
+    return response;
+  };
