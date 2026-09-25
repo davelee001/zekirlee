@@ -9,3 +9,5 @@ export function useMemoryStorage() {
   const optedIn = useRef(false);
 
   function toggle(value: boolean) {
+    optedIn.current = value;
+    setEnabled(value);
