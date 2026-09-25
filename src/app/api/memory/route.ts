@@ -7,3 +7,6 @@ import { getMemoryConfiguration, verifyMainnetRelayer } from "@/lib/memory/confi
 import { MEMORY_COOKIE, memoryIdentity } from "@/lib/memory/identity";
 import { extractionInstructions, factsSchema, storeUsefulFacts } from "@/lib/memory/storage";
 
+export const runtime = "nodejs";
+export const maxDuration = 60;
+const schema = z.object({ consent: z.literal(true), text: z.string().trim().min(1).max(8000) }).strict();
