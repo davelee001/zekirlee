@@ -49,3 +49,6 @@ export async function POST(request: NextRequest) {
   const namespace = `${config.namespace}:guest:${identity.id}`;
   let response: NextResponse;
   try {
+    await verifyMainnetRelayer(config.serverUrl);
+    const writer = MemWal.create({ ...config, namespace });
+    const outcome = await storeUsefulFacts({
