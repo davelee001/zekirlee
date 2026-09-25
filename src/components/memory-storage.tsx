@@ -32,3 +32,6 @@ export function useMemoryStorage() {
           result = await response.json();
         }
         if (!response.ok) throw new Error(result.error || "Memory could not be saved.");
+        setNotice(result.failed
+          ? `${result.saved} details confirmed saved; ${result.failed} could not be confirmed and may still finish.`
+          : result.saved ? `${result.saved} useful detail${result.saved === 1 ? "" : "s"} saved to Walrus.`
