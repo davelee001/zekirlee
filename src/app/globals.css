@@ -308,3 +308,5 @@ html { color-scheme: light; }
 }
 .memory-storage-control label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .memory-storage-control input { accent-color: #167d70; }
+.memory-storage-control small { opacity: .75; }
+.memory-storage-control [role="status"] { overflow-wrap: anywhere; }
