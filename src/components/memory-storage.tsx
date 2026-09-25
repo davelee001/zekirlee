@@ -40,3 +40,6 @@ export function useMemoryStorage() {
         setNotice(error instanceof Error && error.name !== "TimeoutError" ? error.message : "Memory storage timed out. A submitted job may still finish; your chat is unaffected.");
       }
     });
+  }
+
+  return { enabled, notice, toggle, save };
