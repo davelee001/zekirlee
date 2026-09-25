@@ -43,3 +43,6 @@ test("credential messages and ordinary messages without facts cause no storage",
 });
 
 test("identical retries reuse idempotency keys and namespaces separate writes", async () => {
+  const keys = [];
+  const input = {
+    text: "I use TypeScript", namespace: "one",
