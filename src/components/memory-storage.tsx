@@ -48,3 +48,6 @@ export function useMemoryStorage() {
 export function MemoryStorageControl({ enabled, notice, toggle }: {
   enabled: boolean; notice: string; toggle: (enabled: boolean) => void;
 }) {
+  return <div className="memory-storage-control">
+    <label><input type="checkbox" checked={enabled} onChange={event => toggle(event.target.checked)} /> Save useful details to Walrus</label>
+    <small>Optional encrypted storage, linked to this browser. Turning it off stops future saves, not existing storage. Recall in replies is not enabled yet.</small>
