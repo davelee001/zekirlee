@@ -40,3 +40,6 @@ test("credential messages and ordinary messages without facts cause no storage",
   });
   assert.equal(result.skipped, true);
   assert.equal((await storeUsefulFacts({ text: "Hello", namespace: "one", writer, extract: async () => ({ facts: [] }) })).saved, 0);
+});
+
+test("identical retries reuse idempotency keys and namespaces separate writes", async () => {
