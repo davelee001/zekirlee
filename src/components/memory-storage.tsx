@@ -43,3 +43,5 @@ export function useMemoryStorage() {
   }
 
   return { enabled, notice, toggle, save };
+}
+
