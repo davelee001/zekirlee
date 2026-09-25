@@ -6,9 +6,11 @@ const messageSchema = z.object({
 }).refine(message => message.role === "assistant" || message.text.length <= 8000);
 const requestSchema = z.object({
   messages: z.array(messageSchema).min(1).max(40),
+  useMemory: z.boolean().optional().default(false),
 }).refine(({ messages }) => messages.at(-1)?.role === "user");
 
 type ChatMessage = z.infer<typeof messageSchema>;
+type Reply = (messages: ChatMessage[], signal: AbortSignal, context: {
 type Reply = (messages: ChatMessage[], signal: AbortSignal) => Promise<string | AsyncIterable<string>>;
 
 class RequestTooLarge extends Error {}
