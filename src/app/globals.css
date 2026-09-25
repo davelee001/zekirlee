@@ -302,3 +302,6 @@ html { color-scheme: light; }
 /* Keep memory consent available on desktop and mobile without hiding the composer. */
 .memory-storage-control {
   display: grid;
+  gap: 4px;
+  margin-bottom: 10px;
+  font-size: 12px;
