@@ -67,3 +67,5 @@ test("partial storage failures are not reported as successful saves", async () =
       if (text.includes("Move")) throw Error("secret provider error");
       return { blob_id: "blob" };
     } },
+  });
+  assert.deepEqual(result, { saved: 1, failed: 1, skipped: false });
