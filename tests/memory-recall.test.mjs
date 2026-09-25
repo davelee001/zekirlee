@@ -13,3 +13,9 @@ test("stored facts can be recalled with an empty conversation using the SDK mock
   const stored = await storeUsefulFacts({
     text: "I prefer TypeScript", namespace: "guest:test", writer: client,
     extract: async () => ({ facts: [{ text: "User prefers TypeScript", evidence: "I prefer TypeScript" }] }),
+  });
+  assert.equal(stored.saved, 1);
+  const recalled = await recallForChat({ ...defaults(), query: "User prefers TypeScript", loadClient: async () => client });
+  assert.equal(recalled.status, "recalled");
+  assert.deepEqual(recalled.facts, ["User prefers TypeScript"]);
+});
