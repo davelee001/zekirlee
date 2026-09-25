@@ -201,7 +201,6 @@ The server waits for Walrus storage confirmation before reporting a fact as save
 Guest memories use a separate namespace tied to a signed, HttpOnly browser cookie, with Secure enabled over HTTPS and SameSite Strict. The cookie is established before any writes. No wallet or Supabase login is required. Clearing cookies, changing browsers, or rotating the delegate signing key changes the guest identity; existing memories are not automatically migrated or deleted. The account delegate can access all its namespaces, so this is application-level isolation rather than separate on-chain ownership.
 
 Turning memory off stops future saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. Memory recall in replies and a deletion interface remain future work. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
-`WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. The chat route is not yet wired to store or recall memories; guest chat continues to work without memory credentials.
 
 ## Project structure
 
@@ -210,6 +209,7 @@ src/
   app/
     api/chat/route.ts       Streaming AI endpoint
     api/health/route.ts     Liveness endpoint
+    api/memory/route.ts     Opt-in extraction and confirmed storage endpoint
     [section]/page.tsx      Overview, knowledge, guides, settings, help, and network pages
     conversations/page.tsx Dedicated route for the chat interface
     page.tsx               Chat interface and tab-session lifecycle
