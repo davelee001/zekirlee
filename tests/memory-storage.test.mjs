@@ -35,3 +35,6 @@ test("only supported useful facts are stored and duplicate facts share one write
 test("credential messages and ordinary messages without facts cause no storage", async () => {
   const writer = { rememberAndWait: async () => assert.fail("Must not store") };
   const result = await storeUsefulFacts({
+    text: "My password is private", namespace: "one", writer,
+    extract: async () => assert.fail("Must not extract credential-bearing text"),
+  });
