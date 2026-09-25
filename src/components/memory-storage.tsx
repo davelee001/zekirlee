@@ -3,3 +3,6 @@
 import { useRef, useState } from "react";
 
 export function useMemoryStorage() {
+  const [enabled, setEnabled] = useState(false);
+  const [notice, setNotice] = useState("");
+  const queue = useRef(Promise.resolve());
