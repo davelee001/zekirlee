@@ -48,3 +48,6 @@ test("identical retries reuse idempotency keys and namespaces separate writes", 
     text: "I use TypeScript", namespace: "one",
     extract: async () => ({ facts: [{ text: "User uses TypeScript", evidence: "I use TypeScript" }] }),
     writer: { rememberAndWait: async (_text, _namespace, options) => { keys.push(options.idempotencyKey); return { blob_id: "blob" }; } },
+  };
+  await storeUsefulFacts(input);
+  await storeUsefulFacts(input);
