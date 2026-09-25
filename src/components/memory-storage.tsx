@@ -17,3 +17,5 @@ export function useMemoryStorage() {
   function save(text: string) {
     if (!optedIn.current) return;
     queue.current = queue.current.then(async () => {
+      if (!optedIn.current) return;
+      setNotice("Finding useful details to remember...");
