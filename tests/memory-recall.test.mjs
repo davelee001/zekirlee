@@ -32,3 +32,9 @@ test("new identities and empty search results provide no saved context", async (
 test("recall selects relevant, bounded, unique facts", async () => {
   const result = await recallForChat({ ...defaults(), loadClient: async () => ({ recall: async options => {
     assert.equal(options.query, "What should I build?");
+    assert.equal(options.topK, 5);
+    assert.equal(options.maxTokens, 600);
+    return { results: [
+      { text: "User likes TypeScript", distance: 0.2 },
+      { text: "user likes typescript", distance: 0.3 },
+      { text: "irrelevant", distance: 0.9 },
