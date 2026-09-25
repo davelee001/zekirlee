@@ -32,3 +32,6 @@ test("only supported useful facts are stored and duplicate facts share one write
   assert.deepEqual(result, { saved: 1, failed: 0, skipped: false });
 });
 
+test("credential messages and ordinary messages without facts cause no storage", async () => {
+  const writer = { rememberAndWait: async () => assert.fail("Must not store") };
+  const result = await storeUsefulFacts({
