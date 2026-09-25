@@ -51,3 +51,10 @@ test("recall selects relevant, bounded, unique facts", async () => {
 test("failed or stalled memory returns a fallback without throwing", async () => {
   for (const loadClient of [async () => { throw Error("private key error"); }, () => new Promise(() => {})]) {
     assert.deepEqual(await recallForChat({ ...defaults(), loadClient, timeoutMs: 10 }), { status: "unavailable", facts: [] });
+  }
+});
+
+test("request cancellation stops waiting for memory", async () => {
+  const controller = new AbortController();
+  const result = recallForChat({ ...defaults(), signal: controller.signal, loadClient: () => new Promise(() => {}) });
+  controller.abort();
