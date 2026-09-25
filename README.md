@@ -158,6 +158,7 @@ At the conversation limit, start a new conversation. If a response is interrupte
 
 - `GET /api/health` returns application liveness. It does not verify AI credentials or external services.
 - `POST /api/chat` accepts `{ "messages": [{ "role": "user", "text": "Hello" }] }` and streams newline-delimited JSON events: `text`, `done`, or `error`. Validation and configuration failures return JSON error responses.
+- `POST /api/memory` accepts `{ "consent": true, "text": "I prefer TypeScript." }` from the same origin. It establishes a signed guest cookie before writing (HTTP 409 with `MEMORY_SESSION_CREATED`, retried once by the UI), extracts facts, and returns confirmed `saved` and unconfirmed `failed` counts. Missing configuration returns HTTP 503 without affecting chat.
 
 Guest chat bypasses Supabase session refresh and requires no wallet, Supabase, or Walrus credentials. Input and output limits are implemented; distributed rate limiting is not.
 
@@ -186,6 +187,8 @@ The account ID is a **MemWalAccount object ID**, not your wallet address. Use a 
 Run `npm run test:memory` after setting the credentials. It checks configuration, verifies that the relayer's `/config` reports `mainnet`, and makes an authenticated recall in a dedicated connection-check namespace. It does not write memories or print credentials or recalled content. A passing public health request alone does not validate delegate access.
 
 `await createMemoryClient(verifiedUserId)` takes a verified Supabase user UUID, validates the relayer network before returning a client, and derives a per-user namespace within the configured account. This is application-level isolation, not separate on-chain ownership. Keep the raw client and namespace overrides server-side. Callers must obtain the user ID from verified authentication, never from request input.
+
+`WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. Guest chat continues to work without memory credentials.
 
 `WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. The chat route is not yet wired to store or recall memories; guest chat continues to work without memory credentials.
 
