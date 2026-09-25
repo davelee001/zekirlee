@@ -60,3 +60,6 @@ export async function POST(request: NextRequest) {
           output: Output.object({ schema: factsSchema }),
           maxOutputTokens: 1000, maxRetries: 0,
           abortSignal: AbortSignal.any([request.signal, AbortSignal.timeout(15000)]),
+        });
+        return result.output;
+      },
