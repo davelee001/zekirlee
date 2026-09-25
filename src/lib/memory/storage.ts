@@ -20,3 +20,5 @@ export async function storeUsefulFacts(input: {
   text: string;
   namespace: string;
   extract: (text: string) => Promise<unknown>;
+  writer: MemoryWriter;
+}) {
