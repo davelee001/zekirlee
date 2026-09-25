@@ -25,3 +25,5 @@ test("only supported useful facts are stored and duplicate facts share one write
       { text: "User prefers TypeScript.", evidence: "I prefer TypeScript." },
       { text: "User lives in Paris.", evidence: "I live in Paris." },
     ] }),
+    writer: { rememberAndWait: async (...args) => { writes.push(args); return { blob_id: "blob" }; } },
+  });
