@@ -198,6 +198,9 @@ The configured AI model extracts at most three short facts about preferences, on
 
 The server waits for Walrus storage confirmation before reporting a fact as saved. Stable per-fact, per-namespace idempotency keys help retries reuse storage jobs; differently worded facts can still produce separate memories. Partial failures report both confirmed and unconfirmed counts. A timed-out job may still complete on the relayer.
 
+Guest memories use a separate namespace tied to a signed, HttpOnly browser cookie, with Secure enabled over HTTPS and SameSite Strict. The cookie is established before any writes. No wallet or Supabase login is required. Clearing cookies, changing browsers, or rotating the delegate signing key changes the guest identity; existing memories are not automatically migrated or deleted. The account delegate can access all its namespaces, so this is application-level isolation rather than separate on-chain ownership.
+
+Turning memory off stops future saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. Memory recall in replies and a deletion interface remain future work. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
 `WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. The chat route is not yet wired to store or recall memories; guest chat continues to work without memory credentials.
 
 ## Project structure
