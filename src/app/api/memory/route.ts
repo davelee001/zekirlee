@@ -28,3 +28,6 @@ export async function POST(request: NextRequest) {
       if (bytes > 50000) { await reader.cancel(); return json({ error: "Message is too large." }, 413); }
       raw += decoder.decode(value, { stream: true });
     }
+    body = JSON.parse(raw + decoder.decode());
+  } catch { return json({ error: "Invalid memory request." }, 400); }
+  finally { reader.releaseLock(); }
