@@ -47,7 +47,7 @@ Wallet connection and live blockchain retrieval remain outside the delivered sco
 - Public Sui address lookup that opens wallet activity in an external explorer.
 - A compact introduction and visible message input, with conversation history scrolling independently.
 
-Wallet connection, live blockchain retrieval, login screens, and persistent Walrus memory are not implemented in the chat flow. Supabase and Walrus client helpers are available for future integration.
+Wallet connection, live blockchain retrieval, login screens, and memory recall are not implemented in the chat flow. Users can opt in to saving useful details from new messages to Walrus without a wallet or sign-in, once server credentials are configured.
 
 ## Workspace pages
 
