@@ -17,6 +17,12 @@ export const POST = createChatHandler(async (messages, abortSignal, context) => 
     enabled: context.useMemory, query: messages.at(-1)!.text, signal: abortSignal,
     loadClient: async () => {
       if (context.request.headers.get("origin") !== new URL(context.request.url).origin) throw new Error("Memory requires same origin");
+      const config = getMemoryConfiguration(process.env);
+      const cookie = (await cookies()).get(MEMORY_COOKIE)?.value;
+      if (!cookie) return null;
+      const identity = memoryIdentity(cookie, config.key);
+      if (!identity.existing) return null;
+      await verifyMainnetRelayer(config.serverUrl);
 // Guest chat deliberately has no wallet, Supabase, or persistent-memory dependency.
 export const POST = createChatHandler(async (messages, abortSignal) => {
   const result = streamText({
