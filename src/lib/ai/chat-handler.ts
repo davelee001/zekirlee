@@ -65,7 +65,8 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
         reportMemory: (status, count) => {
           memoryHeaders["X-Zekirlee-Memory"] = status;
           memoryHeaders["X-Zekirlee-Memory-Count"] = String(count);
-      const result = await reply(parsed.data.messages, signal);
+        },
+      });
       if (typeof result === "string") {
         if (!result.trim()) throw new Error("Empty model response");
         return json({ text: result });
@@ -105,6 +106,7 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
         "Content-Type": "application/x-ndjson; charset=utf-8",
         "Cache-Control": "no-store, no-transform",
         "X-Accel-Buffering": "no",
+        ...memoryHeaders,
       } });
     } catch {
       // Never expose provider errors or credentials in the browser.
