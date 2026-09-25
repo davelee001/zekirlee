@@ -19,3 +19,6 @@ export function useMemoryStorage() {
     queue.current = queue.current.then(async () => {
       if (!optedIn.current) return;
       setNotice("Finding useful details to remember...");
+      try {
+        const send = () => fetch("/api/memory", {
+          method: "POST", headers: { "Content-Type": "application/json" },
