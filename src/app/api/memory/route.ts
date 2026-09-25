@@ -20,3 +20,6 @@ export async function POST(request: NextRequest) {
   if (!reader) return json({ error: "Send a message to remember." }, 400);
   try {
     const decoder = new TextDecoder();
+    let raw = "", bytes = 0;
+    while (true) {
+      const { value, done } = await reader.read();
