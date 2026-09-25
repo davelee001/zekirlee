@@ -28,3 +28,5 @@ export async function storeUsefulFacts(input: {
   const unique = new Map<string, string>();
   for (const fact of facts) {
     if (!input.text.includes(fact.evidence) || sensitive.test(fact.text) || sensitive.test(fact.evidence)) continue;
+    unique.set(fact.text.toLowerCase().replace(/\s+/g, " "), fact.text);
+  }
