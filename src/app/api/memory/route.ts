@@ -47,3 +47,5 @@ export async function POST(request: NextRequest) {
   // Establish the cookie before any writes, including requests that later time out.
   if (!identity.existing) return setIdentity(json({ code: "MEMORY_SESSION_CREATED" }, 409));
   const namespace = `${config.namespace}:guest:${identity.id}`;
+  let response: NextResponse;
+  try {
