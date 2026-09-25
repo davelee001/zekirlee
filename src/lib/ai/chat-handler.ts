@@ -41,7 +41,7 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
   return async function POST(request: Request) {
     const memoryHeaders: Record<string, string> = {};
     const json = (body: object, status = 200) => Response.json(body, {
-      status, headers: { "Cache-Control": "no-store" },
+      status, headers: { "Cache-Control": "no-store", ...memoryHeaders },
     });
     let body: unknown;
     try {
@@ -60,6 +60,11 @@ export function createChatHandler(reply: Reply, configurationError?: () => strin
       const cancellation = new AbortController();
       const signal = AbortSignal.any([request.signal, cancellation.signal, AbortSignal.timeout(45000)]);
       signal.throwIfAborted();
+      const result = await reply(parsed.data.messages, signal, {
+        request, useMemory: parsed.data.useMemory,
+        reportMemory: (status, count) => {
+          memoryHeaders["X-Zekirlee-Memory"] = status;
+          memoryHeaders["X-Zekirlee-Memory-Count"] = String(count);
       const result = await reply(parsed.data.messages, signal);
       if (typeof result === "string") {
         if (!result.trim()) throw new Error("Empty model response");
