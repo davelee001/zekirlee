@@ -69,3 +69,6 @@ test("partial storage failures are not reported as successful saves", async () =
     } },
   });
   assert.deepEqual(result, { saved: 1, failed: 1, skipped: false });
+});
+
+test("malformed extraction fails before storage", async () => {
