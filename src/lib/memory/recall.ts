@@ -30,3 +30,9 @@ export async function recallForChat(options: {
     return await Promise.race([stopped, (async (): Promise<RecallContext> => {
       const client = await options.loadClient();
       if (!active || options.signal.aborted) return { status: "unavailable", facts: [] };
+      if (!client) return { status: "new", facts: [] };
+      const result = await client.recall({ query: options.query, topK: 5, maxDistance: 0.7, maxTokens: 600 });
+      const facts: string[] = [];
+      const seen = new Set<string>();
+      let length = 0;
+      for (const hit of result.results) {
