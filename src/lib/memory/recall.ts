@@ -36,3 +36,9 @@ export async function recallForChat(options: {
       const seen = new Set<string>();
       let length = 0;
       for (const hit of result.results) {
+        if (typeof hit.text !== "string" || !Number.isFinite(hit.distance) || hit.distance >= 0.7 || hit.distance < 0) continue;
+        const text = hit.text.trim();
+        const normalized = text.toLowerCase().replace(/\s+/g, " ");
+        if (!text || text.length > 500 || seen.has(normalized) || length + text.length > 2000) continue;
+        facts.push(text);
+        seen.add(normalized);
