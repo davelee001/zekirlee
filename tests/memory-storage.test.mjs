@@ -51,3 +51,5 @@ test("identical retries reuse idempotency keys and namespaces separate writes", 
   };
   await storeUsefulFacts(input);
   await storeUsefulFacts(input);
+  await storeUsefulFacts({ ...input, namespace: "two" });
+  assert.equal(keys[0], keys[1]);
