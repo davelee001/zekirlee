@@ -17,3 +17,5 @@ test("signed memory cookies isolate guests and reject tampering or key rotation"
 });
 
 test("only supported useful facts are stored and duplicate facts share one write", async () => {
+  const writes = [];
+  const result = await storeUsefulFacts({
