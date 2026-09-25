@@ -64,3 +64,9 @@ test("request cancellation stops waiting for memory", async () => {
 test("chat passes explicit consent and reports recall without disclosing facts in headers", async () => {
   const messages = [{ role: "user", text: "Hello" }];
   for (const enabled of [false, true]) {
+    const handler = createChatHandler(async (_messages, _signal, context) => {
+      assert.equal(context.useMemory, enabled);
+      context.reportMemory(enabled ? "recalled" : "off", enabled ? 1 : 0);
+      return "Hello";
+    });
+    const result = await handler(new Request("http://localhost/api/chat", {
