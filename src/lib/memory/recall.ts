@@ -49,3 +49,9 @@ export async function recallForChat(options: {
     })()]);
   } catch {
     return { status: "unavailable", facts: [] };
+  } finally {
+    active = false;
+    clearTimeout(timer);
+    options.signal.removeEventListener("abort", onAbort);
+  }
+}
