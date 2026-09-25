@@ -42,3 +42,10 @@ export async function recallForChat(options: {
         if (!text || text.length > 500 || seen.has(normalized) || length + text.length > 2000) continue;
         facts.push(text);
         seen.add(normalized);
+        length += text.length;
+        if (facts.length === 5) break;
+      }
+      return { status: facts.length ? "recalled" : "empty", facts };
+    })()]);
+  } catch {
+    return { status: "unavailable", facts: [] };
