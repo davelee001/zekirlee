@@ -6,6 +6,7 @@ import { restoreMessages, serializeChatRequest, SESSION_KEY, type SessionMessage
 import { ChatMessage } from "@/components/chat-message";
 import { WorkspaceSidebar } from "@/components/workspace-sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { MemoryStorageControl, useMemoryStorage } from "@/components/memory-storage";
 import { ArrowUpRight, Check, FileText, Gem, Menu, Network, Plus, Search, Send, Settings2, Sparkles, Wallet, Zap } from "lucide-react";
 
 type Message = SessionMessage;
@@ -13,6 +14,7 @@ type Message = SessionMessage;
 const starterPrompts = ["Explain how Sui works", "What is DeFi on Sui?", "What can I build on Sui?"];
 
 export default function Home() {
+  const memory = useMemoryStorage();
   const [messages, setMessages] = useState<Message[]>([]);
   const [prompt, setPrompt] = useState("");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
