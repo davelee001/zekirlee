@@ -57,11 +57,11 @@ export function useMemoryStorage() {
 
 export function MemoryStorageControl({ enabled, notice, recallNotice, toggle }: {
   enabled: boolean; notice: string; recallNotice: string; toggle: (enabled: boolean) => void;
-  enabled: boolean; notice: string; toggle: (enabled: boolean) => void;
 }) {
   return <div className="memory-storage-control">
-    <label><input type="checkbox" checked={enabled} onChange={event => toggle(event.target.checked)} /> Save useful details to Walrus</label>
-    <small>Optional encrypted storage, linked to this browser. Turning it off stops future saves, not existing storage. Recall in replies is not enabled yet.</small>
+    <label><input type="checkbox" checked={enabled} onChange={event => toggle(event.target.checked)} /> Use and save memory with Walrus</label>
+    <small>Optional memory, linked to this browser. Relevant saved details are sent to the AI provider for replies. Turning it off stops future recall and saves; stored details remain.</small>
+    {recallNotice && <span role="status">{recallNotice}</span>}
     {notice && <span role="status">{notice}</span>}
   </div>;
 }
