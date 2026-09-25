@@ -11,7 +11,10 @@ const requestSchema = z.object({
 
 type ChatMessage = z.infer<typeof messageSchema>;
 type Reply = (messages: ChatMessage[], signal: AbortSignal, context: {
-type Reply = (messages: ChatMessage[], signal: AbortSignal) => Promise<string | AsyncIterable<string>>;
+  request: Request;
+  useMemory: boolean;
+  reportMemory: (status: string, count: number) => void;
+}) => Promise<string | AsyncIterable<string>>;
 
 class RequestTooLarge extends Error {}
 
@@ -36,6 +39,7 @@ async function readBody(request: Request) {
 
 export function createChatHandler(reply: Reply, configurationError?: () => string | undefined) {
   return async function POST(request: Request) {
+    const memoryHeaders: Record<string, string> = {};
     const json = (body: object, status = 200) => Response.json(body, {
       status, headers: { "Cache-Control": "no-store" },
     });
