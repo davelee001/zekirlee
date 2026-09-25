@@ -39,3 +39,5 @@ export async function POST(request: NextRequest) {
   catch { return json({ error: "Memory storage is not configured yet. Your chat still works." }, 503); }
   const identity = memoryIdentity(request.cookies.get(MEMORY_COOKIE)?.value, config.key);
   const setIdentity = (response: NextResponse) => {
+    response.cookies.set(MEMORY_COOKIE, identity.token, {
+      httpOnly: true, secure: request.nextUrl.protocol === "https:", sameSite: "strict", path: "/", maxAge: 60 * 60 * 24 * 365,
