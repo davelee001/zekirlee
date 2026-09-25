@@ -23,8 +23,11 @@ export const POST = createChatHandler(async (messages, abortSignal, context) => 
       const identity = memoryIdentity(cookie, config.key);
       if (!identity.existing) return null;
       await verifyMainnetRelayer(config.serverUrl);
-// Guest chat deliberately has no wallet, Supabase, or persistent-memory dependency.
-export const POST = createChatHandler(async (messages, abortSignal) => {
+      return MemWal.create({ ...config, namespace: `${config.namespace}:guest:${identity.id}` });
+    },
+  });
+  abortSignal.throwIfAborted();
+  context.reportMemory(memory.status, memory.facts.length);
   const result = streamText({
     model: getLanguageModel(),
     system: "You are ZekirLee, a helpful assistant with knowledge of Sui. Answer general questions directly without requiring a wallet connection. You have no wallet details, live blockchain data, or browsing tools. Do not claim to have inspected a portfolio or fetched current prices or activity. When personal or live data is needed, explain the limitation and ask for relevant public information; never request private keys or seed phrases.",
