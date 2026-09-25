@@ -22,3 +22,6 @@ export async function storeUsefulFacts(input: {
   extract: (text: string) => Promise<unknown>;
   writer: MemoryWriter;
 }) {
+  // Avoid sending obvious credential-bearing messages to the extraction model.
+  if (sensitive.test(input.text)) return { saved: 0, failed: 0, skipped: true };
+  const { facts } = factsSchema.parse(await input.extract(input.text));
