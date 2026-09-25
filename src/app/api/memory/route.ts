@@ -15,3 +15,6 @@ const json = (body: object, status = 200) => NextResponse.json(body, { status, h
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin) return json({ error: "Memory requests must come from this site." }, 403);
   if (!request.headers.get("content-type")?.startsWith("application/json")) return json({ error: "Expected JSON." }, 415);
+  let body: unknown;
+  const reader = request.body?.getReader();
+  if (!reader) return json({ error: "Send a message to remember." }, 400);
