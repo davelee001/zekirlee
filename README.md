@@ -257,7 +257,6 @@ npm start
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
 
 The regression suite currently contains 27 tests, including request-body cancellation, provider cancellation, memory configuration validation, signed guest identity, evidence validation, duplicate handling, partial storage failures, and rejection of non-mainnet relayers.
-The regression suite currently contains 21 tests, including request-body cancellation, provider cancellation, memory configuration validation, namespace separation, and rejection of non-mainnet relayers.
 
 | Live check | Prerequisites | What it verifies |
 | --- | --- | --- |
@@ -293,7 +292,7 @@ No custom `vercel.json` is required by this application. Configure Supabase Auth
 | Memory configuration error | Set the mainnet MemWalAccount object ID and registered delegate key, then run `npm run test:memory`. |
 | Relayer does not report mainnet | Check `WALRUS_MEMORY_SERVER_URL`; setting `WALRUS_NETWORK` cannot change the relayer deployment. |
 | Memory connection check fails | Check connectivity, SDK compatibility, and whether the delegate is registered on the configured mainnet account. |
-| Chat does not recall Walrus memories | The chat route is not yet connected to persistent memory; current history is stored in the browser tab. |
+| Chat does not recall Walrus memories | Saving facts is implemented, but recall in replies is not yet connected; current conversation context still comes from the browser tab. |
 | npm blocked in PowerShell | Use `npm.cmd`. |
 
 ## References
