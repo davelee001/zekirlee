@@ -76,3 +76,10 @@ export function ConversationLibrary() {
     <div className="workspace-actions"><button disabled={busy} onClick={() => { setListing(null); setPage(0); setRevision(value => value + 1); }}>Refresh</button><Link href="/">Open chat</Link></div>
     {notice && <p role="status">{notice}</p>}
     {!current ? <p>{notice ? "Use Refresh to try again." : "Loading saved conversations..."}</p> : current.rows.length === 0 ? <p>No saved conversations on this page.</p> : <ul className="saved-conversations">{current.rows.map(row => <li key={row.id}>
+      <strong>{row.title}</strong><time dateTime={row.created_at}>{new Date(row.created_at).toLocaleString()}</time>
+      <div className="workspace-actions"><button disabled={busy} onClick={() => setConfirm({ id: row.id, action: "open" })}>Open</button><button disabled={busy} onClick={() => setConfirm({ id: row.id, action: "delete" })}>Delete</button></div>
+    </li>)}</ul>}
+    {confirm && <div role="group" aria-label="Confirm conversation action"><p>{confirm.action === "open" ? "Replace the current tab conversation with this snapshot? Unsaved tab messages will be replaced." : "Delete this account snapshot? This cannot be undone."}</p><div className="workspace-actions"><button disabled={busy} onClick={() => void perform()}>Confirm {confirm.action}</button><button disabled={busy} onClick={() => setConfirm(null)}>Cancel</button></div></div>}
+    <div className="workspace-actions"><button disabled={busy || page === 0} onClick={() => { setListing(null); setPage(value => value - 1); }}>Previous</button><span>Page {page + 1}</span><button disabled={busy || !current?.hasMore} onClick={() => { setListing(null); setPage(value => value + 1); }}>Next</button></div>
+  </section>;
+}
