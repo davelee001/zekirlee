@@ -56,3 +56,10 @@ test("new or unconfigured browsers never trigger a remote clear", async () => {
   assert.equal(missing.status, 503);
 });
 
+// Public RFC 8032 test seed, never an application credential.
+const config = { key: "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60", accountId: `0x${"a".repeat(64)}`, serverUrl: "https://relayer.example" };
+
+test("admin requests bind account, namespace, method, path, body, and nonce to an Ed25519 signature", async () => {
+  const nonces = new Set();
+  for (const operation of ["stats", "forget"]) {
+    const count = await memoryAdminRequest(config, operation, "zekirlee:guest:one", async (target, options) => {
