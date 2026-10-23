@@ -13,3 +13,10 @@ async function loadStatus(signal?: AbortSignal): Promise<Status> {
   if (!response.ok) throw new Error(result.error || "Memory status is unavailable.");
   return result;
 }
+
+export function MemorySettings() {
+  const [status, setStatus] = useState<Status | null>(null);
+  const [busy, setBusy] = useState(true);
+  const [confirm, setConfirm] = useState(false);
+  const [notice, setNotice] = useState("");
+
