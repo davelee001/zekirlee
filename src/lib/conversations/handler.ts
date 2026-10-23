@@ -55,3 +55,12 @@ export function createConversationHandler(authorize: () => Promise<Access>) {
         }
       } finally { reader.releaseLock(); }
       let body: unknown;
+      try { body = JSON.parse(raw); } catch { return json({ error: "Invalid conversation request." }, 400); }
+      const parsed = bodySchema.safeParse(body);
+      if (!parsed.success) return json({ error: "Save 1–40 user/assistant messages within the chat limits." }, 400);
+      return json({ conversation: await access.store.create(parsed.data.messages) }, 201);
+    } catch {
+      return json({ error: "Saved conversations are unavailable. Your current chat is unchanged; check account storage setup or try again." }, 503);
+    }
+  };
+}
