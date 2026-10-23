@@ -25,3 +25,13 @@ export function useAccount() {
       hadUser = Boolean(session?.user);
       if (clearHistory) {
         try { sessionStorage.removeItem(SESSION_KEY); localStorage.setItem(SIGNED_OUT_KEY, crypto.randomUUID()); } catch { /* Clear mounted chat via the event as well. */ }
+        window.dispatchEvent(new Event(SIGNED_OUT_EVENT));
+      }
+    });
+    const initialRevision = revision;
+    client.auth.getUser().then(({ data, error }) => {
+      if (!active || revision !== initialRevision) return;
+      setAccount({ state: data.user ? "signed-in" : error && error.name !== "AuthSessionMissingError" ? "unavailable" : "guest", user: data.user });
+    }).catch(() => { if (active && revision === initialRevision) setAccount({ state: "unavailable", user: null }); });
+    return () => { active = false; subscription.unsubscribe(); };
+  }, [configured]);
