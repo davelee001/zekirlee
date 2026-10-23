@@ -196,9 +196,10 @@ Guest chat bypasses Supabase session refresh and requires no wallet, Supabase, o
 After signing in, use **Save to account** in chat to save an immutable snapshot. Nothing is uploaded to the conversation database automatically. Each save creates a separate snapshot titled from its first user message. API limits match chat's 40 messages and 64,000 serialized characters; the database also validates roles and message lengths independently.
 
 Open **Saved chats** to browse snapshots, load one into the current tab, or delete it. Opening and deleting require confirmation. Opening replaces local tab history; continuing a loaded conversation does not change the old snapshot. Saving again creates another one. Pagination lists 20 records at a time, with newest snapshots first.
-Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` to use the browser/server clients. They access PostgreSQL through Supabase's Data API, so a direct database password is unnecessary.
 
-The proxy refreshes sessions but does not authorize application routes. Future protected handlers must verify users or claims. Add Row Level Security policies with application-table migrations, and configure Auth site and redirect URLs when adding sign-in.
+Protected API handlers verify the user with Supabase Auth and bind queries to that user's ID. PostgreSQL row-level security independently enforces ownership. The proxy refreshes sessions but is not the authorization boundary. Sign-out removes local tab history and notifies open chat tabs; it does not delete account snapshots or browser-linked Walrus memory.
+
+Deleting a snapshot leaves the active tab conversation and Walrus memory unchanged. Account history works across devices after sign-in; Walrus memory does **not** yet follow the account between browsers. The client uses cookie-backed Supabase sessions, while guest chat remains available if account services are unavailable.
 
 ### Walrus Memory
 
@@ -272,7 +273,7 @@ Clearing pauses memory in open chat tabs using browser events and local storage 
 
 The installed SDK has no public production `stats` or `forget` method. The server uses the documented relayer endpoints with account-bound Ed25519 signatures, mainnet and compatibility checks, and request deadlines. It never sends the delegate private key. Tests verify signatures, namespace binding, confirmation, and failure behavior with mocked transport; no automated test clears live mainnet data.
 
-Remaining work includes cross-device identity, Supabase sign-in and database-backed conversations, and verification of real mainnet storage, recall, and clearing with configured credentials.
+Remaining work includes connecting the Supabase project and running its migration/tests, linking Walrus memory to accounts across devices, and verifying real mainnet storage, recall, and clearing. See the [remaining-work checklist](docs/remaining-work.md) for the full list.
 
 ## Project structure
 
@@ -283,6 +284,8 @@ src/
     api/health/route.ts     Liveness endpoint
     api/memory/route.ts     Opt-in extraction and confirmed storage endpoint
     api/memory/manage/route.ts Browser-scoped memory status and clearing
+    api/conversations/     Authenticated snapshot list/save/open/delete endpoints
+    auth/callback/route.ts Email token and PKCE session exchange
     [section]/page.tsx      Overview, knowledge, guides, settings, help, and network pages
     conversations/page.tsx Dedicated route for the chat interface
     page.tsx               Chat interface and tab-session lifecycle
