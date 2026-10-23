@@ -26,3 +26,13 @@ export const handleConversation = createConversationHandler(async () => {
     },
     async get(id) {
       const { data, error } = await supabase.from("conversations").select("id,title,messages,created_at")
+        .eq("user_id", user.id).eq("id", id).maybeSingle();
+      if (error) throw error;
+      return data as SavedConversation | null;
+    },
+    async remove(id) {
+      const { data, error } = await supabase.from("conversations").delete().eq("user_id", user.id).eq("id", id).select("id");
+      if (error) throw error;
+      return Boolean(data?.length);
+    },
+  } };
