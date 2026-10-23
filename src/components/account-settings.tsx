@@ -34,3 +34,12 @@ export function AccountSettings() {
       if (error) throw error;
       setNotice("Signed out of this browser. Saved account conversations remain in your account.");
     } catch { setNotice("Sign-out failed. Please try again."); }
+    finally { setBusy(false); }
+  }
+  return <section className="workspace-card" id="account">
+    <h2>Account</h2><p>Sign in by email to save conversation snapshots and open them on another device. Guest chat stays available without an account.</p>
+    {account.state === "disabled" ? <p>Account sign-in is not configured yet. You can continue chatting as a guest.</p>
+      : account.state === "loading" ? <p role="status">Checking account...</p>
+      : account.user ? <><p>Signed in as {account.user.email || "your account"}.</p><button disabled={busy} onClick={() => void signOut()}>Sign out</button></>
+      : <form className="account-form" onSubmit={signIn}>
+        <label htmlFor="account-email">Email address</label>
