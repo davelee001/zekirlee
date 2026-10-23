@@ -61,3 +61,13 @@ test("authenticated users can create, list, open, and confirm deletion of a snap
   assert.equal((await handle(request("DELETE", undefined, { "X-Zekirlee-Confirm": "delete-conversation" }), id)).status, 200);
   assert.equal((await handle(request("GET"), id)).status, 404);
 });
+
+test("invalid IDs, pagination, missing rows, and storage failures return safe errors", async () => {
+  const handle = authenticated(store());
+  assert.equal((await handle(request("GET"), "invalid")).status, 400);
+  assert.equal((await handle(new Request(origin + "/api/conversations?page=-1"))).status, 400);
+  assert.equal((await handle(request("GET"), id)).status, 404);
+  const fail = authenticated(store({ list: async () => { throw Error("database-secret-password"); } }));
+  const response = await fail(request("GET"));
+  assert.equal(response.status, 503);
+  assert.doesNotMatch(await response.text(), /database-secret-password/);
