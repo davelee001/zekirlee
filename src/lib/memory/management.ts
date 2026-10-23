@@ -31,3 +31,10 @@ export function createMemoryManagementHandlers(load: (request: Request) => Promi
         const session = await load(request);
         if (session.state === "unconfigured") return json({ error: "Memory is not configured. Nothing was cleared." }, 503);
         if (session.state === "new") return json({ cleared: 0, state: "new" });
+        const cleared = await session.forget();
+        // Switch namespaces so late writes to the old namespace cannot return in future recalls.
+        return json({ cleared, state: "new" }, 200, { "Set-Cookie": session.replacementCookie });
+      } catch {
+        return json({ error: "Clearing memory could not be confirmed. Retry or refresh the status; chat history is unchanged." }, 503);
+      }
+    },
