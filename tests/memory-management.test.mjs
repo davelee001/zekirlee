@@ -21,3 +21,10 @@ test("memory status distinguishes configuration, new identity, and verified coun
   assert.equal(response.headers.has("set-cookie"), false);
 });
 
+test("clearing requires same-origin confirmation before resolving a memory identity", async () => {
+  const handlers = createMemoryManagementHandlers(async () => assert.fail("Must not access memory"));
+  assert.equal((await handlers.DELETE(request("DELETE"))).status, 403);
+  assert.equal((await handlers.DELETE(request("DELETE", { ...confirmed, origin: "https://other.example" }))).status, 403);
+  assert.equal((await handlers.DELETE(request("DELETE", { origin: confirmed.origin }))).status, 400);
+  assert.equal((await handlers.GET(request("GET", { "sec-fetch-site": "cross-site" }))).status, 403);
+});
