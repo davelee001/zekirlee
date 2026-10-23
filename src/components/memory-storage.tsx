@@ -31,8 +31,11 @@ export function useMemoryStorage() {
       window.removeEventListener(MEMORY_RESET_EVENT, reset);
       window.removeEventListener("storage", storage);
     };
+  }, []);
+
   function toggle(value: boolean) {
     optedIn.current = value;
+    generation.current++;
     setEnabled(value);
     setRecallNotice("");
     setNotice(value ? "Replies can use saved details, and new messages can save preferences, goals, and project details." : "Memory is off. Previously saved details remain stored.");
@@ -48,8 +51,9 @@ export function useMemoryStorage() {
 
   function save(text: string) {
     if (!optedIn.current) return;
+    const version = generation.current;
     queue.current = queue.current.then(async () => {
-      if (!optedIn.current) return;
+      if (!optedIn.current || generation.current !== version) return;
       setNotice("Finding useful details to remember...");
       try {
         const send = () => fetch("/api/memory", {
@@ -59,6 +63,7 @@ export function useMemoryStorage() {
         let response = await send();
         let result = await response.json();
         if (response.status === 409 && result.code === "MEMORY_SESSION_CREATED") {
+          if (!optedIn.current || generation.current !== version) return;
           if (!optedIn.current) return;
           response = await send();
           result = await response.json();
