@@ -17,3 +17,10 @@ const handlers = createMemoryManagementHandlers(async request => {
   if (!identity.existing) return { state: "new" };
   const namespace = `${config.namespace}:guest:${identity.id}`;
   const call = async (operation: "stats" | "forget") => {
+    await verifyMainnetRelayer(config.serverUrl);
+    await MemWal.create({ ...config, namespace }).compatibility();
+    return memoryAdminRequest(config, operation, namespace);
+  };
+  const nextIdentity = memoryIdentity(undefined, config.key);
+  const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
+  return {
