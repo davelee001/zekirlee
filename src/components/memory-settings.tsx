@@ -27,3 +27,10 @@ export function MemorySettings() {
       if (signal?.aborted) return;
       setStatus({ state: "unavailable", count: 0 });
       setNotice(error instanceof Error ? error.message : "Memory status is unavailable.");
+    } finally { if (!signal?.aborted) setBusy(false); }
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+    loadStatus(controller.signal).then(result => {
+      if (!controller.signal.aborted) setStatus(result);
