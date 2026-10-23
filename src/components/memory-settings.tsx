@@ -62,3 +62,10 @@ export function MemorySettings() {
     } finally { setBusy(false); }
   }
 
+  return <section className="workspace-card" id="saved-memory">
+    <h2>Saved memory</h2>
+    <p>Manage the Walrus memory linked to this browser. Chat history and saved memory are separate.</p>
+    <p role="status">{busy ? "Checking or updating memory..." : status?.state === "ready" ? `${status.count} searchable memories linked to this browser.`
+      : status?.state === "new" ? "No previous memory space is linked to this browser."
+      : status?.state === "unconfigured" ? "Walrus memory is not configured. Chat is still available."
+      : "Memory is currently unavailable."}</p>
