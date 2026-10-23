@@ -17,3 +17,13 @@ type Access = { state: "unconfigured" } | { state: "guest" } | { state: "authent
 
 export function createConversationHandler(authorize: () => Promise<Access>) {
   const json = (data: object, status = 200) => Response.json(data, { status, headers: { "Cache-Control": "private, no-store" } });
+  return async (request: Request, id?: string) => {
+    const method = request.method;
+    const origin = request.headers.get("origin");
+    const mutates = method !== "GET";
+    if ((origin && origin !== new URL(request.url).origin) || request.headers.get("sec-fetch-site") === "cross-site"
+      || (mutates && origin !== new URL(request.url).origin)) return json({ error: "Use saved conversations on this site." }, 403);
+    if (id && !z.uuid().safeParse(id).success) return json({ error: "Invalid conversation." }, 400);
+    if (!(["GET", "POST", "DELETE"].includes(method)) || (method === "POST" && id) || (method === "DELETE" && !id)) return json({ error: "Unsupported operation." }, 405);
+    try {
+      const access = await authorize();
