@@ -20,3 +20,13 @@ begin
   if found then raise exception 'User B can delete user A'; end if;
   begin
     insert into public.conversations (user_id, title, messages) values (current_setting('test.user_a')::uuid, 'Forbidden', '[{"role":"user","text":"Hello"}]');
+    raise exception 'User B can impersonate user A';
+  exception when insufficient_privilege then null;
+  end;
+end;
+$$;
+
+select set_config('request.jwt.claims', json_build_object('sub', current_setting('test.user_a'), 'role', 'authenticated')::text, true);
+do $$
+begin
+  if not exists (select 1 from public.conversations where id = current_setting('test.conversation_id')::uuid) then raise exception 'Owner cannot read snapshot'; end if;
