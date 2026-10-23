@@ -20,3 +20,10 @@ export function MemorySettings() {
   const [confirm, setConfirm] = useState(false);
   const [notice, setNotice] = useState("");
 
+  async function refresh(signal?: AbortSignal) {
+    try {
+      setStatus(await loadStatus(signal));
+    } catch (error) {
+      if (signal?.aborted) return;
+      setStatus({ state: "unavailable", count: 0 });
+      setNotice(error instanceof Error ? error.message : "Memory status is unavailable.");
