@@ -186,6 +186,16 @@ Guest chat bypasses Supabase session refresh and requires no wallet, Supabase, o
    ```html
    <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=email">Sign in to ZekirLee</a>
    ```
+
+   The app passes `/auth/callback` as `emailRedirectTo`. The callback verifies email token hashes and also supports PKCE code exchanges; code-based links must be opened in the browser that requested them. See [Supabase passwordless email sign-in](https://supabase.com/docs/guides/auth/auth-email-passwordless).
+5. Open **Settings → Account**, enter an email, and request a sign-in link. New users can create an account through the same flow. Invalid or expired links return to account settings with a retry message.
+6. In a configured **test project**, run `supabase/tests/conversations.sql` to exercise owner isolation, anonymous denial, and immutable snapshots. The script creates temporary test users inside a transaction and rolls back its changes. It has not been executed in this workspace because a database connection is not configured.
+
+### Saved conversations
+
+After signing in, use **Save to account** in chat to save an immutable snapshot. Nothing is uploaded to the conversation database automatically. Each save creates a separate snapshot titled from its first user message. API limits match chat's 40 messages and 64,000 serialized characters; the database also validates roles and message lengths independently.
+
+Open **Saved chats** to browse snapshots, load one into the current tab, or delete it. Opening and deleting require confirmation. Opening replaces local tab history; continuing a loaded conversation does not change the old snapshot. Saving again creates another one. Pagination lists 20 records at a time, with newest snapshots first.
 Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` to use the browser/server clients. They access PostgreSQL through Supabase's Data API, so a direct database password is unnecessary.
 
 The proxy refreshes sessions but does not authorize application routes. Future protected handlers must verify users or claims. Add Row Level Security policies with application-table migrations, and configure Auth site and redirect URLs when adding sign-in.
