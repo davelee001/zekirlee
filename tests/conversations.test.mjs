@@ -52,3 +52,12 @@ test("authenticated users can create, list, open, and confirm deletion of a snap
     get: async key => key === saved?.id ? saved : null,
     remove: async key => { if (key !== saved?.id) return false; saved = null; return true; },
   }));
+  assert.equal((await handle(request("POST", { messages }))).status, 201);
+  const listing = await (await handle(request("GET"))).json();
+  assert.equal(listing.conversations.length, 1);
+  assert.equal(listing.conversations[0].messages, undefined);
+  assert.deepEqual((await (await handle(request("GET"), id)).json()).conversation.messages, messages);
+  assert.equal((await handle(request("DELETE"), id)).status, 400);
+  assert.equal((await handle(request("DELETE", undefined, { "X-Zekirlee-Confirm": "delete-conversation" }), id)).status, 200);
+  assert.equal((await handle(request("GET"), id)).status, 404);
+});
