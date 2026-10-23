@@ -24,6 +24,13 @@ export function useMemoryStorage() {
     window.addEventListener(MEMORY_RESET_EVENT, reset);
     window.addEventListener("storage", storage);
     return () => {
+      optedIn.current = false;
+      // Invalidate the latest queued work, not the generation captured on mount.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      generation.current++;
+      window.removeEventListener(MEMORY_RESET_EVENT, reset);
+      window.removeEventListener("storage", storage);
+    };
   function toggle(value: boolean) {
     optedIn.current = value;
     setEnabled(value);
