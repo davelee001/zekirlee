@@ -3,3 +3,5 @@ import { ConversationLibrary } from "@/components/conversation-library";
 
 export const metadata = { title: "Saved conversations" };
 export default function HistoryPage() {
+  return <WorkspacePage title="Saved conversations"><ConversationLibrary /></WorkspacePage>;
+}
