@@ -43,3 +43,10 @@ export function AccountSettings() {
       : account.user ? <><p>Signed in as {account.user.email || "your account"}.</p><button disabled={busy} onClick={() => void signOut()}>Sign out</button></>
       : <form className="account-form" onSubmit={signIn}>
         <label htmlFor="account-email">Email address</label>
+        <input id="account-email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={event => setEmail(event.target.value)} disabled={busy} />
+        <button type="submit" disabled={busy || !email.trim()}>{busy ? "Sending link..." : "Email me a sign-in link"}</button>
+      </form>}
+    {notice && <p role="status">{notice}</p>}
+    <p>Conversations are saved only when you choose Save to account. Signing out clears the current tab conversation; saved snapshots and Walrus memory are separate. Walrus memory is linked to this browser, not your account, so manage it separately on shared devices.</p>
+  </section>;
+}
