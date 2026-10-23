@@ -330,7 +330,6 @@ tests/                     Chat, session, knowledge, and memory regression tests
 supabase/migrations/       Conversation schema, constraints, and ownership policies
 supabase/tests/            Transactional database isolation checks (run separately)
 docs/remaining-work.md     Outstanding implementation and live-setup checklist
-supabase/migrations/       Placeholder for application migrations
 .github/workflows/ci.yml    Automated checks
 ```
 
@@ -346,7 +345,7 @@ npm start
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
 
-The regression suite currently contains 41 tests, including request-body cancellation, provider cancellation, memory configuration validation, signed guest identity, evidence validation, duplicate handling, partial storage failures, recall fallback and cancellation, an offline storage-to-recall round trip, management authorization and signatures, and rejection of non-mainnet relayers.
+The regression suite currently contains 48 tests, including chat/session behavior, memory storage/recall/management, authenticated conversation operations, ownership-input rejection, and email-link validation. Database policies and real email delivery require the separate configured-project checks; mocked API tests do not verify PostgreSQL enforcement.
 
 | Live check | Prerequisites | What it verifies |
 | --- | --- | --- |
@@ -384,6 +383,9 @@ No custom `vercel.json` is required by this application. Configure Supabase Auth
 | Memory connection check fails | Check connectivity, SDK compatibility, and whether the delegate is registered on the configured mainnet account. |
 | Chat does not recall Walrus memories | Enable **Use and save memory with Walrus**, use the browser that saved the facts, and check the recall notice. Verify credentials with `npm run test:memory`; recent writes may still be processing. |
 | Memory clearing could not be confirmed | Refresh memory status before retrying. A timeout may occur after the relayer applied the clear; the browser identity stays unchanged on failure. |
+| Account sign-in is not configured | Set both public Supabase values and restart/rebuild. Guest chat remains available. |
+| Email link fails | Check allowed callback URLs and the Magic Link email template; request a fresh link. |
+| Signed in but snapshots fail | Apply the conversation migration, then check the database policies and run the isolation test in a test project. |
 | npm blocked in PowerShell | Use `npm.cmd`. |
 
 ## References

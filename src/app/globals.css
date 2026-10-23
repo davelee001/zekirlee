@@ -310,3 +310,7 @@ html { color-scheme: light; }
 .memory-storage-control input { accent-color: #167d70; }
 .memory-storage-control small { opacity: .75; }
 .memory-storage-control [role="status"] { overflow-wrap: anywhere; }
+.account-form { display: grid; gap: 10px; margin-block: 16px; }
+.account-form input { min-width: 0; width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: inherit; }
+.saved-chat-control { flex-shrink: 0; font-size: 12px; margin-bottom: 8px; }
+.saved-chat-actions { display: flex; gap: 14px; align-items: center; }
