@@ -17,6 +17,13 @@ export function useMemoryStorage() {
       optedIn.current = false;
       generation.current++;
       setEnabled(false);
+      setRecallNotice("");
+      setNotice("Memory was paused from Settings. Re-enable it when you want to use and save details again.");
+    };
+    const storage = (event: StorageEvent) => { if (event.key === MEMORY_RESET_KEY) reset(); };
+    window.addEventListener(MEMORY_RESET_EVENT, reset);
+    window.addEventListener("storage", storage);
+    return () => {
   function toggle(value: boolean) {
     optedIn.current = value;
     setEnabled(value);
