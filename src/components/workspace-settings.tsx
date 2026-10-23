@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
 import { SESSION_KEY } from "@/lib/ai/session";
 import { MemorySettings } from "./memory-settings";
+import { AccountSettings } from "./account-settings";
 export function WorkspaceSettings() {
   const [confirm, setConfirm] = useState(false);
   const [notice, setNotice] = useState("");
@@ -12,6 +13,7 @@ export function WorkspaceSettings() {
     setConfirm(false);
   }
   return <div className="workspace-grid">
+    <AccountSettings />
     <section className="workspace-card"><h2>Appearance</h2><p>Switch between light and dark. Your preference is remembered in this browser.</p><ThemeToggle /></section>
     <section className="workspace-card"><h2>Conversation history</h2><p>Messages stay in this tab across refreshes. Clearing history starts a fresh chat and cannot be undone.</p>{confirm ? <div className="workspace-actions"><button onClick={clear}>Clear history</button><button onClick={() => setConfirm(false)}>Cancel</button></div> : <button onClick={() => setConfirm(true)}>Clear this tab&apos;s history</button>}<p role="status">{notice}</p></section>
     <MemorySettings />

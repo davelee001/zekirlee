@@ -8,6 +8,7 @@ import { CircleHelp, Database, History, LayoutGrid, Network, Plus, Settings2, X 
 const links = [
   { href: "/overview", label: "Overview", icon: LayoutGrid },
   { href: "/conversations", label: "Conversations", icon: History },
+  { href: "/history", label: "Saved chats", icon: History },
   { href: "/knowledge", label: "Knowledge", icon: Database },
 ];
 export function WorkspaceSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
