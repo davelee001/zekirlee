@@ -19,3 +19,13 @@ export function ConversationLibrary() {
   useEffect(() => {
     const current = operation.current;
     const cancel = () => { current.generation++; current.controller?.abort(); };
+    const signedOut = () => { cancel(); setConfirm(null); setBusy(false); };
+    window.addEventListener(SIGNED_OUT_EVENT, signedOut);
+    return () => { cancel(); window.removeEventListener(SIGNED_OUT_EVENT, signedOut); };
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return;
+    const controller = new AbortController();
+    fetch(`/api/conversations?page=${page}`, { signal: controller.signal, cache: "no-store" }).then(async response => {
+      const result = await response.json();
