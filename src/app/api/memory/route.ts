@@ -68,6 +68,7 @@ export async function POST(request: NextRequest) {
   } catch {
     response = json({ error: "Memory storage could not be confirmed. Your chat is unaffected; a submitted storage job may still finish." }, 503);
   }
-  // Keep identity even after partial failures so retries target the same namespace.
-  return setIdentity(response);
+  // Existing identities need no refresh. A late save must not overwrite a
+  // replacement cookie issued by a concurrent memory reset.
+  return response;
 }
