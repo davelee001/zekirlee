@@ -24,3 +24,12 @@ test("saved conversations require configured, verified authentication", async ()
       const response = await handle(request(method, method === "POST" ? { messages } : undefined), method === "DELETE" ? id : undefined);
       assert.equal(response.status, status);
       assert.equal(response.headers.get("cache-control"), "private, no-store");
+    }
+  }
+});
+
+test("cross-origin writes and reads cannot reach the account store", async () => {
+  const handle = createConversationHandler(async () => assert.fail("Must reject before authorization"));
+  for (const method of ["GET", "POST", "DELETE"]) {
+    assert.equal((await handle(request(method, undefined, { Origin: "https://other.example" }), method === "DELETE" ? id : undefined)).status, 403);
+  }
