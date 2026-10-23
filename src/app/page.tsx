@@ -7,6 +7,8 @@ import { ChatMessage } from "@/components/chat-message";
 import { WorkspaceSidebar } from "@/components/workspace-sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MemoryStorageControl, useMemoryStorage } from "@/components/memory-storage";
+import { SaveConversation } from "@/components/save-conversation";
+import { SIGNED_OUT_EVENT, SIGNED_OUT_KEY } from "@/hooks/use-account";
 import { ArrowUpRight, Check, FileText, Gem, Menu, Network, Plus, Search, Send, Settings2, Sparkles, Wallet, Zap } from "lucide-react";
 
 type Message = SessionMessage;
@@ -26,6 +28,7 @@ export default function Home() {
   const [storageNotice, setStorageNotice] = useState<string | null>(null);
 
   useEffect(() => {
+    const clearAfterSignOut = () => {
     if (sessionReady) composerRef.current?.focus({ preventScroll: true });
   }, [sessionReady]);
 

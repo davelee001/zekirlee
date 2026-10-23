@@ -314,3 +314,9 @@ html { color-scheme: light; }
 .account-form input { min-width: 0; width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: inherit; }
 .saved-chat-control { flex-shrink: 0; font-size: 12px; margin-bottom: 8px; }
 .saved-chat-actions { display: flex; gap: 14px; align-items: center; }
+.saved-chat-actions a { color: var(--teal); text-decoration: underline; }
+.saved-chat-actions button { border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; }
+.saved-chat-control [role="status"] { display: block; overflow-wrap: anywhere; margin-top: 4px; }
+.saved-conversations { list-style: none; padding: 0; }
+.saved-conversations li { border-bottom: 1px solid var(--line); padding-block: 16px; overflow-wrap: anywhere; }
+.saved-conversations time { display: block; font-size: 12px; margin-block: 8px; opacity: .8; }
