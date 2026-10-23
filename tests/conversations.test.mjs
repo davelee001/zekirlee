@@ -80,3 +80,13 @@ test("email callback accepts PKCE codes and email token hashes only", async () =
   };
   assert.equal(await completeEmailLink(new URLSearchParams("code=test-code"), auth), true);
   assert.equal(await completeEmailLink(new URLSearchParams("token_hash=test-hash&type=email"), auth), true);
+  for (const query of ["", "token_hash=test-hash&type=recovery", "code=test-code&token_hash=test-hash"]) {
+    assert.equal(await completeEmailLink(new URLSearchParams(query), auth), false);
+  }
+});
+
+test("expired email links and auth failures are safely rejected", async () => {
+  const auth = { exchangeCodeForSession: async () => ({ error: "expired" }), verifyOtp: async () => { throw Error("provider-secret"); } };
+  assert.equal(await completeEmailLink(new URLSearchParams("code=expired"), auth), false);
+  assert.equal(await completeEmailLink(new URLSearchParams("token_hash=expired&type=email"), auth), false);
+});
