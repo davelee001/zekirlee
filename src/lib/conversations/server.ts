@@ -17,3 +17,12 @@ export const handleConversation = createConversationHandler(async () => {
       if (error) throw error;
       return { conversations: (data ?? []).slice(0, 20) as ConversationSummary[], hasMore: (data?.length ?? 0) > 20 };
     },
+    async create(messages) {
+      const title = (messages.find(message => message.role === "user")?.text || "Saved conversation").slice(0, 80);
+      const { data, error } = await supabase.from("conversations").insert({ user_id: user.id, title, messages })
+        .select("id,title,created_at").single();
+      if (error) throw error;
+      return data as ConversationSummary;
+    },
+    async get(id) {
+      const { data, error } = await supabase.from("conversations").select("id,title,messages,created_at")
