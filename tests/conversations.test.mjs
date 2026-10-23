@@ -43,3 +43,12 @@ test("client ownership and invalid message roles cannot be injected", async () =
   }
   assert.equal((await handle(request("POST", { messages: "a".repeat(64001) }))).status, 413);
 });
+
+test("authenticated users can create, list, open, and confirm deletion of a snapshot", async () => {
+  let saved = null;
+  const handle = authenticated(store({
+    create: async received => { assert.deepEqual(received, messages); saved = { id, title: "I am learning Move", created_at: "2026-10-23T10:00:00Z", messages: received }; return { id, title: saved.title, created_at: saved.created_at }; },
+    list: async page => { assert.equal(page, 0); return { conversations: saved ? [{ id, title: saved.title, created_at: saved.created_at }] : [], hasMore: false }; },
+    get: async key => key === saved?.id ? saved : null,
+    remove: async key => { if (key !== saved?.id) return false; saved = null; return true; },
+  }));
