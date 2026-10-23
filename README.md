@@ -239,6 +239,13 @@ This manual check performs real AI requests and may write to Walrus mainnet. A s
 | Switch device or browser | Uses a different guest identity; cross-device account linking is not implemented. |
 
 ### Manage saved memory
+
+Open **Settings → Saved memory**, or use **Manage saved memory** above the chat. The status distinguishes missing configuration, a browser with no previous identity, an authenticated count of searchable memories, and a service failure. **Refresh status** retries the check without changing memory.
+
+**Clear saved memory** opens a confirmation explaining the scope. Confirming removes this browser namespace's search-index entries and switches the browser to a fresh signed identity. This prevents jobs that finish in the old namespace from surfacing in future recalls. Chat history stays intact, so old details can still appear in the current conversation until you start a new one.
+
+This is index clearing, not permanent blob erasure: encrypted Walrus blobs persist until expiry and the account operator can restore their index. The relayer's [forget handler](https://github.com/MystenLabs/MemWal/blob/dev/services/server/src/routes/admin.rs) documents these semantics. Settings does not expose account-wide or other-browser clearing.
+
 Remaining work includes a memory deletion interface, cross-device identity, Supabase sign-in and database-backed conversations, and verification of a real mainnet storage-and-recall round trip.
 
 ## Project structure
