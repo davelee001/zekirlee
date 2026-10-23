@@ -14,3 +14,13 @@ const store = (overrides = {}) => ({
   list: async () => ({ conversations: [], hasMore: false }),
   create: async () => assert.fail("Unexpected write"),
   get: async () => null, remove: async () => false, ...overrides,
+});
+const authenticated = value => createConversationHandler(async () => ({ state: "authenticated", store: value }));
+
+test("saved conversations require configured, verified authentication", async () => {
+  for (const [state, status] of [["unconfigured", 503], ["guest", 401]]) {
+    const handle = createConversationHandler(async () => ({ state }));
+    for (const method of ["GET", "POST", "DELETE"]) {
+      const response = await handle(request(method, method === "POST" ? { messages } : undefined), method === "DELETE" ? id : undefined);
+      assert.equal(response.status, status);
+      assert.equal(response.headers.get("cache-control"), "private, no-store");
