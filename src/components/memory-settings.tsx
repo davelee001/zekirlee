@@ -6,3 +6,10 @@ import { announceMemoryReset } from "@/lib/memory/browser-events";
 type Status = { state: "unconfigured" | "new" | "ready" | "unavailable"; count: number };
 
 async function loadStatus(signal?: AbortSignal): Promise<Status> {
+  const response = await fetch("/api/memory/manage", {
+    cache: "no-store", signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(45000)]) : AbortSignal.timeout(45000),
+  });
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.error || "Memory status is unavailable.");
+  return result;
+}
