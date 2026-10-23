@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { MEMORY_RESET_EVENT, MEMORY_RESET_KEY } from "@/lib/memory/browser-events";
-import { useRef, useState } from "react";
 
 export function useMemoryStorage() {
   const [enabled, setEnabled] = useState(false);
@@ -11,7 +10,13 @@ export function useMemoryStorage() {
   const [recallNotice, setRecallNotice] = useState("");
   const queue = useRef(Promise.resolve());
   const optedIn = useRef(false);
+  const generation = useRef(0);
 
+  useEffect(() => {
+    const reset = () => {
+      optedIn.current = false;
+      generation.current++;
+      setEnabled(false);
   function toggle(value: boolean) {
     optedIn.current = value;
     setEnabled(value);
