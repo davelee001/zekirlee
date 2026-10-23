@@ -25,3 +25,5 @@ export async function memoryAdminRequest(config: AdminConfig, operation: "stats"
   const data = await response.json();
   const count = operation === "stats" ? data.memory_count : data.deleted;
   if (data.namespace !== namespace || !Number.isSafeInteger(count) || count < 0) throw new Error("Invalid memory management response");
+  return count as number;
+}
