@@ -25,6 +25,7 @@ Backend reliability, Walrus mainnet configuration, and opt-in memory storage and
 | Walrus account access | Requires a mainnet account ID and registered delegate key; authenticated access is not yet verified |
 | Memory storage | Opt-in extraction and storage implemented; a live mainnet write still requires configured credentials |
 | Memory recall in replies | Opt-in retrieval implemented with bounded context and fallback to ordinary chat; live account access remains unverified |
+| Memory management | Settings shows searchable-memory counts and supports confirmed clearing for this browser; live clearing remains unverified |
 | Supabase authentication and database | Client helpers prepared; sign-in and database-backed conversations remain pending |
 
 Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
@@ -49,6 +50,7 @@ Wallet connection and live blockchain retrieval remain outside the delivered sco
 - Optional extraction and storage of useful user details in Walrus, with confirmed-save and failure notices.
 - Relevant saved facts supplied to future replies, with bounded retrieval time and fallback to ordinary chat.
 - Signed browser identities for guest memory, without requiring a wallet or sign-in.
+- Settings controls to check memory status and clear this browser's searchable memories separately from chat history.
 
 Wallet connection, live blockchain retrieval, and login screens are not implemented in the chat flow. Users can opt in to saving useful details and using relevant Walrus memories in replies without a wallet or sign-in, once server credentials are configured.
 
@@ -163,6 +165,8 @@ At the conversation limit, start a new conversation. If a response is interrupte
 - `POST /api/chat` accepts `{ "messages": [{ "role": "user", "text": "Hello" }] }` and streams newline-delimited JSON events: `text`, `done`, or `error`. Validation and configuration failures return JSON error responses.
 - Add `"useMemory": true` to opt into recall for a chat request. Recall requires the same-origin browser request and its signed memory cookie. Response headers `X-Zekirlee-Memory` and `X-Zekirlee-Memory-Count` report retrieval status and the number of supplied facts, without exposing saved content in headers.
 - `POST /api/memory` accepts `{ "consent": true, "text": "I prefer TypeScript." }` from the same origin. It establishes a signed guest cookie before writing (HTTP 409 with `MEMORY_SESSION_CREATED`, retried once by the UI), extracts facts, and returns confirmed `saved` and unconfirmed `failed` counts. Missing configuration returns HTTP 503 without affecting chat.
+- `GET /api/memory/manage` reports `unconfigured`, `new`, `ready`, or `unavailable`; for an existing signed browser identity, it verifies mainnet and fetches that namespace's searchable-memory count.
+- `DELETE /api/memory/manage` requires a same-origin request and `X-Zekirlee-Confirm: forget-memory`. It clears only the namespace derived from the signed cookie, never a client-supplied namespace. Successful clearing replaces the browser identity; errors preserve it for retry.
 
 Guest chat bypasses Supabase session refresh and requires no wallet, Supabase, or Walrus credentials. Input and output limits are implemented; distributed rate limiting is not.
 
@@ -204,7 +208,7 @@ The server waits for Walrus storage confirmation before reporting a fact as save
 
 Guest memories use a separate namespace tied to a signed, HttpOnly browser cookie, with Secure enabled over HTTPS and SameSite Strict. The cookie is established before any writes. No wallet or Supabase login is required. Clearing cookies, changing browsers, or rotating the delegate signing key changes the guest identity; existing memories are not automatically migrated or deleted. The account delegate can access all its namespaces, so this is application-level isolation rather than separate on-chain ownership.
 
-Turning memory off stops future recall and saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. A deletion interface remains future work. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
+Turning memory off stops future recall and saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. Use **Settings → Saved memory** to clear the browser's searchable memory separately. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
 
 ### Memory recall
 
@@ -234,6 +238,7 @@ This manual check performs real AI requests and may write to Walrus mainnet. A s
 | Clear browser cookies | Loses the guest identity linking this browser to its stored facts; it does not delete them. |
 | Switch device or browser | Uses a different guest identity; cross-device account linking is not implemented. |
 
+### Manage saved memory
 Remaining work includes a memory deletion interface, cross-device identity, Supabase sign-in and database-backed conversations, and verification of a real mainnet storage-and-recall round trip.
 
 ## Project structure
