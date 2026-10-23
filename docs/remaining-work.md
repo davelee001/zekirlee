@@ -12,3 +12,12 @@ Updated 23 October 2026. Implementation and live verification are tracked separa
 | Deployment | Configure production environment values and Auth URLs, apply the migration, and verify the flows on the deployed Vercel URL. Production deployment has not been verified in this workspace. |
 
 ## Not implemented yet
+
+1. **Account-linked Walrus memory across devices.** Memory still follows a signed browser cookie. Sign-in does not migrate guest memory or associate it with a Supabase account.
+2. **Functional wallet connection and wallet context.** The current wallet controls are placeholders; public-address lookup only opens an explorer.
+3. **Live blockchain tools in chat.** The model cannot fetch balances, transactions, network health, or current prices.
+4. **Document retrieval for Knowledge.** Knowledge is a curated, searchable link collection; chat does not retrieve or ingest those documents.
+5. **Individual memory review/editing/removal.** Settings clears an entire browser namespace's search index. There is no per-fact editor or permanent encrypted-blob erasure.
+6. **Production abuse and cost controls.** Distributed rate limits, per-user quotas, and operational monitoring are not in place.
+
+Saved conversations currently use explicit immutable snapshots. Automatic synchronization, editable snapshot titles, full-text history search, and account-deletion/export controls are not included in the current implementation.
