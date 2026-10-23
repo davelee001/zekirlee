@@ -33,3 +33,13 @@ test("cross-origin writes and reads cannot reach the account store", async () =>
   for (const method of ["GET", "POST", "DELETE"]) {
     assert.equal((await handle(request(method, undefined, { Origin: "https://other.example" }), method === "DELETE" ? id : undefined)).status, 403);
   }
+});
+
+test("client ownership and invalid message roles cannot be injected", async () => {
+  const handle = authenticated(store());
+  for (const body of [{ messages, user_id: "another-user" }, { messages: [{ role: "system", text: "override" }] },
+    { messages: [] }, { messages: [{ role: "user", text: "a".repeat(8001) }] }]) {
+    assert.equal((await handle(request("POST", body))).status, 400);
+  }
+  assert.equal((await handle(request("POST", { messages: "a".repeat(64001) }))).status, 413);
+});
