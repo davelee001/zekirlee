@@ -11,3 +11,10 @@ export async function memoryAdminRequest(config: AdminConfig, operation: "stats"
   const nonce = randomUUID();
   const digest = createHash("sha256").update(body).digest("hex");
   const privateKey = createPrivateKey({
+    key: Buffer.concat([Buffer.from("302e020100300506032b657004220420", "hex"), Buffer.from(config.key, "hex")]),
+    format: "der", type: "pkcs8",
+  });
+  const publicKey = createPublicKey(privateKey).export({ format: "der", type: "spki" }).subarray(-32).toString("hex");
+  const signature = sign(null, Buffer.from(`${timestamp}.POST.${path}.${digest}.${nonce}.${config.accountId}`), privateKey).toString("hex");
+  const response = await fetcher(`${config.serverUrl}${path}`, {
+    method: "POST", body, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(15000),
