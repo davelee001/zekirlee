@@ -38,3 +38,12 @@ export function ConversationLibrary() {
   async function perform() {
     if (!confirm || busy || !userId) return;
     const generation = operation.current.generation;
+    const controller = new AbortController();
+    operation.current.controller = controller;
+    setBusy(true); setNotice("");
+    try {
+      const response = await fetch(`/api/conversations/${confirm.id}`, {
+        method: confirm.action === "delete" ? "DELETE" : "GET",
+        headers: confirm.action === "delete" ? { "X-Zekirlee-Confirm": "delete-conversation" } : {},
+        signal: AbortSignal.any([controller.signal, AbortSignal.timeout(20000)]), cache: "no-store",
+      });
