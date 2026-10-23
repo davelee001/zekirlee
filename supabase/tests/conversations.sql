@@ -30,3 +30,12 @@ select set_config('request.jwt.claims', json_build_object('sub', current_setting
 do $$
 begin
   if not exists (select 1 from public.conversations where id = current_setting('test.conversation_id')::uuid) then raise exception 'Owner cannot read snapshot'; end if;
+  begin
+    update public.conversations set title = 'Changed' where id = current_setting('test.conversation_id')::uuid;
+    raise exception 'Snapshots should be immutable';
+  exception when insufficient_privilege then null;
+  end;
+  delete from public.conversations where id = current_setting('test.conversation_id')::uuid;
+  if not found then raise exception 'Owner cannot delete snapshot'; end if;
+end;
+$$;
