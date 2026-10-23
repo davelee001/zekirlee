@@ -286,6 +286,7 @@ src/
     api/memory/manage/route.ts Browser-scoped memory status and clearing
     api/conversations/     Authenticated snapshot list/save/open/delete endpoints
     auth/callback/route.ts Email token and PKCE session exchange
+    history/page.tsx       Saved-conversation library
     [section]/page.tsx      Overview, knowledge, guides, settings, help, and network pages
     conversations/page.tsx Dedicated route for the chat interface
     page.tsx               Chat interface and tab-session lifecycle
@@ -297,6 +298,9 @@ src/
     workspace-page.tsx     Shared layout for content pages
     workspace-settings.tsx Appearance and session-history controls
     memory-settings.tsx    Memory status, counts, and confirmed index clearing
+    account-settings.tsx   Email sign-in and sign-out
+    conversation-library.tsx Private snapshot browsing and confirmation controls
+    save-conversation.tsx  Explicit account-saving control
     wallet-lookup.tsx      Public-address validation and explorer link
     ui/                    Reusable shadcn/ui components
   lib/
@@ -316,11 +320,16 @@ src/
       relayer-admin.ts     Signed relayer stats and forget requests
       browser-events.ts    Memory pause notifications between tabs
     supabase/              Browser and server Supabase clients
+    conversations/         Validated API handlers and owner-bound database adapter
+    auth/                  Email-link verification helper
   proxy.ts                 Supabase session refresh
 scripts/
   check-backend.mjs         Live health, guest chat, and follow-up context check
   check-memory.mjs          Mainnet and authenticated recall check without writes
 tests/                     Chat, session, knowledge, and memory regression tests
+supabase/migrations/       Conversation schema, constraints, and ownership policies
+supabase/tests/            Transactional database isolation checks (run separately)
+docs/remaining-work.md     Outstanding implementation and live-setup checklist
 supabase/migrations/       Placeholder for application migrations
 .github/workflows/ci.yml    Automated checks
 ```
