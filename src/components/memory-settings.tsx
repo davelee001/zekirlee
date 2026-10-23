@@ -48,3 +48,10 @@ export function MemorySettings() {
     setConfirm(false);
     setNotice("Clearing searchable memory...");
     announceMemoryReset();
+    try {
+      const response = await fetch("/api/memory/manage", {
+        method: "DELETE", headers: { "X-Zekirlee-Confirm": "forget-memory" }, signal: AbortSignal.timeout(55000),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Clearing memory could not be confirmed.");
+      setStatus({ state: "new", count: 0 });
