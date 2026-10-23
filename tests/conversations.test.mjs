@@ -71,3 +71,12 @@ test("invalid IDs, pagination, missing rows, and storage failures return safe er
   const response = await fail(request("GET"));
   assert.equal(response.status, 503);
   assert.doesNotMatch(await response.text(), /database-secret-password/);
+});
+
+test("email callback accepts PKCE codes and email token hashes only", async () => {
+  const auth = {
+    exchangeCodeForSession: async code => { assert.equal(code, "test-code"); return { error: null }; },
+    verifyOtp: async options => { assert.deepEqual(options, { token_hash: "test-hash", type: "email" }); return { error: null }; },
+  };
+  assert.equal(await completeEmailLink(new URLSearchParams("code=test-code"), auth), true);
+  assert.equal(await completeEmailLink(new URLSearchParams("token_hash=test-hash&type=email"), auth), true);
