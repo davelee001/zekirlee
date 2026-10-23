@@ -271,6 +271,7 @@ src/
     workspace-sidebar.tsx  Shared navigation and mobile menu
     workspace-page.tsx     Shared layout for content pages
     workspace-settings.tsx Appearance and session-history controls
+    memory-settings.tsx    Memory status, counts, and confirmed index clearing
     wallet-lookup.tsx      Public-address validation and explorer link
     ui/                    Reusable shadcn/ui components
   lib/
@@ -286,6 +287,9 @@ src/
       identity.ts          Signed browser identity for guest memory
       storage.ts           Fact validation, deduplication, and storage confirmation
       recall.ts            Bounded retrieval and model context formatting
+      management.ts        Status and clear handler authorization
+      relayer-admin.ts     Signed relayer stats and forget requests
+      browser-events.ts    Memory pause notifications between tabs
     supabase/              Browser and server Supabase clients
   proxy.ts                 Supabase session refresh
 scripts/
@@ -308,7 +312,7 @@ npm start
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
 
-The regression suite currently contains 34 tests, including request-body cancellation, provider cancellation, memory configuration validation, signed guest identity, evidence validation, duplicate handling, partial storage failures, recall fallback and cancellation, an offline storage-to-recall round trip, and rejection of non-mainnet relayers.
+The regression suite currently contains 41 tests, including request-body cancellation, provider cancellation, memory configuration validation, signed guest identity, evidence validation, duplicate handling, partial storage failures, recall fallback and cancellation, an offline storage-to-recall round trip, management authorization and signatures, and rejection of non-mainnet relayers.
 
 | Live check | Prerequisites | What it verifies |
 | --- | --- | --- |
@@ -345,6 +349,7 @@ No custom `vercel.json` is required by this application. Configure Supabase Auth
 | Relayer does not report mainnet | Check `WALRUS_MEMORY_SERVER_URL`; setting `WALRUS_NETWORK` cannot change the relayer deployment. |
 | Memory connection check fails | Check connectivity, SDK compatibility, and whether the delegate is registered on the configured mainnet account. |
 | Chat does not recall Walrus memories | Enable **Use and save memory with Walrus**, use the browser that saved the facts, and check the recall notice. Verify credentials with `npm run test:memory`; recent writes may still be processing. |
+| Memory clearing could not be confirmed | Refresh memory status before retrying. A timeout may occur after the relayer applied the clear; the browser identity stays unchanged on failure. |
 | npm blocked in PowerShell | Use `npm.cmd`. |
 
 ## References
