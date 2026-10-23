@@ -45,3 +45,13 @@ export function createConversationHandler(authorize: () => Promise<Access>) {
       if (!request.headers.get("content-type")?.startsWith("application/json")) return json({ error: "Expected JSON." }, 415);
       const reader = request.body?.pipeThrough(new TextDecoderStream()).getReader();
       if (!reader) return json({ error: "Send a conversation to save." }, 400);
+      let raw = "";
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          raw += value;
+          if (raw.length > 64000) { await reader.cancel(); return json({ error: "Conversation is too long to save." }, 413); }
+        }
+      } finally { reader.releaseLock(); }
+      let body: unknown;
