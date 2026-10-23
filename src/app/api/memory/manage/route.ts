@@ -24,3 +24,10 @@ const handlers = createMemoryManagementHandlers(async request => {
   const nextIdentity = memoryIdentity(undefined, config.key);
   const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
   return {
+    state: "known", stats: () => call("stats"), forget: () => call("forget"),
+    replacementCookie: `${MEMORY_COOKIE}=${nextIdentity.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000${secure}`,
+  };
+});
+
+export const GET = handlers.GET;
+export const DELETE = handlers.DELETE;
