@@ -19,3 +19,12 @@ export function SaveConversation({ messages, disabled }: { messages: SessionMess
       setNotice("Snapshot saved to your account.");
     } catch (error) {
       setNotice(error instanceof Error && error.name !== "TimeoutError" ? error.message : "Saving timed out. Check Saved chats before retrying; the snapshot may have been saved.");
+    } finally { setBusy(false); }
+  }
+  return <div className="saved-chat-control">
+    <div className="saved-chat-actions"><Link href="/history">Saved chats</Link>
+      {account.user ? <button type="button" disabled={disabled || busy || !messages.length} onClick={() => void save()}>{busy ? "Saving..." : "Save to account"}</button>
+        : <Link href="/settings#account">{account.state === "loading" ? "Account..." : "Sign in to save"}</Link>}
+    </div>
+    {notice && <span role="status">{notice}</span>}
+  </div>;
