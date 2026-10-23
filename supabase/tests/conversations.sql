@@ -39,3 +39,13 @@ begin
   if not found then raise exception 'Owner cannot delete snapshot'; end if;
 end;
 $$;
+
+set local role anon;
+do $$
+begin
+  begin
+    perform 1 from public.conversations;
+    raise exception 'Anonymous users should not read snapshots';
+  exception when insufficient_privilege then null;
+  end;
+end;
