@@ -29,6 +29,16 @@ export default function Home() {
 
   useEffect(() => {
     const clearAfterSignOut = () => {
+      try { sessionStorage.removeItem(SESSION_KEY); } catch { /* Reload also clears in-memory messages. */ }
+      window.location.reload();
+    };
+    const storage = (event: StorageEvent) => { if (event.key === SIGNED_OUT_KEY) clearAfterSignOut(); };
+    window.addEventListener(SIGNED_OUT_EVENT, clearAfterSignOut);
+    window.addEventListener("storage", storage);
+    return () => { window.removeEventListener(SIGNED_OUT_EVENT, clearAfterSignOut); window.removeEventListener("storage", storage); };
+  }, []);
+
+  useEffect(() => {
     if (sessionReady) composerRef.current?.focus({ preventScroll: true });
   }, [sessionReady]);
 
