@@ -49,3 +49,10 @@ test("failed management masks provider errors and preserves the cookie for retry
 });
 
 test("new or unconfigured browsers never trigger a remote clear", async () => {
+  const fresh = await createMemoryManagementHandlers(async () => ({ state: "new" })).DELETE(request("DELETE", confirmed));
+  assert.deepEqual(await fresh.json(), { cleared: 0, state: "new" });
+  assert.equal(fresh.headers.has("set-cookie"), false);
+  const missing = await createMemoryManagementHandlers(async () => ({ state: "unconfigured" })).DELETE(request("DELETE", confirmed));
+  assert.equal(missing.status, 503);
+});
+
