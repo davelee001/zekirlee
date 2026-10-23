@@ -30,6 +30,8 @@ Backend reliability, Walrus mainnet configuration, and opt-in memory storage and
 
 Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
 
+The latest backend increment adds optional account sign-in and private saved-conversation snapshots. The application regression suite has 48 passing tests; real Supabase sign-in, database isolation, and Walrus storage still need configured-service verification. Track implementation and setup separately in the [remaining-work checklist](docs/remaining-work.md).
+
 ## Current features
 
 - Real AI responses through the Vercel AI SDK, with Google Gemini and OpenAI provider options.
@@ -160,6 +162,30 @@ Each request sends the full conversation rather than silently removing earlier m
 | Provider timeout | 45 seconds |
 
 At the conversation limit, start a new conversation. If a response is interrupted, text already received remains visible. Requests that fail before producing text restore the prompt for retry.
+
+### Save and reopen conversations
+
+Once Supabase is configured using the setup below:
+
+1. Open **Settings > Account** and sign in using the emailed link.
+2. Return to chat, send messages, and wait for the response to finish.
+3. Select **Save to account** and wait for the saved confirmation.
+4. Open **Saved chats** in the sidebar to browse your snapshots. The library shows 20 snapshots per page.
+5. Select **Open** and confirm to replace this tab's current conversation with the snapshot. Save any current messages you want to keep first.
+
+Continuing an opened conversation changes the tab's history. Select **Save to account** again to create a new snapshot; existing snapshots are not updated automatically. If saving times out, check Saved chats before retrying because the server may already have saved it.
+
+**Delete** requires confirmation and removes only the selected account snapshot. It does not clear the current conversation or Walrus memories. Signing out clears local chat history and notifies open chat tabs; saved account snapshots remain available when you sign back in.
+
+### Where information is stored
+
+| Storage | What it keeps | Scope and controls |
+| --- | --- | --- |
+| Tab session | Current conversation messages | Restored on refresh in that tab; cleared by New conversation or session-history clearing. |
+| Supabase | Explicitly saved conversation snapshots | Available to the signed-in owner; browse, open, or delete through Saved chats. Requires database setup. |
+| Walrus | Useful facts extracted with memory enabled | Linked to this browser's signed cookie; manage its searchable index in Settings. Requires mainnet credentials. |
+
+Signing in does not upload existing chat automatically or link Walrus facts to the account. Account-linked memory across devices remains pending.
 
 ### API routes
 
