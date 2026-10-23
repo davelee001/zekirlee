@@ -36,3 +36,12 @@ export function createConversationHandler(authorize: () => Promise<Access>) {
         }
         const page = Number(new URL(request.url).searchParams.get("page") ?? 0);
         if (!Number.isInteger(page) || page < 0 || page > 1000) return json({ error: "Invalid page." }, 400);
+        return json(await access.store.list(page));
+      }
+      if (method === "DELETE") {
+        if (request.headers.get("x-zekirlee-confirm") !== "delete-conversation") return json({ error: "Confirm deletion first." }, 400);
+        return await access.store.remove(id!) ? json({ deleted: true }) : json({ error: "Conversation not found." }, 404);
+      }
+      if (!request.headers.get("content-type")?.startsWith("application/json")) return json({ error: "Expected JSON." }, 415);
+      const reader = request.body?.pipeThrough(new TextDecoderStream()).getReader();
+      if (!reader) return json({ error: "Send a conversation to save." }, 400);
