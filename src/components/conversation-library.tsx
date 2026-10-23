@@ -29,3 +29,12 @@ export function ConversationLibrary() {
     const controller = new AbortController();
     fetch(`/api/conversations?page=${page}`, { signal: controller.signal, cache: "no-store" }).then(async response => {
       const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Saved conversations are unavailable.");
+      if (!controller.signal.aborted) { setListing({ owner: userId, rows: result.conversations, hasMore: result.hasMore }); setNotice(""); setBusy(false); }
+    }).catch(error => { if (!controller.signal.aborted) setNotice(error.message); });
+    return () => controller.abort();
+  }, [userId, page, revision]);
+
+  async function perform() {
+    if (!confirm || busy || !userId) return;
+    const generation = operation.current.generation;
