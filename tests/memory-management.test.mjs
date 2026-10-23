@@ -77,3 +77,10 @@ test("admin requests bind account, namespace, method, path, body, and nonce to a
       assert.equal(verify(null, Buffer.from(canonical), publicKey, Buffer.from(headers["x-signature"], "hex")), true);
       assert.equal(verify(null, Buffer.from(canonical + "tampered"), publicKey, Buffer.from(headers["x-signature"], "hex")), false);
       const { namespace } = JSON.parse(options.body);
+      assert.equal(namespace, "zekirlee:guest:one");
+      return Response.json({ namespace, memory_count: 4, deleted: 4 });
+    });
+    assert.equal(count, 4);
+  }
+  assert.equal(nonces.size, 2);
+});
