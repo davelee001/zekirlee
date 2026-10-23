@@ -66,3 +66,13 @@ export function ConversationLibrary() {
     } finally {
       if (generation === operation.current.generation) { setBusy(false); setConfirm(null); }
     }
+  }
+
+  if (account.state === "loading") return <p role="status">Checking account...</p>;
+  if (!userId) return <section className="workspace-card"><h2>Saved conversations</h2><p>{account.state === "disabled" ? "Account storage is not configured yet." : "Sign in to see your saved conversations."} Guest chat remains available.</p><Link href="/settings#account">Account settings</Link><br /><Link href="/">Continue chatting</Link></section>;
+  const current = listing?.owner === userId ? listing : null;
+  return <section className="workspace-card">
+    <h2>Your saved snapshots</h2><p>Save from the chat page to keep a snapshot in your account. Opening one replaces this tab&apos;s current conversation. It does not overwrite the saved snapshot.</p>
+    <div className="workspace-actions"><button disabled={busy} onClick={() => { setListing(null); setPage(0); setRevision(value => value + 1); }}>Refresh</button><Link href="/">Open chat</Link></div>
+    {notice && <p role="status">{notice}</p>}
+    {!current ? <p>{notice ? "Use Refresh to try again." : "Loading saved conversations..."}</p> : current.rows.length === 0 ? <p>No saved conversations on this page.</p> : <ul className="saved-conversations">{current.rows.map(row => <li key={row.id}>
