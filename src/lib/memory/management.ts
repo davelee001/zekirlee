@@ -10,3 +10,10 @@ export function createMemoryManagementHandlers(load: (request: Request) => Promi
     status, headers: { "Cache-Control": "private, no-store", ...headers },
   });
   const blocked = (request: Request) => {
+    const origin = request.headers.get("origin");
+    return (origin !== null && origin !== new URL(request.url).origin) || request.headers.get("sec-fetch-site") === "cross-site";
+  };
+  return {
+    async GET(request: Request) {
+      if (blocked(request)) return json({ error: "Use memory settings on this site." }, 403);
+      try {
