@@ -21,3 +21,12 @@ Updated 23 October 2026. Implementation and live verification are tracked separa
 6. **Production abuse and cost controls.** Distributed rate limits, per-user quotas, and operational monitoring are not in place.
 
 Saved conversations currently use explicit immutable snapshots. Automatic synchronization, editable snapshot titles, full-text history search, and account-deletion/export controls are not included in the current implementation.
+
+## Current validation
+
+- 48 offline application tests cover validation, consent, guest behavior, memory, conversation handlers, and email callback logic.
+- TypeScript, scoped lint, and production builds validate application integration.
+- Database tests are supplied but have not run against a live PostgreSQL/Supabase project.
+- Mainnet writes/deletion and real authentication/email delivery remain unverified because credentials are missing.
+
+Credentials belong in `.env.local` or the hosting environment, never in chat or Git. Guest AI chat remains independent of account and memory setup.
