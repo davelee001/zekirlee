@@ -35,3 +35,10 @@ test("clear succeeds only for the resolved identity and then replaces its cookie
   const response = await handlers.DELETE(new Request(url + "?namespace=someone-else", { method: "DELETE", headers: confirmed }));
   assert.equal(calls, 1);
   assert.deepEqual(await response.json(), { cleared: 2, state: "new" });
+  assert.match(response.headers.get("set-cookie"), /HttpOnly/);
+});
+
+test("failed management masks provider errors and preserves the cookie for retry", async () => {
+  const fail = async () => { throw Error("secret-account-key"); };
+  const handlers = createMemoryManagementHandlers(async () => known({ stats: fail, forget: fail }));
+  for (const response of [await handlers.GET(request("GET")), await handlers.DELETE(request("DELETE", confirmed))]) {
