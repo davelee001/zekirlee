@@ -38,3 +38,5 @@ export function createMemoryManagementHandlers(load: (request: Request) => Promi
         return json({ error: "Clearing memory could not be confirmed. Retry or refresh the status; chat history is unchanged." }, 503);
       }
     },
+  };
+}
