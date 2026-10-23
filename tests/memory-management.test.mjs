@@ -42,3 +42,10 @@ test("failed management masks provider errors and preserves the cookie for retry
   const fail = async () => { throw Error("secret-account-key"); };
   const handlers = createMemoryManagementHandlers(async () => known({ stats: fail, forget: fail }));
   for (const response of [await handlers.GET(request("GET")), await handlers.DELETE(request("DELETE", confirmed))]) {
+    assert.equal(response.status, 503);
+    assert.equal(response.headers.has("set-cookie"), false);
+    assert.doesNotMatch(await response.text(), /secret-account-key/);
+  }
+});
+
+test("new or unconfigured browsers never trigger a remote clear", async () => {
