@@ -16,3 +16,12 @@ begin
   end loop;
   return true;
 end;
+$$;
+
+create table public.conversations (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade default auth.uid(),
+  title text not null check (char_length(btrim(title)) between 1 and 80),
+  messages jsonb not null check (public.valid_conversation_messages(messages)),
+  created_at timestamptz not null default now()
+);
