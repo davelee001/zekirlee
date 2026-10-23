@@ -24,3 +24,13 @@ export function AccountSettings() {
       } });
       if (error) throw error;
       setNotice("Check your email for a sign-in link. Open it in this browser. The link also creates an account if you are new.");
+    } catch { setNotice("The sign-in email could not be sent. Check your email address and try again later."); }
+    finally { setBusy(false); }
+  }
+  async function signOut() {
+    setBusy(true); setNotice("");
+    try {
+      const { error } = await createClient().auth.signOut({ scope: "local" });
+      if (error) throw error;
+      setNotice("Signed out of this browser. Saved account conversations remain in your account.");
+    } catch { setNotice("Sign-out failed. Please try again."); }
