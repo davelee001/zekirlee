@@ -24,3 +24,10 @@ export function createMemoryManagementHandlers(load: (request: Request) => Promi
         return json({ state: "unavailable", error: "Saved memory could not be checked. Your chat still works." }, 503);
       }
     },
+    async DELETE(request: Request) {
+      if (blocked(request) || request.headers.get("origin") !== new URL(request.url).origin) return json({ error: "Use memory settings on this site." }, 403);
+      if (request.headers.get("x-zekirlee-confirm") !== "forget-memory") return json({ error: "Confirm that you want to clear saved memory." }, 400);
+      try {
+        const session = await load(request);
+        if (session.state === "unconfigured") return json({ error: "Memory is not configured. Nothing was cleared." }, 503);
+        if (session.state === "new") return json({ cleared: 0, state: "new" });
