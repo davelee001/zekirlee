@@ -26,7 +26,7 @@ Backend reliability, Walrus mainnet configuration, and opt-in memory storage and
 | Memory storage | Opt-in extraction and storage implemented; a live mainnet write still requires configured credentials |
 | Memory recall in replies | Opt-in retrieval implemented with bounded context and fallback to ordinary chat; live account access remains unverified |
 | Memory management | Settings shows searchable-memory counts and supports confirmed clearing for this browser; live clearing remains unverified |
-| Supabase authentication and database | Client helpers prepared; sign-in and database-backed conversations remain pending |
+| Supabase authentication and database | Email-link sign-in, sign-out, private snapshot APIs, and migration implemented; credentials, migration execution, and live verification remain pending |
 
 Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
 
@@ -51,8 +51,9 @@ Wallet connection and live blockchain retrieval remain outside the delivered sco
 - Relevant saved facts supplied to future replies, with bounded retrieval time and fallback to ordinary chat.
 - Signed browser identities for guest memory, without requiring a wallet or sign-in.
 - Settings controls to check memory status and clear this browser's searchable memories separately from chat history.
+- Optional email-link account sign-in, with explicit conversation snapshot saving and a paginated saved-chat library.
 
-Wallet connection, live blockchain retrieval, and login screens are not implemented in the chat flow. Users can opt in to saving useful details and using relevant Walrus memories in replies without a wallet or sign-in, once server credentials are configured.
+Wallet connection and live blockchain retrieval are not implemented in the chat flow. Account sign-in is available in Settings once Supabase is configured. Walrus memory still uses the browser identity independently of account sign-in.
 
 ## Workspace pages
 
@@ -60,10 +61,11 @@ Wallet connection, live blockchain retrieval, and login screens are not implemen
 | --- | --- | --- |
 | Overview | `/overview` | Workspace introduction and shortcuts to chat, learning, and settings. |
 | Conversations | `/conversations` or `/` | Streamed AI chat with the current tab's conversation history. |
+| Saved chats | `/history` | Sign in to browse, open, and delete private account snapshots. |
 | Knowledge | `/knowledge` | Searchable topics, category filters, a pinned-only view, and links to official resources. |
 | Sui basics | `/sui-basics` | Introductory explanations of objects, ownership, Move, and transactions. |
 | Wallet activity | `/wallet-activity` | Validate a public Sui address and open its Mainnet activity on Suiscan. |
-| Settings | `/settings` | Switch themes or clear this tab's saved conversation after confirmation. |
+| Settings | `/settings` | Email sign-in, sign-out, themes, tab-history clearing, and saved-memory management. |
 | Help center | `/help` | Messaging instructions, session behavior, and troubleshooting guidance. |
 | Sui network | `/network` | Links to a Mainnet explorer and public-address lookup. |
 
@@ -167,6 +169,7 @@ At the conversation limit, start a new conversation. If a response is interrupte
 - `POST /api/memory` accepts `{ "consent": true, "text": "I prefer TypeScript." }` from the same origin. It establishes a signed guest cookie before writing (HTTP 409 with `MEMORY_SESSION_CREATED`, retried once by the UI), extracts facts, and returns confirmed `saved` and unconfirmed `failed` counts. Missing configuration returns HTTP 503 without affecting chat.
 - `GET /api/memory/manage` reports `unconfigured`, `new`, `ready`, or `unavailable`; for an existing signed browser identity, it verifies mainnet and fetches that namespace's searchable-memory count.
 - `DELETE /api/memory/manage` requires a same-origin request and `X-Zekirlee-Confirm: forget-memory`. It clears only the namespace derived from the signed cookie, never a client-supplied namespace. Successful clearing replaces the browser identity; errors preserve it for retry.
+- `GET /api/conversations?page=0` lists 20 private snapshot summaries with a `hasMore` flag. `POST /api/conversations` saves `{ "messages": [...] }` for the verified signed-in user.
 
 Guest chat bypasses Supabase session refresh and requires no wallet, Supabase, or Walrus credentials. Input and output limits are implemented; distributed rate limiting is not.
 
