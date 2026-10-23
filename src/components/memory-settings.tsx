@@ -69,3 +69,10 @@ export function MemorySettings() {
       : status?.state === "new" ? "No previous memory space is linked to this browser."
       : status?.state === "unconfigured" ? "Walrus memory is not configured. Chat is still available."
       : "Memory is currently unavailable."}</p>
+    {confirm ? <div className="memory-confirmation">
+      <p>Clear this browser&apos;s searchable memories? They will stop appearing in future replies. Encrypted blobs remain on Walrus until expiry and may be restored by the account operator. Chat history will stay.</p>
+      <div className="workspace-actions"><button disabled={busy} onClick={() => void clearMemory()}>Confirm clear memory</button><button disabled={busy} onClick={() => setConfirm(false)}>Cancel</button></div>
+    </div> : <div className="workspace-actions">
+      <button disabled={busy || status?.state !== "ready"} onClick={() => setConfirm(true)}>Clear saved memory</button>
+      <button disabled={busy} onClick={() => { setBusy(true); setNotice(""); void refresh(); }}>Refresh status</button>
+    </div>}
