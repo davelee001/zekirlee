@@ -25,3 +25,12 @@ create table public.conversations (
   messages jsonb not null check (public.valid_conversation_messages(messages)),
   created_at timestamptz not null default now()
 );
+
+create index conversations_owner_created_idx on public.conversations (user_id, created_at desc, id desc);
+alter table public.conversations enable row level security;
+alter table public.conversations force row level security;
+revoke all on public.conversations from public, anon, authenticated;
+grant select, insert, delete on public.conversations to authenticated;
+
+create policy conversations_select_own on public.conversations for select to authenticated
+  using ((select auth.uid()) = user_id);
