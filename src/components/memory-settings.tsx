@@ -55,3 +55,10 @@ export function MemorySettings() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Clearing memory could not be confirmed.");
       setStatus({ state: "new", count: 0 });
+      setNotice(`${result.cleared} searchable memories cleared. Future memory uses a fresh space. Encrypted Walrus blobs remain until expiry; your chat history is unchanged.`);
+      announceMemoryReset();
+    } catch (error) {
+      setNotice(error instanceof Error && error.name !== "TimeoutError" ? error.message : "Clearing memory timed out. Refresh the status before retrying; the request may still finish.");
+    } finally { setBusy(false); }
+  }
+
