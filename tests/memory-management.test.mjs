@@ -7,3 +7,10 @@ import { memoryAdminRequest } from "../src/lib/memory/relayer-admin.ts";
 const url = "https://zekirlee.example/api/memory/manage";
 const request = (method, headers = {}) => new Request(url, { method, headers });
 const confirmed = { origin: "https://zekirlee.example", "x-zekirlee-confirm": "forget-memory" };
+const known = (overrides = {}) => ({ state: "known", stats: async () => 3, forget: async () => 3,
+  replacementCookie: "zekirlee-memory=new-token; HttpOnly; SameSite=Strict; Path=/", ...overrides });
+
+test("memory status distinguishes configuration, new identity, and verified counts", async () => {
+  for (const state of ["unconfigured", "new"]) {
+    const response = await createMemoryManagementHandlers(async () => ({ state })).GET(request("GET"));
+    assert.deepEqual(await response.json(), { state, count: 0 });
