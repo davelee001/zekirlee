@@ -16,3 +16,12 @@ export function useAccount() {
     const client = createClient();
     let active = true;
     let revision = 0;
+    let hadUser = false;
+    const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
+      if (!active) return;
+      revision++;
+      setAccount({ state: session?.user ? "signed-in" : "guest", user: session?.user ?? null });
+      const clearHistory = event === "SIGNED_OUT" && hadUser;
+      hadUser = Boolean(session?.user);
+      if (clearHistory) {
+        try { sessionStorage.removeItem(SESSION_KEY); localStorage.setItem(SIGNED_OUT_KEY, crypto.randomUUID()); } catch { /* Clear mounted chat via the event as well. */ }
