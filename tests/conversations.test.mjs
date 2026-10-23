@@ -5,3 +5,12 @@ import { completeEmailLink } from "../src/lib/auth/email-link.ts";
 
 const origin = "https://zekirlee.example";
 const id = "2caf5d08-d16b-418b-bd4c-939c62d4959f";
+const messages = [{ role: "user", text: "I am learning Move" }, { role: "assistant", text: "Let's get started." }];
+const request = (method, body, headers = {}) => new Request(`${origin}/api/conversations`, {
+  method, headers: { Origin: origin, "Content-Type": "application/json", ...headers },
+  ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+});
+const store = (overrides = {}) => ({
+  list: async () => ({ conversations: [], hasMore: false }),
+  create: async () => assert.fail("Unexpected write"),
+  get: async () => null, remove: async () => false, ...overrides,
