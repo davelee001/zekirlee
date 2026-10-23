@@ -34,3 +34,9 @@ grant select, insert, delete on public.conversations to authenticated;
 
 create policy conversations_select_own on public.conversations for select to authenticated
   using ((select auth.uid()) = user_id);
+create policy conversations_insert_own on public.conversations for insert to authenticated
+  with check ((select auth.uid()) = user_id);
+create policy conversations_delete_own on public.conversations for delete to authenticated
+  using ((select auth.uid()) = user_id);
+
+commit;
