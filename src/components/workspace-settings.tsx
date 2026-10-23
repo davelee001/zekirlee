@@ -2,11 +2,12 @@
 import { useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
 import { SESSION_KEY } from "@/lib/ai/session";
+import { MemorySettings } from "./memory-settings";
 export function WorkspaceSettings() {
   const [confirm, setConfirm] = useState(false);
   const [notice, setNotice] = useState("");
   function clear() {
-    try { sessionStorage.removeItem(SESSION_KEY); setNotice("Conversation history cleared for this tab."); }
+    try { sessionStorage.removeItem(SESSION_KEY); setNotice("Conversation history cleared for this tab. Saved Walrus memory is unchanged."); }
     catch { setNotice("Browser storage is unavailable. Return to chat and use New conversation."); }
     setConfirm(false);
   }

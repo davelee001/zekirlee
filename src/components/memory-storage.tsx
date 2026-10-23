@@ -64,16 +64,17 @@ export function useMemoryStorage() {
         let result = await response.json();
         if (response.status === 409 && result.code === "MEMORY_SESSION_CREATED") {
           if (!optedIn.current || generation.current !== version) return;
-          if (!optedIn.current) return;
           response = await send();
           result = await response.json();
         }
         if (!response.ok) throw new Error(result.error || "Memory could not be saved.");
+        if (generation.current !== version) return;
         setNotice(result.failed
           ? `${result.saved} details confirmed saved; ${result.failed} could not be confirmed and may still finish.`
           : result.saved ? `${result.saved} useful detail${result.saved === 1 ? "" : "s"} saved to Walrus.`
           : "No suitable new details to save from this message.");
       } catch (error) {
+        if (generation.current !== version) return;
         setNotice(error instanceof Error && error.name !== "TimeoutError" ? error.message : "Memory storage timed out. A submitted job may still finish; your chat is unaffected.");
       }
     });
@@ -88,6 +89,7 @@ export function MemoryStorageControl({ enabled, notice, recallNotice, toggle }: 
   return <div className="memory-storage-control">
     <label><input type="checkbox" checked={enabled} onChange={event => toggle(event.target.checked)} /> Use and save memory with Walrus</label>
     <small>Optional memory, linked to this browser. Relevant saved details are sent to the AI provider for replies. Turning it off stops future recall and saves; stored details remain.</small>
+    <Link href="/settings#saved-memory">Manage saved memory</Link>
     {recallNotice && <span role="status">{recallNotice}</span>}
     {notice && <span role="status">{notice}</span>}
   </div>;
