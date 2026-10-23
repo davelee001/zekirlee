@@ -18,7 +18,9 @@ export async function proxy(request: NextRequest) {
       },
     },
   });
-  await supabase.auth.getClaims();
+  try { await supabase.auth.getClaims(); } catch {
+    // Auth outages must not prevent guest pages from loading. Protected APIs verify users independently.
+  }
   return response;
 }
 export const config = {
