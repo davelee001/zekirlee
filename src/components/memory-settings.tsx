@@ -76,3 +76,7 @@ export function MemorySettings() {
       <button disabled={busy || status?.state !== "ready"} onClick={() => setConfirm(true)}>Clear saved memory</button>
       <button disabled={busy} onClick={() => { setBusy(true); setNotice(""); void refresh(); }}>Refresh status</button>
     </div>}
+    <p>Clearing pauses memory in open tabs when browser storage is available. Already submitted writes may finish in the old space; future requests use a new one. Re-enable memory in chat when you want to save new details.</p>
+    {notice && <p role="status">{notice}</p>}
+  </section>;
+}

@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { MEMORY_RESET_EVENT, MEMORY_RESET_KEY } from "@/lib/memory/browser-events";
 import { useRef, useState } from "react";
 
 export function useMemoryStorage() {
