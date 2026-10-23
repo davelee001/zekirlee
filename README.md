@@ -246,7 +246,11 @@ Open **Settings → Saved memory**, or use **Manage saved memory** above the cha
 
 This is index clearing, not permanent blob erasure: encrypted Walrus blobs persist until expiry and the account operator can restore their index. The relayer's [forget handler](https://github.com/MystenLabs/MemWal/blob/dev/services/server/src/routes/admin.rs) documents these semantics. Settings does not expose account-wide or other-browser clearing.
 
-Remaining work includes a memory deletion interface, cross-device identity, Supabase sign-in and database-backed conversations, and verification of a real mainnet storage-and-recall round trip.
+Clearing pauses memory in open chat tabs using browser events and local storage notifications. When browser storage is blocked, other tabs may not receive the notification; turn memory off in those tabs too. Queued saves are invalidated on opt-out and navigation; already submitted jobs may still finish. Completed saves do not overwrite a replacement identity cookie.
+
+The installed SDK has no public production `stats` or `forget` method. The server uses the documented relayer endpoints with account-bound Ed25519 signatures, mainnet and compatibility checks, and request deadlines. It never sends the delegate private key. Tests verify signatures, namespace binding, confirmation, and failure behavior with mocked transport; no automated test clears live mainnet data.
+
+Remaining work includes cross-device identity, Supabase sign-in and database-backed conversations, and verification of real mainnet storage, recall, and clearing with configured credentials.
 
 ## Project structure
 
@@ -256,6 +260,7 @@ src/
     api/chat/route.ts       Streaming AI endpoint
     api/health/route.ts     Liveness endpoint
     api/memory/route.ts     Opt-in extraction and confirmed storage endpoint
+    api/memory/manage/route.ts Browser-scoped memory status and clearing
     [section]/page.tsx      Overview, knowledge, guides, settings, help, and network pages
     conversations/page.tsx Dedicated route for the chat interface
     page.tsx               Chat interface and tab-session lifecycle
