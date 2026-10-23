@@ -12,3 +12,7 @@ export async function GET(request: NextRequest) {
     } catch { /* Keep provider details out of redirect URLs. */ }
   }
   // Fixed destination: never redirect to a user-supplied URL.
+  const response = NextResponse.redirect(new URL(`/settings?auth=${success ? "success" : "error"}#account`, request.url));
+  response.headers.set("Cache-Control", "private, no-store");
+  return response;
+}
