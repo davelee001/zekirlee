@@ -84,3 +84,10 @@ test("admin requests bind account, namespace, method, path, body, and nonce to a
   }
   assert.equal(nonces.size, 2);
 });
+
+test("admin responses must confirm the same namespace and a valid count", async () => {
+  for (const data of [{ namespace: "wrong", deleted: 1 }, { namespace: "one", deleted: -1 }, { namespace: "one", deleted: "2" }]) {
+    await assert.rejects(memoryAdminRequest(config, "forget", "one", async () => Response.json(data)), /Invalid/);
+  }
+  await assert.rejects(memoryAdminRequest(config, "stats", "one", async () => new Response("private provider error", { status: 401 })), /Memory management request failed/);
+});
