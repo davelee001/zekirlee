@@ -57,3 +57,12 @@ export function ConversationLibrary() {
         // Remount chat so a cached page cannot keep the conversation this snapshot replaces.
         // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.assign("/");
+      } else {
+        setListing(null); setPage(0); setRevision(value => value + 1);
+        setNotice("Snapshot deleted. Current tab history and Walrus memory are unchanged.");
+      }
+    } catch (error) {
+      if (generation === operation.current.generation) setNotice(error instanceof Error && error.name !== "TimeoutError" ? error.message : "The request timed out. Refresh before retrying.");
+    } finally {
+      if (generation === operation.current.generation) { setBusy(false); setConfirm(null); }
+    }
