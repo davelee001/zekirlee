@@ -41,3 +41,10 @@ export function MemorySettings() {
       }
     }).finally(() => { if (!controller.signal.aborted) setBusy(false); });
     return () => controller.abort();
+  }, []);
+
+  async function clearMemory() {
+    setBusy(true);
+    setConfirm(false);
+    setNotice("Clearing searchable memory...");
+    announceMemoryReset();
