@@ -63,3 +63,10 @@ test("admin requests bind account, namespace, method, path, body, and nonce to a
   const nonces = new Set();
   for (const operation of ["stats", "forget"]) {
     const count = await memoryAdminRequest(config, operation, "zekirlee:guest:one", async (target, options) => {
+      assert.equal(target, `${config.serverUrl}/api/${operation}`);
+      assert.equal(options.redirect, "error");
+      const headers = options.headers;
+      assert.equal(headers["x-public-key"], "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a");
+      assert.equal(headers["x-account-id"], config.accountId);
+      assert.equal(headers["x-delegate-key"], undefined);
+      assert.doesNotMatch(JSON.stringify(options.headers), new RegExp(config.key));
