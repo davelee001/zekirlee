@@ -17,3 +17,10 @@ export function createMemoryManagementHandlers(load: (request: Request) => Promi
     async GET(request: Request) {
       if (blocked(request)) return json({ error: "Use memory settings on this site." }, 403);
       try {
+        const session = await load(request);
+        if (session.state !== "known") return json({ state: session.state, count: 0 });
+        return json({ state: "ready", count: await session.stats() });
+      } catch {
+        return json({ state: "unavailable", error: "Saved memory could not be checked. Your chat still works." }, 503);
+      }
+    },
