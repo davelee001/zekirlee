@@ -15,3 +15,12 @@ export function AccountSettings() {
     if (result === "error") setNotice("The sign-in link is invalid or expired. Request a fresh link and open it in the same browser.");
   }, []);
   async function signIn(event: FormEvent) {
+    event.preventDefault();
+    if (busy) return;
+    setBusy(true); setNotice("");
+    try {
+      const { error } = await createClient().auth.signInWithOtp({ email: email.trim(), options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`, shouldCreateUser: true,
+      } });
+      if (error) throw error;
+      setNotice("Check your email for a sign-in link. Open it in this browser. The link also creates an account if you are new.");
