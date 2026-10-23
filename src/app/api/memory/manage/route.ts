@@ -10,3 +10,10 @@ export const maxDuration = 60;
 
 const handlers = createMemoryManagementHandlers(async request => {
   let config;
+  try { config = getMemoryConfiguration(process.env); }
+  catch { return { state: "unconfigured" }; }
+  const token = (await cookies()).get(MEMORY_COOKIE)?.value;
+  const identity = memoryIdentity(token, config.key);
+  if (!identity.existing) return { state: "new" };
+  const namespace = `${config.namespace}:guest:${identity.id}`;
+  const call = async (operation: "stats" | "forget") => {
