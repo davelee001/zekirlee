@@ -14,3 +14,10 @@ test("memory status distinguishes configuration, new identity, and verified coun
   for (const state of ["unconfigured", "new"]) {
     const response = await createMemoryManagementHandlers(async () => ({ state })).GET(request("GET"));
     assert.deepEqual(await response.json(), { state, count: 0 });
+    assert.equal(response.headers.get("cache-control"), "private, no-store");
+  }
+  const response = await createMemoryManagementHandlers(async () => known()).GET(request("GET"));
+  assert.deepEqual(await response.json(), { state: "ready", count: 3 });
+  assert.equal(response.headers.has("set-cookie"), false);
+});
+
