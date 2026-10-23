@@ -47,3 +47,13 @@ export function ConversationLibrary() {
         headers: confirm.action === "delete" ? { "X-Zekirlee-Confirm": "delete-conversation" } : {},
         signal: AbortSignal.any([controller.signal, AbortSignal.timeout(20000)]), cache: "no-store",
       });
+      const result = await response.json();
+      if (generation !== operation.current.generation) return;
+      if (!response.ok) throw new Error(result.error || "Conversation request failed.");
+      if (confirm.action === "open") {
+        const messages = restoreMessages(JSON.stringify(result.conversation.messages));
+        if (!messages.length) throw new Error("This snapshot contains no usable messages.");
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(messages));
+        // Remount chat so a cached page cannot keep the conversation this snapshot replaces.
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+        window.location.assign("/");
