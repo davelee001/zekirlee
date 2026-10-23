@@ -70,3 +70,10 @@ test("admin requests bind account, namespace, method, path, body, and nonce to a
       assert.equal(headers["x-account-id"], config.accountId);
       assert.equal(headers["x-delegate-key"], undefined);
       assert.doesNotMatch(JSON.stringify(options.headers), new RegExp(config.key));
+      nonces.add(headers["x-nonce"]);
+      const digest = createHash("sha256").update(options.body).digest("hex");
+      const canonical = `${headers["x-timestamp"]}.POST./api/${operation}.${digest}.${headers["x-nonce"]}.${config.accountId}`;
+      const publicKey = createPublicKey({ key: Buffer.from("302a300506032b6570032100" + headers["x-public-key"], "hex"), format: "der", type: "spki" });
+      assert.equal(verify(null, Buffer.from(canonical), publicKey, Buffer.from(headers["x-signature"], "hex")), true);
+      assert.equal(verify(null, Buffer.from(canonical + "tampered"), publicKey, Buffer.from(headers["x-signature"], "hex")), false);
+      const { namespace } = JSON.parse(options.body);
