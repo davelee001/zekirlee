@@ -35,3 +35,5 @@ export function useAccount() {
     }).catch(() => { if (active && revision === initialRevision) setAccount({ state: "unavailable", user: null }); });
     return () => { active = false; subscription.unsubscribe(); };
   }, [configured]);
+  return account;
+}
