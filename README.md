@@ -170,6 +170,7 @@ At the conversation limit, start a new conversation. If a response is interrupte
 - `GET /api/memory/manage` reports `unconfigured`, `new`, `ready`, or `unavailable`; for an existing signed browser identity, it verifies mainnet and fetches that namespace's searchable-memory count.
 - `DELETE /api/memory/manage` requires a same-origin request and `X-Zekirlee-Confirm: forget-memory`. It clears only the namespace derived from the signed cookie, never a client-supplied namespace. Successful clearing replaces the browser identity; errors preserve it for retry.
 - `GET /api/conversations?page=0` lists 20 private snapshot summaries with a `hasMore` flag. `POST /api/conversations` saves `{ "messages": [...] }` for the verified signed-in user.
+- `GET /api/conversations/:id` loads an owned snapshot. `DELETE` requires a same-origin request and `X-Zekirlee-Confirm: delete-conversation`. Other users' snapshots return 404.
 
 Guest chat bypasses Supabase session refresh and requires no wallet, Supabase, or Walrus credentials. Input and output limits are implemented; distributed rate limiting is not.
 
@@ -177,6 +178,14 @@ Guest chat bypasses Supabase session refresh and requires no wallet, Supabase, o
 
 ### Supabase
 
+1. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and the deployment environment. Restart locally or rebuild the deployment when changing public values. No service-role key is used by the app.
+2. Apply `supabase/migrations/202610230001_conversations.sql` through the Supabase SQL editor or your migration tooling. It creates the conversations table, validates message structure, and restricts reads, inserts, and deletes to the owning authenticated user. Saved snapshots cannot be updated in place.
+3. In Supabase Auth, configure the Site URL and allow `http://localhost:3000/auth/callback` for development plus your deployed `/auth/callback` URL. Configure email delivery for your intended users.
+4. For the server-side email flow, set the Magic Link email template to a link such as:
+
+   ```html
+   <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=email">Sign in to ZekirLee</a>
+   ```
 Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` to use the browser/server clients. They access PostgreSQL through Supabase's Data API, so a direct database password is unnecessary.
 
 The proxy refreshes sessions but does not authorize application routes. Future protected handlers must verify users or claims. Add Row Level Security policies with application-table migrations, and configure Auth site and redirect URLs when adding sign-in.
