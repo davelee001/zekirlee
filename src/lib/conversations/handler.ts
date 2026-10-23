@@ -27,3 +27,12 @@ export function createConversationHandler(authorize: () => Promise<Access>) {
     if (!(["GET", "POST", "DELETE"].includes(method)) || (method === "POST" && id) || (method === "DELETE" && !id)) return json({ error: "Unsupported operation." }, 405);
     try {
       const access = await authorize();
+      if (access.state === "unconfigured") return json({ error: "Account storage is not configured. Guest chat still works.", code: "NOT_CONFIGURED" }, 503);
+      if (access.state === "guest") return json({ error: "Sign in to use saved conversations." }, 401);
+      if (method === "GET") {
+        if (id) {
+          const conversation = await access.store.get(id);
+          return conversation ? json({ conversation }) : json({ error: "Conversation not found." }, 404);
+        }
+        const page = Number(new URL(request.url).searchParams.get("page") ?? 0);
+        if (!Number.isInteger(page) || page < 0 || page > 1000) return json({ error: "Invalid page." }, 400);
