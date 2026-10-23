@@ -28,3 +28,10 @@ test("clearing requires same-origin confirmation before resolving a memory ident
   assert.equal((await handlers.DELETE(request("DELETE", { origin: confirmed.origin }))).status, 400);
   assert.equal((await handlers.GET(request("GET", { "sec-fetch-site": "cross-site" }))).status, 403);
 });
+
+test("clear succeeds only for the resolved identity and then replaces its cookie", async () => {
+  let calls = 0;
+  const handlers = createMemoryManagementHandlers(async () => known({ forget: async () => { calls++; return 2; } }));
+  const response = await handlers.DELETE(new Request(url + "?namespace=someone-else", { method: "DELETE", headers: confirmed }));
+  assert.equal(calls, 1);
+  assert.deepEqual(await response.json(), { cleared: 2, state: "new" });
