@@ -34,3 +34,10 @@ export function MemorySettings() {
     const controller = new AbortController();
     loadStatus(controller.signal).then(result => {
       if (!controller.signal.aborted) setStatus(result);
+    }).catch(() => {
+      if (!controller.signal.aborted) {
+        setStatus({ state: "unavailable", count: 0 });
+        setNotice("Saved memory could not be checked. Use Refresh status to try again.");
+      }
+    }).finally(() => { if (!controller.signal.aborted) setBusy(false); });
+    return () => controller.abort();
