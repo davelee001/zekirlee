@@ -4,6 +4,8 @@ import { getMemoryConfiguration, verifyMainnetRelayer } from "@/lib/memory/confi
 import { MEMORY_COOKIE, memoryIdentity } from "@/lib/memory/identity";
 import { createMemoryManagementHandlers } from "@/lib/memory/management";
 import { memoryAdminRequest } from "@/lib/memory/relayer-admin";
+import { resolveMemoryScope } from "@/lib/memory/scope";
+import { loadAccountMemory } from "@/lib/memory/account";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -13,7 +15,7 @@ const handlers = createMemoryManagementHandlers(async request => {
   try { config = getMemoryConfiguration(process.env); }
   catch { return { state: "unconfigured" }; }
   const token = (await cookies()).get(MEMORY_COOKIE)?.value;
-  const identity = memoryIdentity(token, config.key);
+  const identity = await resolveMemoryScope(config, token, loadAccountMemory);
   if (!identity.existing) return { state: "new" };
   const namespace = `${config.namespace}:guest:${identity.id}`;
   const call = async (operation: "stats" | "forget") => {
