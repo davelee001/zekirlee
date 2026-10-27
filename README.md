@@ -230,6 +230,10 @@ Deleting a snapshot leaves the active tab conversation and Walrus memory unchang
 
 ### Account-linked memory setup
 
+Apply `supabase/migrations/202610270001_memory_spaces.sql` after configuring Supabase. It stores one namespace generation per user and restricts access using row-level security. Run `supabase/tests/memory_spaces.sql` in a test project to check ownership enforcement. This migration and SQL test have not been run against a live project in this workspace.
+
+Storage, recall, and management verify the signed-in user on the server and resolve the same account namespace on every device. Guests retain their signed-cookie namespace. Authentication or database errors disable the memory operation instead of falling back to another identity; ordinary chat continues. No guest facts are copied on sign-in.
+
 Deleting a snapshot leaves the active tab conversation and Walrus memory unchanged. Account history works across devices after sign-in; Walrus memory does **not** yet follow the account between browsers. The client uses cookie-backed Supabase sessions, while guest chat remains available if account services are unavailable.
 
 ### Walrus Memory
