@@ -71,14 +71,13 @@ Wallet connection is available from chat and Wallet activity. Live blockchain re
 | Knowledge | `/knowledge` | Searchable topics, category filters, a pinned-only view, and links to official resources. |
 | Sui basics | `/sui-basics` | Introductory explanations of objects, ownership, Move, and transactions. |
 | Wallet activity | `/wallet-activity` | Connect a Sui wallet or enter a public address, then open its Mainnet activity on Suiscan. |
-| Wallet activity | `/wallet-activity` | Validate a public Sui address and open its Mainnet activity on Suiscan. |
 | Settings | `/settings` | Email sign-in, sign-out, themes, tab-history clearing, and saved-memory management. |
 | Help center | `/help` | Messaging instructions, session behavior, and troubleshooting guidance. |
 | Sui network | `/network` | Links to a Mainnet explorer and public-address lookup. |
 
 The shared sidebar highlights the active destination and supports a collapsible mobile menu. Use Knowledge to pin or unpin topics; the sidebar updates immediately and remembers your choices in this browser. Sui basics and Wallet activity are pinned initially. The plus icon opens Knowledge to browse topics. Navigating back to Conversations restores saved history from the current tab.
 
-Knowledge resources are curated links, not documents automatically searched by the chatbot. Wallet lookup opens an external explorer without connecting a wallet or signing transactions. The network page does not monitor live network health.
+Knowledge resources are curated links, not documents automatically searched by the chatbot. Manual wallet lookup opens an external explorer without connecting a wallet. Optional connection also exposes the selected public address and explorer link without signing transactions. The network page does not monitor live network health.
 
 ## Technology
 
@@ -206,6 +205,12 @@ Signing in does not upload existing chat or migrate guest Walrus facts. With the
 Guest chat bypasses Supabase session refresh and requires no wallet, Supabase, or Walrus credentials. Input and output limits are implemented; distributed rate limiting is not.
 
 ## Optional integration helpers
+
+### Sui wallet connection
+
+Use **Connect Wallet** in the chat header, context panel, or Wallet activity page. Choose a compatible wallet and approve its connection request. The wallet menu supports account selection and disconnect; Wallet activity shows the full public address, a copy button, and a Suiscan Mainnet link. Manual public-address lookup remains available without connecting.
+
+Connection uses [Mysten's dApp Kit for Next.js](https://sdk.mystenlabs.com/dapp-kit/getting-started/next-js), loaded only in the browser. The shared connection follows in-app navigation. Automatic reconnection and persisted wallet selection are disabled, so reloading requires an explicit connection. Wallets must advertise Sui Mainnet support.
 
 ### Supabase
 
