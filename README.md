@@ -31,7 +31,9 @@ Backend reliability, Walrus mainnet configuration, and opt-in memory storage and
 
 Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
 
-The latest backend increment adds optional account sign-in and private saved-conversation snapshots. The application regression suite has 53 passing tests; real Supabase sign-in, database isolation, and Walrus storage still need configured-service verification. Track implementation and setup separately in the [remaining-work checklist](docs/remaining-work.md).
+The latest backend increment adds account-linked Walrus memory: signed-in users share saved facts across devices, while guests retain browser-scoped memory. Clearing rotates the active memory space so late writes cannot appear in subsequent recalls. Account changes pause memory in open tabs until the user enables it again.
+
+The latest validation passed 53 application tests, TypeScript checks, scoped lint, and a production build. Real Supabase sign-in, database isolation, and Walrus storage still need configured-service verification. Track implementation and setup separately in the [remaining-work checklist](docs/remaining-work.md).
 
 ## Current features
 
@@ -53,6 +55,7 @@ The latest backend increment adds optional account sign-in and private saved-con
 - Optional extraction and storage of useful user details in Walrus, with confirmed-save and failure notices.
 - Relevant saved facts supplied to future replies, with bounded retrieval time and fallback to ordinary chat.
 - Signed browser identities for guest memory, without requiring a wallet or sign-in.
+- Account-linked memory across devices, with server-verified ownership and shared clearing after database setup.
 - Settings controls to check memory status and clear the active account or guest space separately from chat history.
 - Optional email-link account sign-in, with explicit conversation snapshot saving and a paginated saved-chat library.
 
@@ -232,6 +235,16 @@ Deleting a snapshot leaves the active tab conversation and Walrus memory unchang
 
 Apply `supabase/migrations/202610270001_memory_spaces.sql` after configuring Supabase. It stores one namespace generation per user and restricts access using row-level security. Run `supabase/tests/memory_spaces.sql` in a test project to check ownership enforcement. This migration and SQL test have not been run against a live project in this workspace.
 
+| Setup step | Required for |
+| --- | --- |
+| Configure the Supabase URL, publishable key, and email callback | Verified account sign-in |
+| Apply `202610230001_conversations.sql` | Private saved-conversation snapshots |
+| Apply `202610270001_memory_spaces.sql` | Shared account memory and clearing across devices |
+| Configure the Walrus mainnet account and delegate | Storage, recall, memory counts, and index clearing |
+| Run both SQL files in `supabase/tests/` in a test project | Database ownership checks, separately from `npm test` |
+
+AI-only guest chat requires none of these optional setup steps. Signed-in memory requires both Supabase and Walrus configuration.
+
 Storage, recall, and management verify the signed-in user on the server and resolve the same account namespace on every device. Guests retain their signed-cookie namespace. Authentication or database errors disable the memory operation instead of falling back to another identity; ordinary chat continues. No guest facts are copied on sign-in.
 
 Clearing account memory first clears its current search index, then rotates its namespace generation in PostgreSQL. Subsequent requests on all devices use the new generation; already submitted writes remain in the old space. Concurrent clears use a conditional update so one cannot replace a newer generation. Failed or timed-out clearing must be checked with **Refresh status** before retrying. Replies already in progress may still contain previously recalled facts, and other devices can continue saving new facts.
@@ -348,6 +361,8 @@ src/
       session.ts           History validation and request serialization
     env/                   Public configuration validation
     memory/
+      account.ts           Verified account lookup and conditional namespace rotation
+      scope.ts             Shared account or signed guest namespace selection
       configuration.ts     Credential validation, user namespaces, mainnet verification
       client.ts            Server-only Walrus client factory
       identity.ts          Signed browser identity for guest memory
@@ -423,6 +438,8 @@ No custom `vercel.json` is required by this application. Configure Supabase Auth
 | Account sign-in is not configured | Set both public Supabase values and restart/rebuild. Guest chat remains available. |
 | Email link fails | Check allowed callback URLs and the Magic Link email template; request a fresh link. |
 | Signed in but snapshots fail | Apply the conversation migration, then check the database policies and run the isolation test in a test project. |
+| Guest memory works but signed-in memory fails | Apply the memory-space migration and verify Supabase authentication and table policies. Account errors do not fall back to guest memory. |
+| Memory turns off after switching accounts | Re-enable memory for the current identity. Existing guest facts are not migrated into the account. |
 | npm blocked in PowerShell | Use `npm.cmd`. |
 
 ## References
