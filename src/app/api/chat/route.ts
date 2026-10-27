@@ -5,7 +5,9 @@ import { ChatConfigurationError, getAIConfiguration } from "@/lib/ai/configurati
 import { cookies } from "next/headers";
 import { MemWal } from "@mysten-incubation/memwal";
 import { getMemoryConfiguration, verifyMainnetRelayer } from "@/lib/memory/configuration";
-import { MEMORY_COOKIE, memoryIdentity } from "@/lib/memory/identity";
+import { MEMORY_COOKIE } from "@/lib/memory/identity";
+import { resolveMemoryScope } from "@/lib/memory/scope";
+import { loadAccountMemory } from "@/lib/memory/account";
 import { memoryPrompt, recallForChat } from "@/lib/memory/recall";
 
 export const runtime = "nodejs";
