@@ -18,3 +18,12 @@ function WalletDetails() {
     } catch { setNotice("Copy is unavailable. Select and copy the address below."); }
   }
 
+  return <div className="wallet-details">
+    <strong>{connection.isConnected ? `Connected to ${connection.wallet.name}` : "Wallet connection is optional"}</strong>
+    <p>{connection.isConnecting ? "Approve the connection in your wallet, or cancel to continue as a guest."
+      : "Connect to view your public address. Chat and memory work independently of your wallet."}</p>
+    <ConnectButton />
+    {account && <div key={account.address} className="wallet-address-details">
+      <p>Explorer network: Sui Mainnet</p>
+      <code className="wallet-address">{account.address}</code>
+      <div className="workspace-actions">
