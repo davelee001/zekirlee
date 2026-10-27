@@ -37,3 +37,8 @@ function WalletDetails() {
   </div>;
 }
 
+export default function WalletUI({ compact }: { compact: boolean }) {
+  return <DAppKitProvider dAppKit={dAppKit}>
+    {compact ? <ConnectButton /> : <WalletDetails />}
+  </DAppKitProvider>;
+}

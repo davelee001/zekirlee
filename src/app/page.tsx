@@ -5,6 +5,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { restoreMessages, serializeChatRequest, SESSION_KEY, type SessionMessage } from "@/lib/ai/session";
 import { ChatMessage } from "@/components/chat-message";
 import { WorkspaceSidebar } from "@/components/workspace-sidebar";
+import { WalletControls } from "@/components/wallet-controls";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MemoryStorageControl, useMemoryStorage } from "@/components/memory-storage";
 import { SaveConversation } from "@/components/save-conversation";
