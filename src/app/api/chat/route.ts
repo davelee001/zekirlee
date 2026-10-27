@@ -21,10 +21,10 @@ export const POST = createChatHandler(async (messages, abortSignal, context) => 
       if (context.request.headers.get("origin") !== new URL(context.request.url).origin) throw new Error("Memory requires same origin");
       const config = getMemoryConfiguration(process.env);
       const cookie = (await cookies()).get(MEMORY_COOKIE)?.value;
-      if (!cookie) return null;
-      const identity = memoryIdentity(cookie, config.key);
+      const identity = await resolveMemoryScope(config, cookie, loadAccountMemory);
       if (!identity.existing) return null;
       await verifyMainnetRelayer(config.serverUrl);
+      return MemWal.create({ ...config, namespace: identity.namespace });
       return MemWal.create({ ...config, namespace: `${config.namespace}:guest:${identity.id}` });
     },
   });
