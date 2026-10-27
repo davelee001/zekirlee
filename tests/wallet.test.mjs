@@ -52,3 +52,5 @@ test('rejected connections leave the application disconnected', async () => {
 test('wallets without mainnet support are excluded', () => {
   const wallet = fixture({ chain: 'sui:testnet' });
   try { assert.equal(wallet.ui(), undefined); }
+  finally { wallet.cleanup(); }
+});

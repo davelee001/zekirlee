@@ -29,11 +29,11 @@ Backend reliability, Walrus mainnet configuration, and opt-in memory storage and
 | Account-linked memory | Shared storage, recall, and namespace rotation implemented; memory-space migration and live two-device verification pending |
 | Supabase authentication and database | Email-link sign-in, sign-out, private snapshot APIs, and migration implemented; credentials, migration execution, and live verification remain pending |
 
-Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
+Optional wallet connection is implemented; live blockchain retrieval in chat remains outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
 
 The latest backend increment adds account-linked Walrus memory: signed-in users share saved facts across devices, while guests retain browser-scoped memory. Clearing rotates the active memory space so late writes cannot appear in subsequent recalls. Account changes pause memory in open tabs until the user enables it again.
 
-The latest validation passed 53 application tests, TypeScript checks, scoped lint, and a production build. Real Supabase sign-in, database isolation, and Walrus storage still need configured-service verification. Track implementation and setup separately in the [remaining-work checklist](docs/remaining-work.md).
+The latest validation passed 56 application tests, TypeScript checks, scoped lint, and a production build. Real Supabase sign-in, database isolation, and Walrus storage still need configured-service verification. Track implementation and setup separately in the [remaining-work checklist](docs/remaining-work.md).
 
 ## Current features
 
@@ -59,7 +59,7 @@ The latest validation passed 53 application tests, TypeScript checks, scoped lin
 - Settings controls to check memory status and clear the active account or guest space separately from chat history.
 - Optional email-link account sign-in, with explicit conversation snapshot saving and a paginated saved-chat library.
 
-Wallet connection and live blockchain retrieval are not implemented in the chat flow. Account sign-in is available in Settings once Supabase is configured. Signed-in Walrus memory follows the account across devices; guest memory remains browser-scoped and is not migrated on sign-in.
+Wallet connection is available from chat and Wallet activity. Live blockchain retrieval and automatic wallet context in replies are not implemented. Account sign-in is available in Settings once Supabase is configured. Signed-in Walrus memory follows the account across devices; guest memory remains browser-scoped and is not migrated on sign-in.
 
 ## Workspace pages
 
@@ -70,6 +70,7 @@ Wallet connection and live blockchain retrieval are not implemented in the chat 
 | Saved chats | `/history` | Sign in to browse, open, and delete private account snapshots. |
 | Knowledge | `/knowledge` | Searchable topics, category filters, a pinned-only view, and links to official resources. |
 | Sui basics | `/sui-basics` | Introductory explanations of objects, ownership, Move, and transactions. |
+| Wallet activity | `/wallet-activity` | Connect a Sui wallet or enter a public address, then open its Mainnet activity on Suiscan. |
 | Wallet activity | `/wallet-activity` | Validate a public Sui address and open its Mainnet activity on Suiscan. |
 | Settings | `/settings` | Email sign-in, sign-out, themes, tab-history clearing, and saved-memory management. |
 | Help center | `/help` | Messaging instructions, session behavior, and troubleshooting guidance. |
