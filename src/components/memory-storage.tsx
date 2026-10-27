@@ -89,7 +89,6 @@ export function MemoryStorageControl({ enabled, notice, recallNotice, toggle }: 
   return <div className="memory-storage-control">
     <label><input type="checkbox" checked={enabled} onChange={event => toggle(event.target.checked)} /> Use and save memory with Walrus</label>
     <small>Optional memory follows your account when signed in, or this browser as a guest. Guest memories are not migrated on sign-in. Relevant saved details are sent to the AI provider for replies. Turning it off stops future recall and saves; stored details remain.</small>
-    <small>Optional memory, linked to this browser. Relevant saved details are sent to the AI provider for replies. Turning it off stops future recall and saves; stored details remain.</small>
     <Link href="/settings#saved-memory">Manage saved memory</Link>
     {recallNotice && <span role="status">{recallNotice}</span>}
     {notice && <span role="status">{notice}</span>}
