@@ -311,7 +311,6 @@ Clearing pauses memory in open chat tabs using browser events and local storage 
 The installed SDK has no public production `stats` or `forget` method. The server uses the documented relayer endpoints with account-bound Ed25519 signatures, mainnet and compatibility checks, and request deadlines. It never sends the delegate private key. Tests verify signatures, namespace binding, confirmation, and failure behavior with mocked transport; no automated test clears live mainnet data.
 
 Remaining work includes connecting the Supabase project and running its migration/tests, migrating existing guest memory to accounts, and verifying real mainnet storage, recall, and clearing. See the [remaining-work checklist](docs/remaining-work.md) for the full list.
-Remaining work includes connecting the Supabase project and running its migration/tests, linking Walrus memory to accounts across devices, and verifying real mainnet storage, recall, and clearing. See the [remaining-work checklist](docs/remaining-work.md) for the full list.
 
 ## Project structure
 
@@ -321,7 +320,7 @@ src/
     api/chat/route.ts       Streaming AI endpoint
     api/health/route.ts     Liveness endpoint
     api/memory/route.ts     Opt-in extraction and confirmed storage endpoint
-    api/memory/manage/route.ts Browser-scoped memory status and clearing
+    api/memory/manage/route.ts Account/guest memory status and clearing
     api/conversations/     Authenticated snapshot list/save/open/delete endpoints
     auth/callback/route.ts Email token and PKCE session exchange
     history/page.tsx       Saved-conversation library
@@ -383,7 +382,7 @@ npm start
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
 
-The regression suite currently contains 48 tests, including chat/session behavior, memory storage/recall/management, authenticated conversation operations, ownership-input rejection, and email-link validation. Database policies and real email delivery require the separate configured-project checks; mocked API tests do not verify PostgreSQL enforcement.
+The regression suite currently contains 53 tests, including chat/session behavior, memory storage/recall/management, authenticated conversation operations, ownership-input rejection, and email-link validation. Database policies and real email delivery require the separate configured-project checks; mocked API tests do not verify PostgreSQL enforcement.
 
 | Live check | Prerequisites | What it verifies |
 | --- | --- | --- |
