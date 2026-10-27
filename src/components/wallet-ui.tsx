@@ -27,3 +27,13 @@ function WalletDetails() {
       <p>Explorer network: Sui Mainnet</p>
       <code className="wallet-address">{account.address}</code>
       <div className="workspace-actions">
+        <button type="button" onClick={() => void copyAddress()}>Copy address</button>
+        <a href={`https://suiscan.xyz/mainnet/account/${encodeURIComponent(account.address)}`} target="_blank" rel="noopener noreferrer">View activity on Suiscan</a>
+      </div>
+      <p>Use the wallet button to change accounts or disconnect.</p>
+    </div>}
+    <p>No transaction or signature is requested. Your address is not automatically sent to the chatbot or saved as memory.</p>
+    {notice && <p role="status">{notice}</p>}
+  </div>;
+}
+
