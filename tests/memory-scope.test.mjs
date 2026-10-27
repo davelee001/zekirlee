@@ -27,3 +27,8 @@ test('different accounts and rotated generations cannot share memory namespaces'
 test('guests keep their existing namespace and must establish a cookie before writes', async () => {
   const identity = memoryIdentity(undefined, config.key);
   const guest = await resolveMemoryScope(config, identity.token, async () => null);
+  assert.equal(guest.namespace, `test:guest:${identity.id}`);
+  assert.equal(guest.scope, 'browser');
+  assert.equal(guest.existing, true);
+  const fresh = await resolveMemoryScope(config, 'tampered', async () => null);
+  assert.equal(fresh.existing, false);
