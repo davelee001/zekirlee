@@ -57,7 +57,6 @@ The latest backend increment adds optional account sign-in and private saved-con
 - Optional email-link account sign-in, with explicit conversation snapshot saving and a paginated saved-chat library.
 
 Wallet connection and live blockchain retrieval are not implemented in the chat flow. Account sign-in is available in Settings once Supabase is configured. Signed-in Walrus memory follows the account across devices; guest memory remains browser-scoped and is not migrated on sign-in.
-Wallet connection and live blockchain retrieval are not implemented in the chat flow. Account sign-in is available in Settings once Supabase is configured. Walrus memory still uses the browser identity independently of account sign-in.
 
 ## Workspace pages
 
@@ -185,8 +184,9 @@ Continuing an opened conversation changes the tab's history. Select **Save to ac
 | --- | --- | --- |
 | Tab session | Current conversation messages | Restored on refresh in that tab; cleared by New conversation or session-history clearing. |
 | Supabase | Explicitly saved conversation snapshots | Available to the signed-in owner; browse, open, or delete through Saved chats. Requires database setup. |
-| Walrus | Useful facts extracted with memory enabled | Linked to this browser's signed cookie; manage its searchable index in Settings. Requires mainnet credentials. |
+| Walrus | Useful facts extracted with memory enabled | Linked to the signed-in account, or a browser cookie for guests; manage its searchable index in Settings. Requires mainnet credentials. |
 
+Signing in does not upload existing chat or migrate guest Walrus facts. With the memory-space migration applied, new signed-in memory uses a shared account namespace across devices.
 Signing in does not upload existing chat automatically or link Walrus facts to the account. Account-linked memory across devices remains pending.
 
 ### API routes
