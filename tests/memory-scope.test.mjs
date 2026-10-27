@@ -36,3 +36,7 @@ test('guests keep their existing namespace and must establish a cookie before wr
 test('authentication and database failures never fall back to guest memory', async () => {
   await assert.rejects(resolveMemoryScope(config, memoryIdentity(undefined, config.key).token,
     async () => { throw new Error('Auth unavailable'); }), /Auth unavailable/);
+  await assert.rejects(resolveMemoryScope(config, undefined, async () => ({ ...await account(), userId: 'untrusted' })), /Invalid/);
+});
+test('account clearing reports its scope without changing the guest cookie', async () => {
+  let clears = 0;
