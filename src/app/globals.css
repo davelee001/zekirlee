@@ -323,3 +323,4 @@ html { color-scheme: light; }
 .wallet-details { display: grid; gap: 10px; min-width: 0; }
 .wallet-address-details { min-width: 0; }
 .wallet-address { display: block; overflow-wrap: anywhere; user-select: all; font-size: 12px; margin-block: 10px; }
+.wallet-details .workspace-actions { flex-wrap: wrap; }
