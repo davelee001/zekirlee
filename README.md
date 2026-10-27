@@ -187,15 +187,15 @@ Continuing an opened conversation changes the tab's history. Select **Save to ac
 | Walrus | Useful facts extracted with memory enabled | Linked to the signed-in account, or a browser cookie for guests; manage its searchable index in Settings. Requires mainnet credentials. |
 
 Signing in does not upload existing chat or migrate guest Walrus facts. With the memory-space migration applied, new signed-in memory uses a shared account namespace across devices.
-Signing in does not upload existing chat automatically or link Walrus facts to the account. Account-linked memory across devices remains pending.
 
 ### API routes
 
 - `GET /api/health` returns application liveness. It does not verify AI credentials or external services.
 - `POST /api/chat` accepts `{ "messages": [{ "role": "user", "text": "Hello" }] }` and streams newline-delimited JSON events: `text`, `done`, or `error`. Validation and configuration failures return JSON error responses.
-- Add `"useMemory": true` to opt into recall for a chat request. Recall requires the same-origin browser request and its signed memory cookie. Response headers `X-Zekirlee-Memory` and `X-Zekirlee-Memory-Count` report retrieval status and the number of supplied facts, without exposing saved content in headers.
+- Add `"useMemory": true` to opt into recall for a chat request. Recall requires a same-origin request and either a verified account or a signed guest memory cookie. Response headers `X-Zekirlee-Memory` and `X-Zekirlee-Memory-Count` report retrieval status and the number of supplied facts, without exposing saved content in headers.
 - `POST /api/memory` accepts `{ "consent": true, "text": "I prefer TypeScript." }` from the same origin. It establishes a signed guest cookie before writing (HTTP 409 with `MEMORY_SESSION_CREATED`, retried once by the UI), extracts facts, and returns confirmed `saved` and unconfirmed `failed` counts. Missing configuration returns HTTP 503 without affecting chat.
 - `GET /api/memory/manage` reports `unconfigured`, `new`, `ready`, or `unavailable`; for an existing signed browser identity, it verifies mainnet and fetches that namespace's searchable-memory count.
+- `DELETE /api/memory/manage` requires a same-origin request and `X-Zekirlee-Confirm: forget-memory`. It clears only the server-resolved account or guest namespace, never a client-supplied namespace. Successful clearing rotates the account generation or replaces the guest cookie.
 - `DELETE /api/memory/manage` requires a same-origin request and `X-Zekirlee-Confirm: forget-memory`. It clears only the namespace derived from the signed cookie, never a client-supplied namespace. Successful clearing replaces the browser identity; errors preserve it for retry.
 - `GET /api/conversations?page=0` lists 20 private snapshot summaries with a `hasMore` flag. `POST /api/conversations` saves `{ "messages": [...] }` for the verified signed-in user.
 - `GET /api/conversations/:id` loads an owned snapshot. `DELETE` requires a same-origin request and `X-Zekirlee-Confirm: delete-conversation`. Other users' snapshots return 404.
