@@ -20,3 +20,4 @@ export async function loadAccountMemory(): Promise<AccountMemory | null> {
       .eq("user_id", user.id).eq("generation", data.generation).select("user_id");
     if (result.error || !result.data?.length) throw result.error || new Error("Memory space changed; refresh settings");
   } };
+}
