@@ -18,3 +18,7 @@ do $$ begin
   update public.memory_spaces set generation = gen_random_uuid() where user_id = current_setting('test.user_a')::uuid;
   if found then raise exception 'Cross-account rotation allowed'; end if;
   begin
+    insert into public.memory_spaces (user_id) values (current_setting('test.user_a')::uuid);
+    raise exception 'Spoofed owner allowed';
+  exception when insufficient_privilege then null;
+  end;
