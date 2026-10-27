@@ -14,3 +14,8 @@ test('account memory uses the same namespace on devices with different guest coo
   const two = await resolveMemoryScope(config, undefined, account);
   assert.equal(one.namespace, two.namespace);
   assert.equal(one.scope, 'account');
+  assert.equal(one.existing, true);
+  assert.equal(one.token, undefined);
+});
+test('different accounts and rotated generations cannot share memory namespaces', async () => {
+  const original = await resolveMemoryScope(config, undefined, account);
