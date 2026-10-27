@@ -22,3 +22,8 @@ do $$ begin
     raise exception 'Spoofed owner allowed';
   exception when insufficient_privilege then null;
   end;
+end $$;
+set local role anon;
+do $$ begin
+  begin
+    perform * from public.memory_spaces;
