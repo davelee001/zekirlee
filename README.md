@@ -31,7 +31,7 @@ Backend reliability, Walrus mainnet configuration, and opt-in memory storage and
 
 Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.
 
-The latest backend increment adds optional account sign-in and private saved-conversation snapshots. The application regression suite has 48 passing tests; real Supabase sign-in, database isolation, and Walrus storage still need configured-service verification. Track implementation and setup separately in the [remaining-work checklist](docs/remaining-work.md).
+The latest backend increment adds optional account sign-in and private saved-conversation snapshots. The application regression suite has 53 passing tests; real Supabase sign-in, database isolation, and Walrus storage still need configured-service verification. Track implementation and setup separately in the [remaining-work checklist](docs/remaining-work.md).
 
 ## Current features
 
@@ -53,9 +53,10 @@ The latest backend increment adds optional account sign-in and private saved-con
 - Optional extraction and storage of useful user details in Walrus, with confirmed-save and failure notices.
 - Relevant saved facts supplied to future replies, with bounded retrieval time and fallback to ordinary chat.
 - Signed browser identities for guest memory, without requiring a wallet or sign-in.
-- Settings controls to check memory status and clear this browser's searchable memories separately from chat history.
+- Settings controls to check memory status and clear the active account or guest space separately from chat history.
 - Optional email-link account sign-in, with explicit conversation snapshot saving and a paginated saved-chat library.
 
+Wallet connection and live blockchain retrieval are not implemented in the chat flow. Account sign-in is available in Settings once Supabase is configured. Signed-in Walrus memory follows the account across devices; guest memory remains browser-scoped and is not migrated on sign-in.
 Wallet connection and live blockchain retrieval are not implemented in the chat flow. Account sign-in is available in Settings once Supabase is configured. Walrus memory still uses the browser identity independently of account sign-in.
 
 ## Workspace pages
