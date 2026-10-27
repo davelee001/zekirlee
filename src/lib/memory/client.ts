@@ -9,7 +9,7 @@ export async function createMemoryClient(authenticatedUserId: string) {
   const config = getMemoryConfiguration(process.env);
   const account = await loadAccountMemory();
   if (!account || account.userId !== authenticatedUserId) throw new Error("Verified account required");
-  const namespace = userMemoryNamespace(config.namespace, authenticatedUserId);
+  const { namespace } = await resolveMemoryScope(config, undefined, async () => account);
   // The SDK has no network selector: check the deployment before signed operations.
   await verifyMainnetRelayer(config.serverUrl);
   return MemWal.create({ ...config, namespace });
