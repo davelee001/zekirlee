@@ -196,7 +196,6 @@ Signing in does not upload existing chat or migrate guest Walrus facts. With the
 - `POST /api/memory` accepts `{ "consent": true, "text": "I prefer TypeScript." }` from the same origin. It establishes a signed guest cookie before writing (HTTP 409 with `MEMORY_SESSION_CREATED`, retried once by the UI), extracts facts, and returns confirmed `saved` and unconfirmed `failed` counts. Missing configuration returns HTTP 503 without affecting chat.
 - `GET /api/memory/manage` reports `unconfigured`, `new`, `ready`, or `unavailable`; for an existing signed browser identity, it verifies mainnet and fetches that namespace's searchable-memory count.
 - `DELETE /api/memory/manage` requires a same-origin request and `X-Zekirlee-Confirm: forget-memory`. It clears only the server-resolved account or guest namespace, never a client-supplied namespace. Successful clearing rotates the account generation or replaces the guest cookie.
-- `DELETE /api/memory/manage` requires a same-origin request and `X-Zekirlee-Confirm: forget-memory`. It clears only the namespace derived from the signed cookie, never a client-supplied namespace. Successful clearing replaces the browser identity; errors preserve it for retry.
 - `GET /api/conversations?page=0` lists 20 private snapshot summaries with a `hasMore` flag. `POST /api/conversations` saves `{ "messages": [...] }` for the verified signed-in user.
 - `GET /api/conversations/:id` loads an owned snapshot. `DELETE` requires a same-origin request and `X-Zekirlee-Confirm: delete-conversation`. Other users' snapshots return 404.
 
@@ -226,6 +225,10 @@ After signing in, use **Save to account** in chat to save an immutable snapshot.
 Open **Saved chats** to browse snapshots, load one into the current tab, or delete it. Opening and deleting require confirmation. Opening replaces local tab history; continuing a loaded conversation does not change the old snapshot. Saving again creates another one. Pagination lists 20 records at a time, with newest snapshots first.
 
 Protected API handlers verify the user with Supabase Auth and bind queries to that user's ID. PostgreSQL row-level security independently enforces ownership. The proxy refreshes sessions but is not the authorization boundary. Sign-out removes local tab history and notifies open chat tabs; it does not delete account snapshots or browser-linked Walrus memory.
+
+Deleting a snapshot leaves the active tab conversation and Walrus memory unchanged. Account history works across devices after sign-in. Account memory also follows sign-in once the separate memory-space migration below is applied. The client uses cookie-backed Supabase sessions, while guest chat remains available if account services are unavailable.
+
+### Account-linked memory setup
 
 Deleting a snapshot leaves the active tab conversation and Walrus memory unchanged. Account history works across devices after sign-in; Walrus memory does **not** yet follow the account between browsers. The client uses cookie-backed Supabase sessions, while guest chat remains available if account services are unavailable.
 
