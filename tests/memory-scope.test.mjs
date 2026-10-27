@@ -40,3 +40,8 @@ test('authentication and database failures never fall back to guest memory', asy
 });
 test('account clearing reports its scope without changing the guest cookie', async () => {
   let clears = 0;
+  const handlers = createMemoryManagementHandlers(async () => ({ state: 'known', scope: 'account',
+    stats: async () => 3, forget: async () => { clears++; return 3; } }));
+  const response = await handlers.DELETE(new Request('https://app.example/api/memory/manage', {
+    method: 'DELETE', headers: { origin: 'https://app.example', 'X-Zekirlee-Confirm': 'forget-memory' },
+  }));
