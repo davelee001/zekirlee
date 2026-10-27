@@ -7,7 +7,6 @@ import { getMemoryConfiguration, verifyMainnetRelayer } from "@/lib/memory/confi
 import { MEMORY_COOKIE } from "@/lib/memory/identity";
 import { resolveMemoryScope } from "@/lib/memory/scope";
 import { loadAccountMemory } from "@/lib/memory/account";
-import { MEMORY_COOKIE, memoryIdentity } from "@/lib/memory/identity";
 import { extractionInstructions, factsSchema, storeUsefulFacts } from "@/lib/memory/storage";
 
 export const runtime = "nodejs";
@@ -40,6 +39,9 @@ export async function POST(request: NextRequest) {
   let config;
   try { config = getMemoryConfiguration(process.env); }
   catch { return json({ error: "Memory storage is not configured yet. Your chat still works." }, 503); }
+  let identity;
+  try { identity = await resolveMemoryScope(config, request.cookies.get(MEMORY_COOKIE)?.value, loadAccountMemory); }
+  catch { return json({ error: "Memory identity is unavailable. Check account setup and try again; chat still works." }, 503); }
   const identity = memoryIdentity(request.cookies.get(MEMORY_COOKIE)?.value, config.key);
   const setIdentity = (response: NextResponse) => {
     response.cookies.set(MEMORY_COOKIE, identity.token, {
