@@ -10,3 +10,7 @@ const generation = '22222222-2222-4222-8222-222222222222';
 const account = async () => ({ userId, generation, rotate: async () => {} });
 
 test('account memory uses the same namespace on devices with different guest cookies', async () => {
+  const one = await resolveMemoryScope(config, memoryIdentity(undefined, config.key).token, account);
+  const two = await resolveMemoryScope(config, undefined, account);
+  assert.equal(one.namespace, two.namespace);
+  assert.equal(one.scope, 'account');
