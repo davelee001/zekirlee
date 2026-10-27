@@ -19,6 +19,8 @@ export function MemorySettings() {
   const account = useAccount();
   return <MemorySettingsPanel key={account.user?.id ?? account.state} />;
 }
+
+function MemorySettingsPanel() {
   const [status, setStatus] = useState<Status | null>(null);
   const [busy, setBusy] = useState(true);
   const [confirm, setConfirm] = useState(false);
@@ -58,7 +60,7 @@ export function MemorySettings() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Clearing memory could not be confirmed.");
-      setStatus({ state: "new", count: 0 });
+      setStatus({ state: "new", count: 0, scope: result.scope });
       setNotice(`${result.cleared} searchable memories cleared. Future memory uses a fresh space. Encrypted Walrus blobs remain until expiry; your chat history is unchanged.`);
       announceMemoryReset();
     } catch (error) {
