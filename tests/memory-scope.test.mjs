@@ -32,3 +32,7 @@ test('guests keep their existing namespace and must establish a cookie before wr
   assert.equal(guest.existing, true);
   const fresh = await resolveMemoryScope(config, 'tampered', async () => null);
   assert.equal(fresh.existing, false);
+});
+test('authentication and database failures never fall back to guest memory', async () => {
+  await assert.rejects(resolveMemoryScope(config, memoryIdentity(undefined, config.key).token,
+    async () => { throw new Error('Auth unavailable'); }), /Auth unavailable/);
