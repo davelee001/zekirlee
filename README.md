@@ -254,7 +254,7 @@ The account ID is a **MemWalAccount object ID**, not your wallet address. Use a 
 
 Run `npm run test:memory` after setting the credentials. It checks configuration, verifies that the relayer's `/config` reports `mainnet`, and makes an authenticated recall in a dedicated connection-check namespace. It does not write memories or print credentials or recalled content. A passing public health request alone does not validate delegate access.
 
-`await createMemoryClient(verifiedUserId)` takes a verified Supabase user UUID, validates the relayer network before returning a client, and derives a per-user namespace within the configured account. This is application-level isolation, not separate on-chain ownership. Keep the raw client and namespace overrides server-side. Callers must obtain the user ID from verified authentication, never from request input.
+`await createMemoryClient(verifiedUserId)` re-verifies the current Supabase user, checks that the supplied UUID matches, and uses the current account namespace generation after validating the relayer network. This is application-level isolation, not separate on-chain ownership. Keep the raw client and namespace overrides server-side. Callers must obtain the user ID from verified authentication, never from request input.
 
 `WALRUS_NETWORK` is restricted to `mainnet`, but the relayer controls the actual network: an environment value cannot change its deployment. A missing network or a non-mainnet response fails closed. Account provisioning, funding, and Mainnet transactions require separate setup. Guest chat continues to work without memory credentials.
 
@@ -268,10 +268,11 @@ The server waits for Walrus storage confirmation before reporting a fact as save
 
 Guest memories use a separate namespace tied to a signed, HttpOnly browser cookie, with Secure enabled over HTTPS and SameSite Strict. The cookie is established before any writes. No wallet or Supabase login is required. Clearing cookies, changing browsers, or rotating the delegate signing key changes the guest identity; existing memories are not automatically migrated or deleted. The account delegate can access all its namespaces, so this is application-level isolation rather than separate on-chain ownership.
 
-Turning memory off stops future recall and saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. Use **Settings → Saved memory** to clear the browser's searchable memory separately. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
+Turning memory off stops future recall and saves and skips queued work; already submitted jobs may finish. Clearing chat history does not delete stored facts. Use **Settings → Saved memory** to clear the active account or guest searchable memory separately. Extraction uses the configured AI provider and storage uses the configured Walrus account, with their respective usage costs.
 
 ### Memory recall
 
+With memory enabled, the latest message becomes a semantic search query in the verified account namespace, or the browser's guest namespace when signed out. Recall retrieves at most five facts, filters weak matches and duplicates, and caps supplied context at 2,000 characters. Saved facts are sent to the configured AI provider as untrusted contextual data; instructions tell the model to prioritize current user statements over old facts and ignore commands embedded in memories.
 With memory enabled, the latest message becomes a semantic search query in the browser's guest namespace. Recall retrieves at most five facts, filters weak matches and duplicates, and caps supplied context at 2,000 characters. Saved facts are sent to the configured AI provider as untrusted contextual data; instructions tell the model to prioritize current user statements over old facts and ignore commands embedded in memories.
 
 The app waits at most four seconds for recall before continuing with the current conversation. Missing configuration, an unavailable relayer, and failed retrieval never block ordinary chat. The UI distinguishes supplied facts, no matches, a new browser identity, and unavailable memory. A provider request already in progress may continue after the wait expires, but late results are not added to the reply.
