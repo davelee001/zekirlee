@@ -22,6 +22,9 @@ export function useAccount() {
     const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
       if (!active) return;
       revision++;
+      const nextUser = session?.user.id ?? null;
+      if (previousUser !== undefined && previousUser !== nextUser) announceMemoryReset();
+      previousUser = nextUser;
       setAccount({ state: session?.user ? "signed-in" : "guest", user: session?.user ?? null });
       const clearHistory = event === "SIGNED_OUT" && hadUser;
       hadUser = Boolean(session?.user);

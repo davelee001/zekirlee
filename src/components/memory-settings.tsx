@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { announceMemoryReset } from "@/lib/memory/browser-events";
+import { useAccount } from "@/hooks/use-account";
 
 type Status = { state: "unconfigured" | "new" | "ready" | "unavailable"; count: number };
 
