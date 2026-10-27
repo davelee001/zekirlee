@@ -28,6 +28,11 @@ const handlers = createMemoryManagementHandlers(async request => {
   return {
     state: "known", scope: identity.scope, stats: () => call("stats"),
     forget: async () => {
+      const cleared = await call("forget");
+      await identity.rotate?.();
+      return cleared;
+    },
+    replacementCookie: identity.scope === "account" ? undefined : `${MEMORY_COOKIE}=${nextIdentity.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000${secure}`,
     state: "known", stats: () => call("stats"), forget: () => call("forget"),
     replacementCookie: `${MEMORY_COOKIE}=${nextIdentity.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000${secure}`,
   };
