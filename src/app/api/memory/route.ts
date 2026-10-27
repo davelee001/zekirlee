@@ -42,15 +42,15 @@ export async function POST(request: NextRequest) {
   let identity;
   try { identity = await resolveMemoryScope(config, request.cookies.get(MEMORY_COOKIE)?.value, loadAccountMemory); }
   catch { return json({ error: "Memory identity is unavailable. Check account setup and try again; chat still works." }, 503); }
-  const identity = memoryIdentity(request.cookies.get(MEMORY_COOKIE)?.value, config.key);
   const setIdentity = (response: NextResponse) => {
-    response.cookies.set(MEMORY_COOKIE, identity.token, {
+    response.cookies.set(MEMORY_COOKIE, identity.token!, {
       httpOnly: true, secure: request.nextUrl.protocol === "https:", sameSite: "strict", path: "/", maxAge: 60 * 60 * 24 * 365,
     });
     return response;
   };
   // Establish the cookie before any writes, including requests that later time out.
   if (!identity.existing) return setIdentity(json({ code: "MEMORY_SESSION_CREATED" }, 409));
+  const namespace = identity.namespace;
   const namespace = `${config.namespace}:guest:${identity.id}`;
   let response: NextResponse;
   try {
