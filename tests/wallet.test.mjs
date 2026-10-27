@@ -34,3 +34,12 @@ test('wallet discovery does not connect automatically or require a signing reque
     assert.equal(dAppKit.stores.$connection.get().account.address, wallet.accounts[0].address);
     dAppKit.switchAccount({ account: connected.accounts[1] });
     assert.equal(dAppKit.stores.$connection.get().account.address, wallet.accounts[1].address);
+    await dAppKit.disconnectWallet();
+    assert.equal(wallet.disconnects(), 1);
+    assert.equal(dAppKit.stores.$connection.get().account, null);
+  } finally { wallet.cleanup(); }
+});
+
+test('rejected connections leave the application disconnected', async () => {
+  const wallet = fixture({ reject: true });
+  try {
