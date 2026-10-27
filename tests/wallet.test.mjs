@@ -24,3 +24,13 @@ function fixture({ reject = false, chain = 'sui:mainnet' } = {}) {
 }
 
 test('wallet discovery does not connect automatically or require a signing request', async () => {
+  const wallet = fixture();
+  try {
+    assert.equal(wallet.connects(), 0);
+    assert.equal(dAppKit.stores.$connection.get().status, 'disconnected');
+    assert.equal(dAppKit.stores.$currentNetwork.get(), 'mainnet');
+    const connected = await dAppKit.connectWallet({ wallet: wallet.ui() });
+    assert.equal(wallet.connects(), 1);
+    assert.equal(dAppKit.stores.$connection.get().account.address, wallet.accounts[0].address);
+    dAppKit.switchAccount({ account: connected.accounts[1] });
+    assert.equal(dAppKit.stores.$connection.get().account.address, wallet.accounts[1].address);
