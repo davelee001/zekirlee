@@ -73,17 +73,16 @@ function MemorySettingsPanel() {
     <p>Signed-in memory follows your account across devices. Guest memory stays linked to this browser. Signing in does not migrate guest memories.</p>
     <p role="status">{busy ? "Checking or updating memory..." : status?.state === "ready" ? `${status.count} searchable memories linked to ${status.scope === "account" ? "your account across devices" : "this browser"}.`
       : status?.state === "new" ? "Your active memory space is empty or has not been created yet."
-    <p role="status">{busy ? "Checking or updating memory..." : status?.state === "ready" ? `${status.count} searchable memories linked to this browser.`
-      : status?.state === "new" ? "No previous memory space is linked to this browser."
       : status?.state === "unconfigured" ? "Walrus memory is not configured. Chat is still available."
       : "Memory is currently unavailable."}</p>
     {confirm ? <div className="memory-confirmation">
-      <p>Clear this browser&apos;s searchable memories? They will stop appearing in future replies. Encrypted blobs remain on Walrus until expiry and may be restored by the account operator. Chat history will stay.</p>
+      <p>Clear {status?.scope === "account" ? "your account's searchable memories across all devices" : "this browser's searchable memories"}? They will stop appearing in future replies. Encrypted blobs remain on Walrus until expiry and may be restored by the account operator. Chat history will stay.</p>
       <div className="workspace-actions"><button disabled={busy} onClick={() => void clearMemory()}>Confirm clear memory</button><button disabled={busy} onClick={() => setConfirm(false)}>Cancel</button></div>
     </div> : <div className="workspace-actions">
       <button disabled={busy || status?.state !== "ready"} onClick={() => setConfirm(true)}>Clear saved memory</button>
       <button disabled={busy} onClick={() => { setBusy(true); setNotice(""); void refresh(); }}>Refresh status</button>
     </div>}
+    <p>Clearing pauses memory in this browser&apos;s open tabs when storage is available. Other devices may keep saving new facts. Already submitted writes may finish in the old space; future requests use a new one. Replies already in progress may still contain previously recalled facts.</p>
     <p>Clearing pauses memory in open tabs when browser storage is available. Already submitted writes may finish in the old space; future requests use a new one. Re-enable memory in chat when you want to save new details.</p>
     {notice && <p role="status">{notice}</p>}
   </section>;
