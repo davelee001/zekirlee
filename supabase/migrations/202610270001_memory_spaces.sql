@@ -10,3 +10,5 @@ grant select, insert on public.memory_spaces to authenticated;
 grant update (generation) on public.memory_spaces to authenticated;
 create policy memory_spaces_read on public.memory_spaces for select to authenticated using (user_id = (select auth.uid()));
 create policy memory_spaces_create on public.memory_spaces for insert to authenticated with check (user_id = (select auth.uid()));
+create policy memory_spaces_rotate on public.memory_spaces for update to authenticated
+  using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));

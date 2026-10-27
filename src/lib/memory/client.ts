@@ -1,5 +1,7 @@
 import "server-only";
 import { MemWal } from "@mysten-incubation/memwal";
+import { getMemoryConfiguration, verifyMainnetRelayer } from "./configuration";
+import { loadAccountMemory } from "./account";
 import { getMemoryConfiguration, userMemoryNamespace, verifyMainnetRelayer } from "./configuration";
 
 // Only pass the user ID obtained from a verified Supabase session.
