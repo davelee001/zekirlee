@@ -20,7 +20,7 @@ export function createMemoryManagementHandlers(load: (request: Request) => Promi
       try {
         const session = await load(request);
         if (session.state !== "known") return json({ state: session.state, count: 0 });
-        return json({ state: "ready", count: await session.stats() });
+        return json({ state: "ready", count: await session.stats(), ...(session.scope ? { scope: session.scope } : {}) });
       } catch {
         return json({ state: "unavailable", error: "Saved memory could not be checked. Your chat still works." }, 503);
       }
@@ -34,7 +34,8 @@ export function createMemoryManagementHandlers(load: (request: Request) => Promi
         if (session.state === "new") return json({ cleared: 0, state: "new" });
         const cleared = await session.forget();
         // Switch namespaces so late writes to the old namespace cannot return in future recalls.
-        return json({ cleared, state: "new" }, 200, { "Set-Cookie": session.replacementCookie });
+        return json({ cleared, state: "new", ...(session.scope ? { scope: session.scope } : {}) }, 200,
+          session.replacementCookie ? { "Set-Cookie": session.replacementCookie } : {});
       } catch {
         return json({ error: "Clearing memory could not be confirmed. Retry or refresh the status; chat history is unchanged." }, 503);
       }
