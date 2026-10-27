@@ -11,3 +11,7 @@ export async function resolveMemoryScope(config: { namespace: string; key: strin
     return { scope: "account" as const, namespace: `${config.namespace}:account:${account.userId}:${account.generation}`,
       existing: true, token: undefined, rotate: account.rotate };
   }
+  const identity = memoryIdentity(cookie, config.key);
+  return { scope: "browser" as const, namespace: `${config.namespace}:guest:${identity.id}`,
+    existing: identity.existing, token: identity.token, rotate: undefined };
+}
