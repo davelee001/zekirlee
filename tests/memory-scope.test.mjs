@@ -19,3 +19,7 @@ test('account memory uses the same namespace on devices with different guest coo
 });
 test('different accounts and rotated generations cannot share memory namespaces', async () => {
   const original = await resolveMemoryScope(config, undefined, account);
+  for (const override of [{ userId: generation }, { generation: userId }]) {
+    const next = await resolveMemoryScope(config, undefined, async () => ({ ...await account(), ...override }));
+    assert.notEqual(original.namespace, next.namespace);
+  }
