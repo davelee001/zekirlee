@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/env/public";
 import { SESSION_KEY } from "@/lib/ai/session";
+import { announceMemoryReset } from "@/lib/memory/browser-events";
 
 export const SIGNED_OUT_EVENT = "zekirlee:signed-out";
 export const SIGNED_OUT_KEY = "zekirlee.signed-out.v1";
@@ -17,6 +18,7 @@ export function useAccount() {
     let active = true;
     let revision = 0;
     let hadUser = false;
+    let previousUser: string | null | undefined;
     const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
       if (!active) return;
       revision++;

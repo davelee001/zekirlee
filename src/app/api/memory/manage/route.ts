@@ -33,8 +33,6 @@ const handlers = createMemoryManagementHandlers(async request => {
       return cleared;
     },
     replacementCookie: identity.scope === "account" ? undefined : `${MEMORY_COOKIE}=${nextIdentity.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000${secure}`,
-    state: "known", stats: () => call("stats"), forget: () => call("forget"),
-    replacementCookie: `${MEMORY_COOKIE}=${nextIdentity.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000${secure}`,
   };
 });
 
