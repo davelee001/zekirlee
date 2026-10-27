@@ -15,3 +15,12 @@ function fixture({ reject = false, chain = 'sui:mainnet' } = {}) {
       'standard:disconnect': { version: '1.0.0', disconnect: async () => { disconnects++; } },
       'standard:events': { version: '1.0.0', on: () => () => {} },
       'sui:signTransaction': { version: '2.0.0', signTransaction: async () => assert.fail('Connection must not sign') },
+    } };
+  const unregister = getWallets().register(wallet);
+  const unlisten = dAppKit.stores.$wallets.listen(() => {});
+  return { accounts, connects: () => connects, disconnects: () => disconnects,
+    ui: () => dAppKit.stores.$wallets.get().find(item => item.name === wallet.name),
+    cleanup: () => { unregister(); unlisten(); } };
+}
+
+test('wallet discovery does not connect automatically or require a signing request', async () => {
