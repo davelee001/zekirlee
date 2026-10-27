@@ -17,7 +17,7 @@ const handlers = createMemoryManagementHandlers(async request => {
   const token = (await cookies()).get(MEMORY_COOKIE)?.value;
   const identity = await resolveMemoryScope(config, token, loadAccountMemory);
   if (!identity.existing) return { state: "new" };
-  const namespace = `${config.namespace}:guest:${identity.id}`;
+  const namespace = identity.namespace;
   const call = async (operation: "stats" | "forget") => {
     await verifyMainnetRelayer(config.serverUrl);
     await MemWal.create({ ...config, namespace }).compatibility();
@@ -26,6 +26,8 @@ const handlers = createMemoryManagementHandlers(async request => {
   const nextIdentity = memoryIdentity(undefined, config.key);
   const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
   return {
+    state: "known", scope: identity.scope, stats: () => call("stats"),
+    forget: async () => {
     state: "known", stats: () => call("stats"), forget: () => call("forget"),
     replacementCookie: `${MEMORY_COOKIE}=${nextIdentity.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=31536000${secure}`,
   };
