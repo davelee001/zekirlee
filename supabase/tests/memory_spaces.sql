@@ -27,3 +27,7 @@ set local role anon;
 do $$ begin
   begin
     perform * from public.memory_spaces;
+    raise exception 'Anonymous read allowed';
+  exception when insufficient_privilege then null;
+  end;
+end $$;
