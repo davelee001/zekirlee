@@ -320,3 +320,6 @@ html { color-scheme: light; }
 .saved-conversations { list-style: none; padding: 0; }
 .saved-conversations li { border-bottom: 1px solid var(--line); padding-block: 16px; overflow-wrap: anywhere; }
 .saved-conversations time { display: block; font-size: 12px; margin-block: 8px; opacity: .8; }
+.wallet-details { display: grid; gap: 10px; min-width: 0; }
+.wallet-address-details { min-width: 0; }
+.wallet-address { display: block; overflow-wrap: anywhere; user-select: all; font-size: 12px; margin-block: 10px; }
