@@ -43,3 +43,12 @@ test('wallet discovery does not connect automatically or require a signing reque
 test('rejected connections leave the application disconnected', async () => {
   const wallet = fixture({ reject: true });
   try {
+    await assert.rejects(dAppKit.connectWallet({ wallet: wallet.ui() }), /User rejected/);
+    assert.equal(dAppKit.stores.$connection.get().status, 'disconnected');
+    assert.equal(dAppKit.stores.$connection.get().account, null);
+  } finally { wallet.cleanup(); }
+});
+
+test('wallets without mainnet support are excluded', () => {
+  const wallet = fixture({ chain: 'sui:testnet' });
+  try { assert.equal(wallet.ui(), undefined); }
