@@ -25,7 +25,8 @@ Backend reliability, Walrus mainnet configuration, and opt-in memory storage and
 | Walrus account access | Requires a mainnet account ID and registered delegate key; authenticated access is not yet verified |
 | Memory storage | Opt-in extraction and storage implemented; a live mainnet write still requires configured credentials |
 | Memory recall in replies | Opt-in retrieval implemented with bounded context and fallback to ordinary chat; live account access remains unverified |
-| Memory management | Settings shows searchable-memory counts and supports confirmed clearing for this browser; live clearing remains unverified |
+| Memory management | Settings shows the active account or guest scope, counts, and confirmed clearing; live clearing remains unverified |
+| Account-linked memory | Shared storage, recall, and namespace rotation implemented; memory-space migration and live two-device verification pending |
 | Supabase authentication and database | Email-link sign-in, sign-out, private snapshot APIs, and migration implemented; credentials, migration execution, and live verification remain pending |
 
 Wallet connection and live blockchain retrieval remain outside the delivered scope. Chat continues to work without Supabase or Walrus credentials.

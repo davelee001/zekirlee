@@ -49,3 +49,4 @@ test('account clearing reports its scope without changing the guest cookie', asy
   assert.equal(response.headers.has('set-cookie'), false);
   assert.equal(clears, 1);
   assert.deepEqual(await response.json(), { cleared: 3, state: 'new', scope: 'account' });
+});
