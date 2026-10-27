@@ -18,7 +18,7 @@ export function useMemoryStorage() {
       generation.current++;
       setEnabled(false);
       setRecallNotice("");
-      setNotice("Memory was paused from Settings. Re-enable it when you want to use and save details again.");
+      setNotice("Memory paused after an account or memory-settings change. Re-enable it when you want to use and save details again.");
     };
     const storage = (event: StorageEvent) => { if (event.key === MEMORY_RESET_KEY) reset(); };
     window.addEventListener(MEMORY_RESET_EVENT, reset);
@@ -88,6 +88,7 @@ export function MemoryStorageControl({ enabled, notice, recallNotice, toggle }: 
 }) {
   return <div className="memory-storage-control">
     <label><input type="checkbox" checked={enabled} onChange={event => toggle(event.target.checked)} /> Use and save memory with Walrus</label>
+    <small>Optional memory follows your account when signed in, or this browser as a guest. Guest memories are not migrated on sign-in. Relevant saved details are sent to the AI provider for replies. Turning it off stops future recall and saves; stored details remain.</small>
     <small>Optional memory, linked to this browser. Relevant saved details are sent to the AI provider for replies. Turning it off stops future recall and saves; stored details remain.</small>
     <Link href="/settings#saved-memory">Manage saved memory</Link>
     {recallNotice && <span role="status">{recallNotice}</span>}
