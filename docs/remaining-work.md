@@ -1,6 +1,6 @@
 # Remaining work
 
-Updated 23 October 2026. Implementation and live verification are tracked separately.
+Updated 27 October 2026. Implementation and live verification are tracked separately.
 
 ## Implemented, awaiting external setup or verification
 

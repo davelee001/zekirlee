@@ -418,7 +418,7 @@ No custom `vercel.json` is required by this application. Configure Supabase Auth
 | Memory configuration error | Set the mainnet MemWalAccount object ID and registered delegate key, then run `npm run test:memory`. |
 | Relayer does not report mainnet | Check `WALRUS_MEMORY_SERVER_URL`; setting `WALRUS_NETWORK` cannot change the relayer deployment. |
 | Memory connection check fails | Check connectivity, SDK compatibility, and whether the delegate is registered on the configured mainnet account. |
-| Chat does not recall Walrus memories | Enable **Use and save memory with Walrus**, use the browser that saved the facts, and check the recall notice. Verify credentials with `npm run test:memory`; recent writes may still be processing. |
+| Chat does not recall Walrus memories | Enable **Use and save memory with Walrus**, use the same signed-in account (or the original guest browser), and check the recall notice. Verify credentials with `npm run test:memory`; recent writes may still be processing. |
 | Memory clearing could not be confirmed | Refresh memory status before retrying. A timeout may occur after the relayer applied the clear; the browser identity stays unchanged on failure. |
 | Account sign-in is not configured | Set both public Supabase values and restart/rebuild. Guest chat remains available. |
 | Email link fails | Check allowed callback URLs and the Magic Link email template; request a fresh link. |
