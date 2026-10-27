@@ -45,3 +45,7 @@ test('account clearing reports its scope without changing the guest cookie', asy
   const response = await handlers.DELETE(new Request('https://app.example/api/memory/manage', {
     method: 'DELETE', headers: { origin: 'https://app.example', 'X-Zekirlee-Confirm': 'forget-memory' },
   }));
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.has('set-cookie'), false);
+  assert.equal(clears, 1);
+  assert.deepEqual(await response.json(), { cleared: 3, state: 'new', scope: 'account' });
