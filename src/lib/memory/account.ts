@@ -15,3 +15,8 @@ export async function loadAccountMemory(): Promise<AccountMemory | null> {
   const { data, error: readError } = await client.from("memory_spaces").select("generation").eq("user_id", user.id).single();
   if (readError || !data) throw readError || new Error("Memory space unavailable");
   return { userId: user.id, generation: data.generation, async rotate() {
+    // Compare-and-swap prevents a simultaneous clear from replacing a newer space.
+    const result = await client.from("memory_spaces").update({ generation: randomUUID() })
+      .eq("user_id", user.id).eq("generation", data.generation).select("user_id");
+    if (result.error || !result.data?.length) throw result.error || new Error("Memory space changed; refresh settings");
+  } };
