@@ -273,7 +273,6 @@ Turning memory off stops future recall and saves and skips queued work; already 
 ### Memory recall
 
 With memory enabled, the latest message becomes a semantic search query in the verified account namespace, or the browser's guest namespace when signed out. Recall retrieves at most five facts, filters weak matches and duplicates, and caps supplied context at 2,000 characters. Saved facts are sent to the configured AI provider as untrusted contextual data; instructions tell the model to prioritize current user statements over old facts and ignore commands embedded in memories.
-With memory enabled, the latest message becomes a semantic search query in the browser's guest namespace. Recall retrieves at most five facts, filters weak matches and duplicates, and caps supplied context at 2,000 characters. Saved facts are sent to the configured AI provider as untrusted contextual data; instructions tell the model to prioritize current user statements over old facts and ignore commands embedded in memories.
 
 The app waits at most four seconds for recall before continuing with the current conversation. Missing configuration, an unavailable relayer, and failed retrieval never block ordinary chat. The UI distinguishes supplied facts, no matches, a new browser identity, and unavailable memory. A provider request already in progress may continue after the wait expires, but late results are not added to the reply.
 
@@ -297,12 +296,13 @@ This manual check performs real AI requests and may write to Walrus mainnet. A s
 | Reload page | Restores tab history, but resets the memory opt-in to off. |
 | Turn memory off | Stops future recall and saves; previously stored facts remain. |
 | Clear browser cookies | Loses the guest identity linking this browser to its stored facts; it does not delete them. |
-| Switch device or browser | Uses a different guest identity; cross-device account linking is not implemented. |
+| Switch device or browser | Guests use a different identity; signing in to the same account shares account memory after setup. |
 
 ### Manage saved memory
 
 Open **Settings → Saved memory**, or use **Manage saved memory** above the chat. The status distinguishes missing configuration, a browser with no previous identity, an authenticated count of searchable memories, and a service failure. **Refresh status** retries the check without changing memory.
 
+**Clear saved memory** opens a confirmation explaining the active scope. For guests, confirming removes this browser namespace's search-index entries and switches the browser to a fresh signed identity. For signed-in users, it clears and rotates the account space across devices without changing the guest cookie. This prevents jobs that finish in the old namespace from surfacing in future recalls. Chat history stays intact, so old details can still appear in the current conversation until you start a new one.
 **Clear saved memory** opens a confirmation explaining the scope. Confirming removes this browser namespace's search-index entries and switches the browser to a fresh signed identity. This prevents jobs that finish in the old namespace from surfacing in future recalls. Chat history stays intact, so old details can still appear in the current conversation until you start a new one.
 
 This is index clearing, not permanent blob erasure: encrypted Walrus blobs persist until expiry and the account operator can restore their index. The relayer's [forget handler](https://github.com/MystenLabs/MemWal/blob/dev/services/server/src/routes/admin.rs) documents these semantics. Settings does not expose account-wide or other-browser clearing.
