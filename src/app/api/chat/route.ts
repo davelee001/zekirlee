@@ -25,7 +25,6 @@ export const POST = createChatHandler(async (messages, abortSignal, context) => 
       if (!identity.existing) return null;
       await verifyMainnetRelayer(config.serverUrl);
       return MemWal.create({ ...config, namespace: identity.namespace });
-      return MemWal.create({ ...config, namespace: `${config.namespace}:guest:${identity.id}` });
     },
   });
   abortSignal.throwIfAborted();

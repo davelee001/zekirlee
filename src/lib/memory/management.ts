@@ -2,7 +2,8 @@ type Session = { state: "unconfigured" } | { state: "new" } | {
   state: "known";
   stats: () => Promise<number>;
   forget: () => Promise<number>;
-  replacementCookie: string;
+  scope?: "browser" | "account";
+  replacementCookie?: string;
 };
 
 export function createMemoryManagementHandlers(load: (request: Request) => Promise<Session>) {
