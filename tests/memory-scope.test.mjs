@@ -6,3 +6,7 @@ import { createMemoryManagementHandlers } from '../src/lib/memory/management.ts'
 
 const config = { namespace: 'test', key: '11'.repeat(32) };
 const userId = '11111111-1111-4111-8111-111111111111';
+const generation = '22222222-2222-4222-8222-222222222222';
+const account = async () => ({ userId, generation, rotate: async () => {} });
+
+test('account memory uses the same namespace on devices with different guest cookies', async () => {
