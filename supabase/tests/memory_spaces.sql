@@ -14,3 +14,7 @@ do $$ begin
 end $$;
 select set_config('request.jwt.claims', json_build_object('sub', current_setting('test.user_b'), 'role', 'authenticated')::text, true);
 do $$ begin
+  if exists (select 1 from public.memory_spaces) then raise exception 'Cross-account read allowed'; end if;
+  update public.memory_spaces set generation = gen_random_uuid() where user_id = current_setting('test.user_a')::uuid;
+  if found then raise exception 'Cross-account rotation allowed'; end if;
+  begin
