@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { announceMemoryReset } from "@/lib/memory/browser-events";
 import { useAccount } from "@/hooks/use-account";
 
-type Status = { state: "unconfigured" | "new" | "ready" | "unavailable"; count: number };
+type Status = { state: "unconfigured" | "new" | "ready" | "unavailable"; count: number; scope?: "browser" | "account" };
 
 async function loadStatus(signal?: AbortSignal): Promise<Status> {
   const response = await fetch("/api/memory/manage", {
@@ -16,6 +16,9 @@ async function loadStatus(signal?: AbortSignal): Promise<Status> {
 }
 
 export function MemorySettings() {
+  const account = useAccount();
+  return <MemorySettingsPanel key={account.user?.id ?? account.state} />;
+}
   const [status, setStatus] = useState<Status | null>(null);
   const [busy, setBusy] = useState(true);
   const [confirm, setConfirm] = useState(false);
