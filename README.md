@@ -303,14 +303,14 @@ This manual check performs real AI requests and may write to Walrus mainnet. A s
 Open **Settings → Saved memory**, or use **Manage saved memory** above the chat. The status distinguishes missing configuration, a browser with no previous identity, an authenticated count of searchable memories, and a service failure. **Refresh status** retries the check without changing memory.
 
 **Clear saved memory** opens a confirmation explaining the active scope. For guests, confirming removes this browser namespace's search-index entries and switches the browser to a fresh signed identity. For signed-in users, it clears and rotates the account space across devices without changing the guest cookie. This prevents jobs that finish in the old namespace from surfacing in future recalls. Chat history stays intact, so old details can still appear in the current conversation until you start a new one.
-**Clear saved memory** opens a confirmation explaining the scope. Confirming removes this browser namespace's search-index entries and switches the browser to a fresh signed identity. This prevents jobs that finish in the old namespace from surfacing in future recalls. Chat history stays intact, so old details can still appear in the current conversation until you start a new one.
 
-This is index clearing, not permanent blob erasure: encrypted Walrus blobs persist until expiry and the account operator can restore their index. The relayer's [forget handler](https://github.com/MystenLabs/MemWal/blob/dev/services/server/src/routes/admin.rs) documents these semantics. Settings does not expose account-wide or other-browser clearing.
+This is index clearing, not permanent blob erasure: encrypted Walrus blobs persist until expiry and the account operator can restore their index. The relayer's [forget handler](https://github.com/MystenLabs/MemWal/blob/dev/services/server/src/routes/admin.rs) documents these semantics. Settings cannot clear other users' namespaces or the entire operator-owned Walrus account.
 
 Clearing pauses memory in open chat tabs using browser events and local storage notifications. When browser storage is blocked, other tabs may not receive the notification; turn memory off in those tabs too. Queued saves are invalidated on opt-out and navigation; already submitted jobs may still finish. Completed saves do not overwrite a replacement identity cookie.
 
 The installed SDK has no public production `stats` or `forget` method. The server uses the documented relayer endpoints with account-bound Ed25519 signatures, mainnet and compatibility checks, and request deadlines. It never sends the delegate private key. Tests verify signatures, namespace binding, confirmation, and failure behavior with mocked transport; no automated test clears live mainnet data.
 
+Remaining work includes connecting the Supabase project and running its migration/tests, migrating existing guest memory to accounts, and verifying real mainnet storage, recall, and clearing. See the [remaining-work checklist](docs/remaining-work.md) for the full list.
 Remaining work includes connecting the Supabase project and running its migration/tests, linking Walrus memory to accounts across devices, and verifying real mainnet storage, recall, and clearing. See the [remaining-work checklist](docs/remaining-work.md) for the full list.
 
 ## Project structure
