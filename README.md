@@ -212,6 +212,10 @@ Use **Connect Wallet** in the chat header, context panel, or Wallet activity pag
 
 Connection uses [Mysten's dApp Kit for Next.js](https://sdk.mystenlabs.com/dapp-kit/getting-started/next-js), loaded only in the browser. The shared connection follows in-app navigation. Automatic reconnection and persisted wallet selection are disabled, so reloading requires an explicit connection. Wallets must advertise Sui Mainnet support.
 
+Connecting does not request a signature or transaction, authenticate a Supabase account, or migrate memory. The connected address is not automatically included in AI requests or Walrus memory. Live balances, transactions, and wallet-aware replies remain pending. Real extension approval still needs manual verification; automated tests use a mock Wallet Standard provider.
+
+To check manually, connect from the chat header, verify the same account on Wallet activity, switch accounts, copy the address, and disconnect. Also cancel a connection request and confirm guest chat stays usable. Reload to verify the connection is not restored automatically.
+
 ### Supabase
 
 1. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local` and the deployment environment. Restart locally or rebuild the deployment when changing public values. No service-role key is used by the app.
@@ -358,6 +362,8 @@ src/
     conversation-library.tsx Private snapshot browsing and confirmation controls
     save-conversation.tsx  Explicit account-saving control
     wallet-lookup.tsx      Public-address validation and explorer link
+    wallet-controls.tsx    Browser-only wallet loading boundary
+    wallet-ui.tsx          Wallet selection, account display, copy, and disconnect
     ui/                    Reusable shadcn/ui components
   lib/
     ai/
@@ -380,6 +386,7 @@ src/
     supabase/              Browser and server Supabase clients
     conversations/         Validated API handlers and owner-bound database adapter
     auth/                  Email-link verification helper
+    wallet/dapp-kit.ts      Shared Mainnet wallet configuration
   proxy.ts                 Supabase session refresh
 scripts/
   check-backend.mjs         Live health, guest chat, and follow-up context check
@@ -403,7 +410,7 @@ npm start
 
 Run `npm start` after a successful build. Tests cover guest access, full conversation context, session restoration, request limits, incremental streaming, and safe failure handling. Automated tests do not call paid AI providers.
 
-The regression suite currently contains 53 tests, including chat/session behavior, memory storage/recall/management, authenticated conversation operations, ownership-input rejection, and email-link validation. Database policies and real email delivery require the separate configured-project checks; mocked API tests do not verify PostgreSQL enforcement.
+The regression suite currently contains 56 tests, including chat/session behavior, memory storage/recall/management, authenticated conversation operations, ownership-input rejection, and email-link validation. Database policies and real email delivery require the separate configured-project checks; mocked API tests do not verify PostgreSQL enforcement.
 
 | Live check | Prerequisites | What it verifies |
 | --- | --- | --- |
