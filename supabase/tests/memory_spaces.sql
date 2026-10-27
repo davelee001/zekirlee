@@ -9,3 +9,8 @@ set local role authenticated;
 select set_config('request.jwt.claims', json_build_object('sub', current_setting('test.user_a'), 'role', 'authenticated')::text, true);
 insert into public.memory_spaces default values;
 do $$ begin
+  update public.memory_spaces set generation = gen_random_uuid() where user_id = auth.uid();
+  if not found then raise exception 'Owner cannot rotate'; end if;
+end $$;
+select set_config('request.jwt.claims', json_build_object('sub', current_setting('test.user_b'), 'role', 'authenticated')::text, true);
+do $$ begin
